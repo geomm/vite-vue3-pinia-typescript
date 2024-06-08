@@ -6,7 +6,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   async mounted() {
-    const chars = await apiService.get('character', { page: 7 });
+    const chars = await apiService.get('character', { page: 1 });
     console.log('chars: ', chars);
   }
 });
