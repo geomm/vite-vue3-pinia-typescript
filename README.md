@@ -22,3 +22,11 @@ $ cd usr/src/rick-and-morty-UI
 $ npm i
 $ npm run dev
 ```
+
+### Tasks:
+
+- setup api service
+- setup store/state
+- setup list
+- setup details
+- setup details edit mode
