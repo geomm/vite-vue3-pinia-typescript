@@ -1,6 +1,15 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import { RouterLink, RouterView } from 'vue-router';
+import HelloWorld from './components/HelloWorld.vue';
+import apiService from './services/api.service';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  async mounted() {
+    const chars = await apiService.get('character', { page: 7 });
+    console.log('chars: ', chars);
+  }
+});
 </script>
 
 <template>

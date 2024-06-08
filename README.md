@@ -27,6 +27,6 @@ $ npm run dev
 
 - setup api service
 - setup store/state
-- setup list
-- setup details
-- setup details edit mode
+- create list
+- create details
+- adjust details for edit mode
