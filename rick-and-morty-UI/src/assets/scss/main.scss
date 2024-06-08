@@ -1,0 +1,92 @@
+@import './base.scss';
+@import './breakpoints.scss';
+
+#app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-weight: normal;
+  }
+  
+  a,
+  .green {
+    text-decoration: none;
+    color: hsla(160, 100%, 37%, 1);
+    transition: 0.4s;
+    padding: 3px;
+  }
+  
+  @media (hover: hover) {
+    a:hover {
+      background-color: hsla(160, 100%, 37%, 0.2);
+    }
+  }
+  
+  @media (min-width: $larger) {
+    body {
+      display: flex;
+      place-items: center;
+    }
+  
+    #app {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 0 2rem;
+    }
+  }
+  
+
+// body {
+//   display: flex;
+// }
+// #app {
+//   margin: 0 auto;
+//   padding: 0px;
+//   width: 100vw;
+//   display: flex;
+//   flex-flow: column;
+//   align-items: center;
+//   font-weight: normal;
+//   border-right: 1px solid;
+//   border-left: 1px solid;
+//   border-color: var(--vt-ui-grid-border-color);
+//   min-height: 102vh;
+// }
+// main {
+//   align-items: center;
+//   display: flex;
+//   flex-flow: column;
+//   height: 100%;
+//   width: 100%;
+//   position: relative;
+//   background: var(--color-background);
+// }
+// h1 {
+//   margin: 1rem 0 1rem 0;
+//   font-size: 18px;
+//   text-transform: uppercase;
+//   color: #ffffff;
+// }
+// a {
+//   text-decoration: none;
+//   color: #70c4ec;
+//   transition: 0.4s;
+//   &.router-link-active {
+//     display: none;
+//   }
+//   &:hover {
+//     color: #fff;
+//   }
+// }
+// b {
+//   font-weight: 700;
+// }
+// .no-data {
+//   opacity: 0.2;
+// }
+
+// @media (hover: hover) {
+//   a:hover {
+//     cursor: pointer;
+//   }
+// }

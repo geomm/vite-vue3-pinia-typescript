@@ -1,0 +1,32 @@
+project.notes.txt
+
+# Logs
+rick-and-morty-UI/logs
+rick-and-morty-UI/*.log
+rick-and-morty-UI/npm-debug.log*
+rick-and-morty-UI/yarn-debug.log*
+rick-and-morty-UI/yarn-error.log*
+rick-and-morty-UI/pnpm-debug.log*
+rick-and-morty-UI/lerna-debug.log*
+
+rick-and-morty-UI/node_modules
+rick-and-morty-UI/.DS_Store
+rick-and-morty-UI/dist
+rick-and-morty-UI/dist-ssr
+rick-and-morty-UI/coverage
+rick-and-morty-UI/*.local
+
+rick-and-morty-UI/cypress/videos/
+rick-and-morty-UI/cypress/screenshots/
+
+# Editor directories and files
+rick-and-morty-UI/.vscode/*
+rick-and-morty-UI/!.vscode/extensions.json
+rick-and-morty-UI/.idea
+rick-and-morty-UI/*.suo
+rick-and-morty-UI/*.ntvs*
+rick-and-morty-UI/*.njsproj
+rick-and-morty-UI/*.sln
+rick-and-morty-UI/*.sw?
+
+rick-and-morty-UI/*.tsbuildinfo

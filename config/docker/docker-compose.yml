@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  node_vite_vue_dev:
+    container_name: rick_and_morty_UI_dev
+    image: node:20.14.0
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - ${VITE_PORT}:${VITE_PORT}
+      - ${VITE_HMR_PORT}:${VITE_HMR_PORT}
+      - ${PREVIEW_PORT}:${PREVIEW_PORT}
+    env_file: ../../env/.env.development
+    volumes:
+      - ../../:/usr/src
+    stdin_open: true
+    tty: true
