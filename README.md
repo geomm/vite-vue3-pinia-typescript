@@ -25,7 +25,7 @@ $ npm run dev
 
 ### Tasks:
 
-- setup api service
+- ~~ setup api service ~~
 - setup store/state
 - create list
 - create details
