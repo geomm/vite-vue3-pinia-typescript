@@ -24,10 +24,11 @@ ul {
 </style>
 <template>
   <ul class="">
-    <li class="" v-for="character in charStore.$state.data as ICharacter[]" :key="character.id">
-      {{ character.name }}
-      <img :src="character.image" :alt="character.name" />
-    </li>
+    <ListCardComponent
+      v-for="character in (charStore.$state.data as ICharacter[])"
+      :key="character.id"
+      :character="character"
+    />
   </ul>
   <button @click="getPrevCharacters">prev</button>
   <button @click="getNextCharacters">next</button>
@@ -36,20 +37,25 @@ ul {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ICharacter } from '@/models/character.model';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
+import ListCardComponent from '../components/ListCardComponent.vue';
 
 export default defineComponent({
+  name: 'ListingComponent',
+  components: { ListCardComponent },
   setup() {
     const charStore = characterStore();
 
-    charStore.fetchCharacters(1);
+    onMounted(() => {
+      charStore.fetchCharacters(1);
+    });
 
-    const getNextCharacters = async () => {
+    const getNextCharacters = () => {
       const page = (charStore.$state.paging || 1) + 1;
       charStore.fetchCharacters(page);
     };
 
-    const getPrevCharacters = async () => {
+    const getPrevCharacters = () => {
       const page = (charStore.$state.paging || 1) - 1;
       charStore.fetchCharacters(page);
     };

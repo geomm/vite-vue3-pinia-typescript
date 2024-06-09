@@ -9,3 +9,5 @@ describe('HelloWorld', () => {
     expect(wrapper.text()).toContain('Hello Vitest')
   })
 })
+
+//@ΝΟΤΕ: leaving this file here for unit test reference 
