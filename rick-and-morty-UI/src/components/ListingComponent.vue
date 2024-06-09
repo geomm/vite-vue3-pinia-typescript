@@ -6,19 +6,45 @@ ul {
   flex-flow: row wrap;
   min-width: 100%;
   justify-content: center;
-  
+  li {
+    opacity: 0.8;
+    border-top: 1px solid;
+    border-color: var(--vt-ui-grid-border-color);
+    &:hover {
+      opacity: 1;
+    }
+    &:nth-child(odd) {
+      justify-content: flex-end;
+    }
+    &:nth-child(even) {
+      justify-content: flex-start;
+    }
+  }
+}
+.buttons-wrap {
+  position: fixed;
+  z-index: 12;
+  bottom: 1rem;
+  right: 2rem;
+  @media (max-width: 1024px) {
+    position: relative;
+    bottom: unset;
+    right: unset;
+  }
 }
 </style>
 <template>
   <ul class="">
     <ListCardComponent
-      v-for="character in (charStore.$state.data?.results as ICharacter[])"
+      v-for="character in charStore.$state.data?.results as ICharacter[]"
       :key="character.id"
       :character="character"
     />
   </ul>
-  <button @click="getPrevCharacters">prev</button>
-  <button @click="getNextCharacters">next</button>
+  <div class="buttons-wrap">
+    <button @click="getPrevCharacters">prev</button>
+    <button @click="getNextCharacters">next</button>
+  </div>
 </template>
 <script lang="ts">
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

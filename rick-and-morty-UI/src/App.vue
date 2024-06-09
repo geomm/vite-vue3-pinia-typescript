@@ -4,11 +4,11 @@ import { RouterLink, RouterView } from 'vue-router';
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="300" />
+    <img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150" />
 
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">LIST</RouterLink>
       </nav>
     </div>
   </header>
@@ -20,6 +20,7 @@ import { RouterLink, RouterView } from 'vue-router';
 header {
   line-height: 1.5;
   max-height: 100vh;
+  position: relative;
 }
 
 .logo {
@@ -56,11 +57,15 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+    /* padding-right: calc(var(--section-gap) / 2); */
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    left: 0px;
   }
 
   .logo {
-    margin: 0 2rem 0 0;
+    margin: 0 2rem 0 2rem;
   }
 
   header .wrapper {

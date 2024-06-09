@@ -1,5 +1,5 @@
 <template>
-  <section v-if="(charStore.$state.data?.model as ICharacter)">
+  <section v-if="charStore.$state.data?.model as ICharacter">
     <div class="image">
       <img
         :src="(charStore.$state.data?.model as ICharacter).image"
@@ -25,13 +25,15 @@
       </div>
       <div class="section">
         <span class="text-gray">Last known location: </span>
-        <a :href="(charStore.$state.data?.model as ICharacter).location?.url">{{
+        <a :href="(charStore.$state.data?.model as ICharacter).location?.url" target="_blank">{{
           (charStore.$state.data?.model as ICharacter).location?.name || ''
         }}</a>
       </div>
       <div class="section">
         <span class="text-gray">First seen in: </span>
-        <a :href="(charStore.$state.data?.model as ICharacter).episode?.[0]">That episode</a>
+        <a :href="(charStore.$state.data?.model as ICharacter).episode?.[0]" target="_blank"
+          >That episode</a
+        >
       </div>
     </div>
   </section>
@@ -48,7 +50,7 @@ export default defineComponent({
   name: 'DetailsComponent',
   setup() {
     const charStore = characterStore();
-    const character: ICharacter = reactive({...charStore.$state.data?.model as ICharacter});
+    const character: ICharacter = reactive({ ...(charStore.$state.data?.model as ICharacter) });
 
     const redirect = (id: number) => {
       router.push({ name: `character`, params: { id: id } });
