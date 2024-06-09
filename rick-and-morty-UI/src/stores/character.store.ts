@@ -1,13 +1,13 @@
 import type { IApiDataModel } from '@/models/api-data.model';
 import type { ICharacter } from '@/models/character.model';
-import type { IStoreState } from '@/models/store.model';
+import type { IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
-    data: null as ICharacter[] | ICharacter | null,
+    data: {} as ModelState<ICharacter> | null,
     loading: false,
     error: null as any | null,
     paging: 1
@@ -22,19 +22,20 @@ export const characterStore = defineStore('character', {
           'character',
           { page: page }
         );
-        this.data = response.data.results;
+        this.data!.results = response.data.results;
       } catch (error) {
         this.error = error;
+        console.error("Didn't fetch,\n", error);
       } finally {
         this.loading = false;
       }
     },
-    async fetchCharacter(id: string): Promise<void> {
+    async fetchCharacter(id: number): Promise<void> {
       this.loading = true;
       this.error = null;
       try {
         const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        this.data = response.data;
+        this.data!.model = response.data;
       } catch (error) {
         this.error = error;
       } finally {

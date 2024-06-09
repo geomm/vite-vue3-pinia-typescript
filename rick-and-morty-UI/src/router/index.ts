@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import CharactersView from '../views/CharactersView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import CharactersView from '../views/CharactersView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,11 +10,11 @@ const router = createRouter({
       component: CharactersView
     },
     {
-      path: '/characters',
-      name: 'characters',
-      component: () => import('../views/CharactersView.vue')
+      path: '/character/:id',
+      name: 'character',
+      component: () => import('../views/CharacterDetailsView.vue')
     }
   ]
-})
+});
 
-export default router
+export default router;

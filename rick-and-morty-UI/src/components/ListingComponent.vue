@@ -1,31 +1,18 @@
 <style scoped lang="scss">
 ul {
   list-style-type: none;
-  li {
-    opacity: 0.8;
-    border-top: 1px solid;
-    border-color: var(--vt-ui-grid-border-color);
-    &:hover {
-      opacity: 1;
-    }
-    > a {
-      border-left: 1px solid;
-      border-right: 1px solid;
-      border-color: var(--vt-ui-grid-border-color);
-    }
-    &:nth-child(odd) {
-      justify-content: flex-end;
-    }
-    &:nth-child(even) {
-      justify-content: flex-start;
-    }
-  }
+  padding-left: unset;
+  display: flex;
+  flex-flow: row wrap;
+  min-width: 100%;
+  justify-content: center;
+  
 }
 </style>
 <template>
   <ul class="">
     <ListCardComponent
-      v-for="character in (charStore.$state.data as ICharacter[])"
+      v-for="character in (charStore.$state.data?.results as ICharacter[])"
       :key="character.id"
       :character="character"
     />

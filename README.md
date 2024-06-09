@@ -25,11 +25,15 @@ $ npm run dev
 
 ### Tasks:
 
-- ~~ setup api service ~~
+- ~~setup api service~~
 - setup store/state - wip
-- create list - wip
-- create details
+- ~~create list - wip~~
+- - get last episode's link in list's items
+- create details - wip
 - adjust details for edit mode
+- organize styles
+- add loader
+- add toast
 
 
 ---------------------------------------------------------
