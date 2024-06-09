@@ -7,17 +7,21 @@ import { defineStore } from 'pinia';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
-    data: null,
+    data: null as ICharacter[] | ICharacter | null,
     loading: false,
-    error: null
+    error: null as any | null,
+    paging: 1
   }),
   actions: {
-    async fetchCharacters(): Promise<void> {
+    async fetchCharacters(page: number): Promise<void> {
       this.loading = true;
       this.error = null;
+      this.paging = page || 1;
       try {
-        const response: AxiosResponse<IApiDataModel<ICharacter>> =
-          await apiService.get('character');
+        const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
+          'character',
+          { page: page }
+        );
         this.data = response.data.results;
       } catch (error) {
         this.error = error;
@@ -29,8 +33,7 @@ export const characterStore = defineStore('character', {
       this.loading = true;
       this.error = null;
       try {
-        const response: AxiosResponse<ICharacter> =
-          await apiService.get(`character/${id}`);
+        const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
         this.data = response.data;
       } catch (error) {
         this.error = error;
