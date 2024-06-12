@@ -6,7 +6,7 @@ ul {
   flex-flow: row wrap;
   min-width: 100%;
   justify-content: center;
-  opacity: 1.0;
+  opacity: 1;
   -webkit-transition: opacity 0.1s ease-in-out;
   -moz-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
@@ -47,7 +47,7 @@ ul {
 </template>
 <script lang="ts">
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
 import ListPaginationComponent from './ListPaginationComponent.vue';
 
