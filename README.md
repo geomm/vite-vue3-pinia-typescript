@@ -45,7 +45,9 @@ $ npm run dev
 - - use toast for invalid pagination inputs (validate input)
 - - use toast for requests errors
 - ~~create NavComponent (show activePage/total and input)~~
-- - currently input is binded on:keydown:enter @TODO: add button to the right of the input 
+- - currently input is binded on:keydown:enter @TODO: add button to the right of the input
+- - add validation (before request) in pagin input
+- - simplify template properties instead of using pinia state directly
 
 ---
 
