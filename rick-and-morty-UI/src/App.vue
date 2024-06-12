@@ -39,7 +39,6 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    /* padding-right: calc(var(--section-gap) / 2); */
     position: fixed;
     top: 0px;
     z-index: 1;
@@ -48,12 +47,6 @@ nav a:first-of-type {
 
   .logo {
     margin: 0 2rem 0 2rem;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
   }
 
   nav {
@@ -68,12 +61,9 @@ nav a:first-of-type {
 </style>
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150" />
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">LIST</RouterLink>
-      </nav>
-    </div>
+    <RouterLink class="logo" to="/"
+      ><img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150"
+    /></RouterLink>
   </header>
   <RouterView />
   <LoaderComponent v-if="charStore.$state.loading" />

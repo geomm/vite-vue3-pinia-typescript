@@ -32,17 +32,20 @@ $ npm run dev
 ### Tasks:
 
 - ~~setup api service~~
-- setup store/state - wip
+- setup store/state - inreview
 - ~~create list - wip~~
 - - get last episode's link in list's items
-- - add status icon in listing (red/green circle)
-- main page UI design
+- - ~~add status icon in listing (red/green circle)~~
+- main page UI design - inreview
 - create details - UI design wip
 - adjust details for edit mode
-- organize styles
-- add loader - wip
-- add toast
-- create NavComponent (show activePage/total and input)
+- organize styles - wip/inreview
+- ~~add loader~~
+- add toast (error handling, edit mode state store notify user)
+- - use toast for invalid pagination inputs (validate input)
+- - use toast for requests errors
+- ~~create NavComponent (show activePage/total and input)~~
+- - currently input is binded on:keydown:enter @TODO: add button to the right of the input 
 
 ---
 

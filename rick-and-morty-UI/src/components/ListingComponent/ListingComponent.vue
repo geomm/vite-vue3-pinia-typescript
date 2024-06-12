@@ -6,8 +6,15 @@ ul {
   flex-flow: row wrap;
   min-width: 100%;
   justify-content: center;
+  opacity: 1.0;
+  -webkit-transition: opacity 0.1s ease-in-out;
+  -moz-transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.1s ease-in-out;
+  &.disabled {
+    opacity: 0.3;
+  }
   li {
-    opacity: 0.8;
+    opacity: 0.9;
     border-top: 1px solid;
     border-color: var(--vt-ui-grid-border-color);
     &:hover {
@@ -21,64 +28,32 @@ ul {
     }
   }
 }
-.buttons-wrap {
-  position: fixed;
-  z-index: 12;
-  bottom: 1rem;
-  right: 2rem;
-  background-color: #04aaa899;
-  padding: 1em;
-
-  button {
-    background-color: var(--vt-ui-project-accent-color);
-    border: none;
-    color: var(--vt-ui-project-secondary-color);
-    padding: 2em 4em;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    font-weight: 800;
-    cursor: pointer;
-    text-transform: uppercase;
-    &:hover {
-      background-color: var(--vt-ui-project-secondary-color);
-      color: var(--vt-ui-project-accent-color);
-    }
-  }
-  @media (max-width: 1024px) {
-    position: relative;
-    bottom: unset;
-    right: unset;
-  }
-}
 </style>
 <template>
-  <ul class="">
+  <ul class="flex" :class="{ disabled: charStore.$state.loading }">
     <ListCardComponent
-      v-for="character in charStore.$state.data?.results as ICharacter[]"
+      v-for="character in charStore.$state.data?.results"
       :key="character.id"
       :character="character"
     />
   </ul>
-  <div class="buttons-wrap">
-    <InputComponent />
-    <button @click="getPrevCharacters">prev</button>
-    <button @click="getNextCharacters">next</button>
-  </div>
+  <ListPaginationComponent
+    :paging="charStore.$state.paging"
+    :pagesTotal="charStore.$state.pagesTotal"
+    @click:getPrev="getPrevCharacters"
+    @click:getNext="getNextCharacters"
+    @keyup:enter="fetchCharactersByPageNumber($event)"
+  />
 </template>
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { ICharacter } from '@/models/character.model';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
-import InputComponent from '../UICompoents/InputComponent.vue';
+import ListPaginationComponent from './ListPaginationComponent.vue';
 
 export default defineComponent({
   name: 'ListingComponent',
-  components: { ListCardComponent, InputComponent },
+  components: { ListCardComponent, ListPaginationComponent },
   setup() {
     const charStore = characterStore();
 
@@ -86,20 +61,31 @@ export default defineComponent({
       charStore.fetchCharacters(1);
     });
 
-    const getNextCharacters = () => {
-      const page = (charStore.$state.paging || 1) + 1;
+    const getPrevCharacters = () => {
+      const page = (charStore.$state.paging || 1) - 1;
+      if (!page) {
+        return;
+      }
       charStore.fetchCharacters(page);
     };
 
-    const getPrevCharacters = () => {
-      const page = (charStore.$state.paging || 1) - 1;
+    const getNextCharacters = () => {
+      const page = (charStore.$state.paging as number) + 1;
+      if (page === (charStore.$state.pagesTotal as number) + 1) {
+        return;
+      }
       charStore.fetchCharacters(page);
+    };
+
+    const fetchCharactersByPageNumber = (pageIndex: number) => {
+      charStore.fetchCharacters(Number(pageIndex));
     };
 
     return {
       charStore,
       getNextCharacters,
-      getPrevCharacters
+      getPrevCharacters,
+      fetchCharactersByPageNumber
     };
   }
 });

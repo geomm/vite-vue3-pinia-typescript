@@ -3,7 +3,7 @@
   display: inline-grid;
   padding: 5px;
   background: transparent;
-  filter: contrast(12); //blur(4px)
+  filter: contrast(12);
   position: fixed;
   left: 50%;
   top: 50%;

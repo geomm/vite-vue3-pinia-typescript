@@ -1,10 +1,16 @@
 @import './base.scss';
 @import './vars.scss';
+@import './grid.scss';
 @import './button.scss';
 @import './form.scss';
 
 body {
   display: flex;
+  background-image: url(https://static1.srcdn.com/wordpress/wp-content/uploads/2023/12/untitled-design-32-1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-position: 50%;
 }
 #app {
   margin: 0 auto;
@@ -14,10 +20,6 @@ body {
   flex-flow: column;
   align-items: center;
   font-weight: normal;
-  border-right: 1px solid;
-  border-left: 1px solid;
-  border-color: var(--vt-ui-grid-border-color);
-  min-height: 102vh;
 }
 main {
   align-items: center;
@@ -26,7 +28,6 @@ main {
   height: 100%;
   width: 100%;
   position: relative;
-  background: var(--color-background);
   margin-top: 9vh;
   @media (max-width: 1024px) {
     margin-top: unset;
@@ -36,17 +37,17 @@ h1 {
   margin: 1rem 0 1rem 0;
   font-size: 18px;
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--vt-c-white);
 }
 a {
   text-decoration: none;
-  color: #70c4ec;
+  color: var(--vt-ui-project-accent-color);
   transition: 0.4s;
-  &.router-link-active {
+  &.router-link-active:not(.logo) {
     display: none;
   }
   &:hover {
-    color: #fff;
+    color: var(--vt-c-white);
   }
 }
 b {

@@ -1,7 +1,16 @@
+/**
+* SASS variables
+*/
 @import './breakpoints.scss';
 
-$mat-bg-color: #FFFFFF;
+$mat-bg-color: hsl(208, 25%, 12%);
 $mat-hl-color: #f0ff00;
 $mat-muted-color: mix(white, $mat-bg-color, 70%);
 $mat-trans-time: 300ms;
-$mat-width: 320px;
+$mat-width: 100%;
+
+$gutter: 0.5em;
+$flex-columns: 12;
+$flex-col-margin: 1em;
+$container-width: 100%;
+$container-devices-margin: 1.5em;

@@ -1,6 +1,6 @@
-// BUTTONS // ============================== //
+/* Base Button Styles */
 button {
-  background: #fff;
+  background: var(--vt-c-white);
   color: mix(black, $mat-muted-color, 25%);
   border: none;
   padding: 10px 20px;
@@ -44,7 +44,3 @@ button {
   }
 }
 
-.btn-box {
-  text-align: center;
-  margin: 50px 0;
-}

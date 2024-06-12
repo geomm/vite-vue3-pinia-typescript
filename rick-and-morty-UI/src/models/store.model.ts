@@ -3,8 +3,7 @@ export interface IStoreState<T> {
   loading: boolean;
   error: any | null;
   paging?: number;
-  pageActive?: number;
-  pageTotal?: number
+  pagesTotal?: number | null | undefined;
 }
 
 export interface ModelState<T> {

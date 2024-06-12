@@ -10,19 +10,22 @@ export const characterStore = defineStore('character', {
     data: {} as ModelState<ICharacter> | null,
     loading: false,
     error: null as any | null,
-    paging: 1
+    paging: 1,
+    pagesTotal: null
   }),
   actions: {
     async fetchCharacters(page: number): Promise<void> {
       this.loading = true;
       this.error = null;
-      this.paging = page || 1;
+      this.paging = page;
       try {
         const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
           'character',
           { page: page }
         );
         this.data!.results = response.data.results;
+        this.pagesTotal = response.data.info.pages;
+        console.log('>>> response: ', response.data);
       } catch (error) {
         this.error = error;
         console.error("Didn't fetch,\n", error);
@@ -35,7 +38,6 @@ export const characterStore = defineStore('character', {
       this.error = null;
       try {
         const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        // this.$state.data!.model = response.data;
         this.setCharacterState(response.data);
       } catch (error) {
         this.error = error;

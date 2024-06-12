@@ -51,7 +51,7 @@
         justify-content: flex-end;
       }
       span {
-        font-size: 16px;
+        font-size: 1em;
         font-weight: 500;
       }
       .text-gray {
@@ -62,12 +62,27 @@
         -webkit-box-align: center;
         align-items: center;
         text-transform: capitalize;
-        .status__icon {
+        .status_icon {
           height: 0.5rem;
           width: 0.5rem;
           margin-right: 0.375rem;
           background: rgb(158, 158, 158);
           border-radius: 50%;
+
+          &.alive {
+            height: 0.5rem;
+            width: 0.5rem;
+            margin-right: 0.375rem;
+            background: var(--vt-ui-project-status-icon-green);
+            border-radius: 50%;
+          }
+          &.dead {
+            height: 0.5rem;
+            width: 0.5rem;
+            margin-right: 0.375rem;
+            background: var(--vt-ui-project-status-icon-red);
+            border-radius: 50%;
+          }
         }
       }
       a {
@@ -96,7 +111,7 @@
           ><h2>{{ character?.name }}</h2></RouterLink
         > -->
         <span class="status">
-          <span class="status_icon"></span>
+          <span class="status_icon" :class="character?.status.toLowerCase()"></span>
           {{ character?.status }} - {{ character?.species }}
         </span>
       </div>

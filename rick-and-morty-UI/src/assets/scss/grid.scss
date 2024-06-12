@@ -1,0 +1,62 @@
+/**
+* grid system specific styles
+*/
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  padding: 0px $flex-col-margin;
+
+  @media (max-width: $container-width) {
+    width: calc(100% - #{$flex-col-margin}* 2);
+    padding: 0px;
+  }
+  @media (max-width: $medium) {
+    width: calc(100% - #{$container-devices-margin}* 2);
+    padding: 0px;
+  }
+}
+
+/*
+* flex responsive
+*/
+.flex {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  @media (max-width: $medium) {
+    flex-flow: column;
+    width: 100%;
+  }
+}
+
+@for $i from 1 through $flex-columns {
+  .col-#{$i} {
+    flex-basis: auto;
+    $i_width: calc((100% / $flex-columns * $i) - (2 * $gutter));
+    width: $i_width;
+    max-width: $i_width;
+    margin: $gutter;
+
+    @media (max-width: $medium) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+@for $i from 0 through $flex-columns {
+  .col-offset-#{$i} {
+    @if $i == 0 {
+      margin-left: 0;
+    } @else {
+      margin-left: calc(100% / $flex-columns * $i);
+    }
+
+    @media (max-width: $medium) {
+      margin-left: 0;
+    }
+  }
+}
