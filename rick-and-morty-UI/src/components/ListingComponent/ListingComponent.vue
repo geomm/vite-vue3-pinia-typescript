@@ -26,6 +26,8 @@ ul {
   z-index: 12;
   bottom: 1rem;
   right: 2rem;
+  background-color: #04aaa899;
+  padding: 1em;
 
   button {
     background-color: var(--vt-ui-project-accent-color);
@@ -61,6 +63,7 @@ ul {
     />
   </ul>
   <div class="buttons-wrap">
+    <InputComponent />
     <button @click="getPrevCharacters">prev</button>
     <button @click="getNextCharacters">next</button>
   </div>
@@ -71,10 +74,11 @@ import type { ICharacter } from '@/models/character.model';
 import { characterStore } from '@/stores/character.store';
 import { defineComponent, onMounted } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
+import InputComponent from '../UICompoents/InputComponent.vue';
 
 export default defineComponent({
   name: 'ListingComponent',
-  components: { ListCardComponent },
+  components: { ListCardComponent, InputComponent },
   setup() {
     const charStore = characterStore();
 
