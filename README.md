@@ -32,14 +32,14 @@ $ npm run dev
 ### Tasks:
 
 - ~~setup api service~~
-- setup store/state - inreview
-- ~~create list - wip~~
+- setup store/state - **inreview**
+- ~~create list~~
 - - get last episode's link in list's items
 - - ~~add status icon in listing (red/green circle)~~
-- main page UI design - inreview
-- create details - UI design wip
+- main page UI design - **inreview**
+- create details - UI
 - adjust details for edit mode
-- organize styles - wip/inreview
+- organize styles - **wip/inreview**
 - ~~add loader~~
 - add toast (error handling, edit mode state store notify user)
 - - use toast for invalid pagination inputs (validate input)
