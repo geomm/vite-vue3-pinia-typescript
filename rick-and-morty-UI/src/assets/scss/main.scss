@@ -1,5 +1,7 @@
 @import './base.scss';
-@import './breakpoints.scss';
+@import './vars.scss';
+@import './button.scss';
+@import './form.scss';
 
 body {
   display: flex;
@@ -25,7 +27,7 @@ main {
   width: 100%;
   position: relative;
   background: var(--color-background);
-  margin-top: 15%;
+  margin-top: 9vh;
   @media (max-width: 1024px) {
     margin-top: unset;
   }

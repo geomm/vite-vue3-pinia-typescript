@@ -3,9 +3,11 @@ export interface IStoreState<T> {
   loading: boolean;
   error: any | null;
   paging?: number;
+  pageActive?: number;
+  pageTotal?: number
 }
 
 export interface ModelState<T> {
-  results: T[];
+  results?: T[];
   model: T;
 }

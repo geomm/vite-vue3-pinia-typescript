@@ -36,11 +36,13 @@ $ npm run dev
 - ~~create list - wip~~
 - - get last episode's link in list's items
 - - add status icon in listing (red/green circle)
-- create details - wip
+- main page UI design
+- create details - UI design wip
 - adjust details for edit mode
 - organize styles
-- add loader
+- add loader - wip
 - add toast
+- create NavComponent (show activePage/total and input)
 
 ---
 

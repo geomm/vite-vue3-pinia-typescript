@@ -1,39 +1,36 @@
 <template>
-  <section v-if="charStore.$state.data?.model as ICharacter">
+  <section v-if="charStore.$state.data?.model">
     <div class="image">
-      <img
-        :src="(charStore.$state.data?.model as ICharacter).image"
-        :alt="(charStore.$state.data?.model as ICharacter).name"
-      />
-      <img :src="character?.image" :alt="character?.name" />
+      <img :src="charStore.$state.data.model?.image" :alt="charStore.$state.data.model?.name" />
     </div>
     <div class="info">
       <div class="section">
-        <a
-          href="javascript:void(0)"
-          @click="redirect((charStore.$state.data?.model as ICharacter).id)"
-          ><h2>{{ (charStore.$state.data?.model as ICharacter).name || '' }}</h2></a
+        <a @click="redirect(charStore.$state.data.model.id)"
+          ><h2>{{ charStore.$state.data.model.name }}</h2></a
         >
-        <!-- <RouterLink :to="{ name: '(charStore.$state.data?.model as ICharacter)', params: { id: (charStore.$state.data?.model as ICharacter).id } }"
-          ><h2>{{ (charStore.$state.data?.model as ICharacter).name || '' }}</h2></RouterLink
-        > @NOTE: receivng error on history.back()-->
+        <!-- <RouterLink
+          :to="{
+            name: charStore.$state.data.model?.name,
+            params: { id: Number(charStore.$state.data.model?.id) }
+          }"
+          ><h2>{{ charStore.$state.data!.model?.name }}</h2></RouterLink
+        > -->
+        <!-- @NOTE:  receivng error -->
         <span class="status">
           <span class="status_icon"></span>
-          {{ (charStore.$state.data?.model as ICharacter).status || '' }} -
-          {{ (charStore.$state.data?.model as ICharacter).species || '' }}
+          {{ charStore.$state.data!.model?.status }} -
+          {{ charStore.$state.data!.model?.species }}
         </span>
       </div>
       <div class="section">
         <span class="text-gray">Last known location: </span>
-        <a :href="(charStore.$state.data?.model as ICharacter).location?.url" target="_blank">{{
-          (charStore.$state.data?.model as ICharacter).location?.name || ''
+        <a :href="charStore.$state.data!.model.location?.url" target="_blank">{{
+          charStore.$state.data!.model.location?.name
         }}</a>
       </div>
       <div class="section">
         <span class="text-gray">First seen in: </span>
-        <a :href="(charStore.$state.data?.model as ICharacter).episode?.[0]" target="_blank"
-          >That episode</a
-        >
+        <a :href="charStore.$state.data!.model.episode?.[0]" target="_blank">That episode</a>
       </div>
     </div>
   </section>
@@ -43,27 +40,32 @@
 import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, onBeforeMount, onBeforeUnmount, reactive } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'DetailsComponent',
   setup() {
+    const route = useRoute();
     const charStore = characterStore();
-    const character: ICharacter = reactive({ ...(charStore.$state.data?.model as ICharacter) });
+    let character: ICharacter = {} as ICharacter;
 
     const redirect = (id: number) => {
       router.push({ name: `character`, params: { id: id } });
     };
 
-    const route = useRoute();
+    const updateCharacter = () => {
+      character = charStore.$state.data!.model;
+    };
 
     onBeforeMount(() => {
-      charStore.fetchCharacter(Number(route.params.id));
+      charStore.fetchCharacter(Number(route.params.id)).then(() => {
+        updateCharacter();
+      });
     });
 
     onBeforeUnmount(() => {
-      //   charStore.$dispose();
+      charStore.resetCharacterState();
     });
 
     return {

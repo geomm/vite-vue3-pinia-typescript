@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-.card {
+.rick-and-morty-api-card {
   width: 600px;
   height: 220px;
   display: flex;
@@ -83,26 +83,26 @@
 }
 </style>
 <template>
-  <li class="card" v-if="character as ICharacter" :key="character.id">
+  <li class="rick-and-morty-api-card" v-if="character as ICharacter" :key="character.id">
     <div class="image">
       <img :src="character.image" :alt="character.name" />
     </div>
     <div class="info">
       <div class="section">
-        <a href="javascript:void(0)" @click="redirect(character?.id)"
-          ><h2>{{ character?.name || '' }}</h2></a
+        <a @click="redirect(character?.id)"
+          ><h2>{{ character?.name }}</h2></a
         >
         <!-- <RouterLink :to="{ name: 'character', params: { id: character?.id } }"
-          ><h2>{{ character?.name || '' }}</h2></RouterLink
+          ><h2>{{ character?.name }}</h2></RouterLink
         > -->
         <span class="status">
           <span class="status_icon"></span>
-          {{ character?.status || '' }} - {{ character?.species || '' }}
+          {{ character?.status }} - {{ character?.species }}
         </span>
       </div>
       <div class="section">
         <span class="text-gray">Last known location: </span>
-        <a :href="character.location?.url" target="_blank">{{ character.location?.name || '' }}</a>
+        <a :href="character.location?.url" target="_blank">{{ character.location?.name }}</a>
       </div>
       <div class="section">
         <span class="text-gray">First seen in:</span>

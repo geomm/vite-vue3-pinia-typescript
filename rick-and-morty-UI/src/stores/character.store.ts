@@ -35,12 +35,19 @@ export const characterStore = defineStore('character', {
       this.error = null;
       try {
         const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        this.data!.model = response.data;
+        // this.$state.data!.model = response.data;
+        this.setCharacterState(response.data);
       } catch (error) {
         this.error = error;
       } finally {
         this.loading = false;
       }
+    },
+    setCharacterState(character: ICharacter): void {
+      this.$state.data!.model = character;
+    },
+    resetCharacterState(): void {
+      this.$state.data!.model = {} as ICharacter;
     }
   }
 });

@@ -1,0 +1,50 @@
+// BUTTONS // ============================== //
+button {
+  background: #fff;
+  color: mix(black, $mat-muted-color, 25%);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    color: mix(black, $mat-muted-color, 30%);
+    box-shadow:
+      0 7px 14px rgba(0, 0, 0, 0.18),
+      0 5px 5px rgba(0, 0, 0, 0.12);
+  }
+  &.btn-link {
+    background: $mat-hl-color;
+    color: mix(white, $mat-hl-color, 80%);
+    &:hover {
+      background: darken($mat-hl-color, 5%);
+      color: mix(white, $mat-hl-color, 85%);
+    }
+  }
+  &.btn-submit {
+    background: $mat-hl-color;
+    color: mix(white, $mat-hl-color, 70%);
+    &:hover {
+      background: darken($mat-hl-color, 5%);
+      color: mix(white, $mat-hl-color, 85%);
+    }
+  }
+  &.btn-cancel {
+    background: #eee;
+    &:hover {
+      background: darken(#eee, 5%);
+      color: mix(black, $mat-muted-color, 30%);
+    }
+  }
+}
+
+.btn-box {
+  text-align: center;
+  margin: 50px 0;
+}

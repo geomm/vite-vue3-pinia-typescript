@@ -26,6 +26,25 @@ ul {
   z-index: 12;
   bottom: 1rem;
   right: 2rem;
+
+  button {
+    background-color: var(--vt-ui-project-accent-color);
+    border: none;
+    color: var(--vt-ui-project-secondary-color);
+    padding: 2em 4em;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    &:hover {
+      background-color: var(--vt-ui-project-secondary-color);
+      color: var(--vt-ui-project-accent-color);
+    }
+  }
   @media (max-width: 1024px) {
     position: relative;
     bottom: unset;
@@ -51,7 +70,7 @@ ul {
 import type { ICharacter } from '@/models/character.model';
 import { characterStore } from '@/stores/character.store';
 import { defineComponent, onMounted } from 'vue';
-import ListCardComponent from '../components/ListCardComponent.vue';
+import ListCardComponent from './ListCardComponent.vue';
 
 export default defineComponent({
   name: 'ListingComponent',

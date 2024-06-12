@@ -1,21 +1,3 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-</script>
-
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150" />
-
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">LIST</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
-</template>
-
 <style scoped>
 header {
   line-height: 1.5;
@@ -84,3 +66,36 @@ nav a:first-of-type {
   }
 }
 </style>
+<template>
+  <header>
+    <img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150" />
+    <div class="wrapper">
+      <nav>
+        <RouterLink to="/">LIST</RouterLink>
+      </nav>
+    </div>
+  </header>
+  <RouterView />
+  <LoaderComponent v-if="charStore.$state.loading" />
+</template>
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { RouterLink, RouterView } from 'vue-router';
+import LoaderComponent from './components/UICompoents/LoaderComponent.vue';
+import { characterStore } from './stores/character.store';
+
+export default defineComponent({
+  name: 'AppComponent',
+  components: {
+    RouterLink,
+    RouterView,
+    LoaderComponent
+  },
+  setup() {
+    const charStore = characterStore();
+    return {
+      charStore
+    };
+  }
+});
+</script>
