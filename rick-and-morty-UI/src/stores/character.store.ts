@@ -4,6 +4,8 @@ import type { IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
+import { toast } from 'vue3-toastify';
+import { toastifyConfiguration } from '@/configs/toastify.config';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
@@ -25,10 +27,10 @@ export const characterStore = defineStore('character', {
         );
         this.data!.results = response.data.results;
         this.pagesTotal = response.data.info.pages;
-        console.log('>>> response: ', response.data);
+        toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
-        console.error("Didn't fetch,\n", error);
+        toast.error(`Store error: ${error}`, toastifyConfiguration);
       } finally {
         this.loading = false;
       }
@@ -36,17 +38,20 @@ export const characterStore = defineStore('character', {
     async fetchCharacter(id: number): Promise<void> {
       this.loading = true;
       this.error = null;
+
       try {
         const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
         this.setCharacterState(response.data);
       } catch (error) {
         this.error = error;
+        toast.error(`Store error: ${error}`, toastifyConfiguration);
       } finally {
         this.loading = false;
       }
     },
     setCharacterState(character: ICharacter): void {
       this.$state.data!.model = character;
+      toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {
       this.$state.data!.model = {} as ICharacter;

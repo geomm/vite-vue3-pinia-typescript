@@ -50,6 +50,8 @@ import { characterStore } from '@/stores/character.store';
 import { defineComponent, onMounted } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
 import ListPaginationComponent from './ListPaginationComponent.vue';
+import { toast } from 'vue3-toastify';
+import { toastifyConfiguration } from '@/configs/toastify.config';
 
 export default defineComponent({
   name: 'ListingComponent',
@@ -64,6 +66,7 @@ export default defineComponent({
     const getPrevCharacters = () => {
       const page = (charStore.$state.paging || 1) - 1;
       if (!page) {
+        toast.warn(`There are no less than ${page} pages :)`, toastifyConfiguration);
         return;
       }
       charStore.fetchCharacters(page);
@@ -72,6 +75,7 @@ export default defineComponent({
     const getNextCharacters = () => {
       const page = (charStore.$state.paging as number) + 1;
       if (page === (charStore.$state.pagesTotal as number) + 1) {
+        toast.warn(`There are no more that ${page} pages :)`, toastifyConfiguration);
         return;
       }
       charStore.fetchCharacters(page);
