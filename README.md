@@ -37,13 +37,13 @@ $ npm run dev
 - - get last episode's link in list's items
 - - ~~add status icon in listing (red/green circle)~~
 - main page UI design - **inreview**
-- create details - UI
+- create details - UI - **wip**
 - adjust details for edit mode
 - organize styles - **wip/inreview**
 - ~~add loader~~
-- add toast (error handling, edit mode state store notify user)
-- - use toast for invalid pagination inputs (validate input)
-- - use toast for requests errors
+- ~~add toast (error handling, edit mode state store notify user)~~
+- - ~~use toast for invalid pagination inputs~~ 
+- - ~~use toast for requests errors~~
 - ~~create NavComponent (show activePage/total and input)~~
 - - currently input is binded on:keydown:enter @TODO: add button to the right of the input
 - - add validation (before request) in pagin input
