@@ -26,7 +26,6 @@
   --vt-ui-project-accent-color: #04aaa8;
   --vt-ui-project-secondary-color: #f0ff00;
   --vt-ui-project-panel-bg-color: #04aaa8de;
-
   --vt-ui-project-status-icon-green: rgb(85, 204, 68);
   --vt-ui-project-status-icon-red: rgb(214, 61, 46);
 }
@@ -64,9 +63,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
   position: relative;
-  font-weight: normal;
 }
 
 ::-moz-selection {

@@ -3,7 +3,7 @@ import DetailsComponent from '@/components/DetailsComponent.vue';
 </script>
 
 <template>
-  <main>
+  <main class="flex">
     <DetailsComponent />
   </main>
 </template>

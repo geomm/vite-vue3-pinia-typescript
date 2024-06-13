@@ -10,9 +10,6 @@ ul {
   -webkit-transition: opacity 0.1s ease-in-out;
   -moz-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
-  &.disabled {
-    opacity: 0.3;
-  }
   li {
     opacity: 0.9;
     border-top: 1px solid;
@@ -30,7 +27,7 @@ ul {
 }
 </style>
 <template>
-  <ul class="flex" :class="{ disabled: charStore.$state.loading }">
+  <ul class="flex" :class="{ 'no-data': charStore.$state.loading }">
     <ListCardComponent
       v-for="character in charStore.$state.data?.results"
       :key="character.id"
@@ -66,7 +63,7 @@ export default defineComponent({
     const getPrevCharacters = () => {
       const page = (charStore.$state.paging || 1) - 1;
       if (!page) {
-        toast.warn(`There are no less than ${page} pages :)`, toastifyConfiguration);
+        toast.warn(`There is nothing before page 1 :)`, toastifyConfiguration);
         return;
       }
       charStore.fetchCharacters(page);

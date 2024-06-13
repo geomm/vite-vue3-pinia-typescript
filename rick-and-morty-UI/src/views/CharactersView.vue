@@ -3,7 +3,7 @@ import ListingComponent from '@/components/ListingComponent/ListingComponent.vue
 </script>
 
 <template>
-  <main>
+  <main class="flex">
     <ListingComponent />
   </main>
 </template>

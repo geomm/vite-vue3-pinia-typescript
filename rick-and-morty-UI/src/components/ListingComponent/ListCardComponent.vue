@@ -57,34 +57,6 @@
       .text-gray {
         color: rgb(158, 158, 158);
       }
-      .status {
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-        text-transform: capitalize;
-        .status_icon {
-          height: 0.5rem;
-          width: 0.5rem;
-          margin-right: 0.375rem;
-          background: rgb(158, 158, 158);
-          border-radius: 50%;
-
-          &.alive {
-            height: 0.5rem;
-            width: 0.5rem;
-            margin-right: 0.375rem;
-            background: var(--vt-ui-project-status-icon-green);
-            border-radius: 50%;
-          }
-          &.dead {
-            height: 0.5rem;
-            width: 0.5rem;
-            margin-right: 0.375rem;
-            background: var(--vt-ui-project-status-icon-red);
-            border-radius: 50%;
-          }
-        }
-      }
       a {
         color: rgb(245, 245, 245);
         &:hover,
