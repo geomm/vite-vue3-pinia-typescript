@@ -1,4 +1,5 @@
 <style scoped lang="scss">
+@import '../../assets/scss/vars.scss';
 .pagination {
   position: fixed;
   z-index: 12;
@@ -36,10 +37,14 @@
       cursor: not-allowed;
     }
   }
-  @media (max-width: 1024px) {
-    position: relative;
-    bottom: unset;
-    right: unset;
+  @media (max-width: $larger) {
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
   }
 }
 </style>

@@ -1,9 +1,25 @@
 <style scoped lang="scss">
+@import '../../assets/scss/vars.scss';
 .section {
   justify-content: space-between;
   display: inline-flex;
   width: 100%;
-  border-bottom: 2px dotted #ffffff5e;
+  &:hover {
+    border-bottom: 2px dotted #ffffff5e;
+  }
+  &:not(.list-card) {
+    span {
+      font-size: 0.7em;
+      display: inline-flex;
+      align-items: center;
+      letter-spacing: -0.001em;
+      justify-content: space-between;
+      i {
+        margin-right: 0.5em;
+        color: $project-secondary-color;
+      }
+    }
+  }
   &.list-card {
     a {
       color: rgb(245, 245, 245);
@@ -24,9 +40,7 @@
       font-size: 1em;
       font-weight: 500;
     }
-    .text-gray {
-      color: rgb(158, 158, 158);
-    }
+
     a {
       color: rgb(245, 245, 245);
       &:hover,
@@ -40,8 +54,10 @@
 </style>
 <template>
   <div class="section" v-if="content">
-    <span class="text-gray">{{ label }}: </span>
-    <b v-if="!url">{{ content || '' }}</b>
+    <span :class="{ 'text-gray': !icon }"
+      ><i v-if="icon" class="material-icons"> {{ icon }} </i>{{ label }}:
+    </span>
+    <b v-if="!url" :class="{ 'text-gray': content === 'unknown' }">{{ content || '' }}</b>
     <b v-else-if="url"
       ><a :href="url" target="_blank">{{ content }}</a></b
     >
@@ -54,7 +70,8 @@ export default defineComponent({
   props: {
     label: String as PropType<string | null>,
     content: String as PropType<string | null>,
-    url: String as PropType<string | null>
+    url: String as PropType<string | null>,
+    icon: String as PropType<string | null>
   }
 });
 </script>

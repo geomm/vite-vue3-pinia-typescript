@@ -6,13 +6,16 @@
 $mat-bg-color: hsl(208, 25%, 12%);
 $mat-hl-color: #f0ff00;
 
-$project-accent-color: #04aaa8;
-$project-secondary-color: #f0ff00;
-$project-panel-bg-color: #04aaa8de;
-$project-status-icon-green: rgb(85, 204, 68);
-$project-status-icon-red: rgb(214, 61, 46);
+$project-accent-color: var(--vt-ui-project-accent-color);
+$project-secondary-color: var(--vt-ui-project-secondary-color);
+$project-panel-bg-color: var(--vt-ui-project-panel-bg-color);
+$project-status-icon-green: var(--vt-ui-project-status-icon-green);
+$project-status-icon-red: var(--vt-ui-project-status-icon-red);
+$project-link: var(--vt-ui-project-link);
+$project-link-active: var(--vt-ui-project-link-active);
+$project-text-gray: var(--vt-ui-project-text-gray);
 
-$mat-muted-color: mix(white, $mat-bg-color, 70%);
+$mat-muted-color: mix(#ffffff, $mat-bg-color, 70%);
 $mat-trans-time: 300ms;
 $mat-width: 100%;
 $mat-border-radius: 3px;

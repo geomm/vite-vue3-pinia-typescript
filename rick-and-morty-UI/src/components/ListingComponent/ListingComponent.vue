@@ -1,4 +1,5 @@
 <style scoped lang="scss">
+@import '../../assets/scss/vars.scss';
 ul {
   list-style-type: none;
   padding-left: unset;
@@ -10,6 +11,9 @@ ul {
   -webkit-transition: opacity 0.1s ease-in-out;
   -moz-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
+  @media (max-width: $larger) {
+    padding: 30vh 0px;
+  }
   li {
     opacity: 0.9;
     border-top: 1px solid;

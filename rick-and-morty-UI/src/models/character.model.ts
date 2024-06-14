@@ -3,11 +3,13 @@ interface INamedUrl {
   url: string;
 }
 
-export type Gender = 'Male' | 'Female';
+export type Origin = string | 'unknown' ;
 
-export type Status = 'Alive' | 'Dead' | 'unknown' | '';
+export type Gender = 'Male' | 'Female' | 'unknown';
 
-export type Spieces = 'Alien' | 'Human' | '';
+export type Status = 'Alive' | 'Dead' | 'unknown';
+
+export type Spieces = 'Alien' | 'Human';
 
 export interface ICharacter {
   id: number;
