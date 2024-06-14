@@ -4,6 +4,38 @@
   display: inline-flex;
   width: 100%;
   border-bottom: 2px dotted #ffffff5e;
+  &.list-card {
+    a {
+      color: rgb(245, 245, 245);
+      font-weight: normal;
+      word-wrap: break-word;
+      font-kerning: normal;
+      -moz-font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+      font-feature-settings: 'kern', 'liga', 'clig', 'calt';
+    }
+    border-bottom: none;
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+
+    span {
+      font-size: 1em;
+      font-weight: 500;
+    }
+    .text-gray {
+      color: rgb(158, 158, 158);
+    }
+    a {
+      color: rgb(245, 245, 245);
+      &:hover,
+      &:focus {
+        color: rgb(255, 152, 0);
+        text-decoration: none;
+      }
+    }
+  }
 }
 </style>
 <template>

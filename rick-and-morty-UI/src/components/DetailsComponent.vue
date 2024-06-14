@@ -37,6 +37,9 @@ section {
     :class="{ 'no-data': charStore.$state.loading }"
     v-if="charStore.$state.data?.model"
   >
+    <span class="material-icons"> menu </span>
+    <span class="material-icons">face</span>
+    <button class="prev"><i class="material-icons">arrow_back</i></button>
     <div class="col-6">
       <div
         class="col-12 flex"
@@ -82,6 +85,7 @@ section {
         <SectionInfoComponent :label="'Species'" :content="charStore.$state.data!.model?.species" />
       </div>
     </div>
+    <button class="prev"><i class="material-icons">arrow_forward</i></button>
   </section>
 </template>
 <script lang="ts">
