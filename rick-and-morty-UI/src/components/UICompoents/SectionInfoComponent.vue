@@ -4,10 +4,11 @@
   justify-content: space-between;
   display: inline-flex;
   width: 100%;
-  &:hover {
-    border-bottom: 2px dotted #ffffff5e;
-  }
   &:not(.list-card) {
+    border-bottom: 2px solid transparent;
+    &:hover {
+      border-bottom: 2px dotted #ffffff5e;
+    }
     span {
       font-size: 0.7em;
       display: inline-flex;
@@ -18,6 +19,11 @@
         margin-right: 0.5em;
         color: $project-secondary-color;
       }
+    }
+    @media (max-width: $xx-large) {
+      flex-flow: column;
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
     }
   }
   &.list-card {

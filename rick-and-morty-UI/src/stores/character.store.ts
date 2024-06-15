@@ -13,7 +13,8 @@ export const characterStore = defineStore('character', {
     loading: false,
     error: null as any | null,
     paging: 1,
-    pagesTotal: null
+    pagesTotal: null,
+    editMode: false
   }),
   actions: {
     async fetchCharacters(page: number): Promise<void> {
@@ -55,6 +56,10 @@ export const characterStore = defineStore('character', {
     },
     resetCharacterState(): void {
       this.$state.data!.model = {} as ICharacter;
+    },
+    updateEditModeState(): void {
+      this.$state.editMode = !this.$state.editMode;
+      console.log('toggled editMode:', this.$state.editMode);
     }
   }
 });

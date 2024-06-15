@@ -2,22 +2,6 @@
 * grid system specific styles
 */
 
-.container {
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  padding: 0px $flex-col-margin;
-
-  @media (max-width: $container-width) {
-    width: calc(100% - #{$flex-col-margin}* 2);
-    padding: 0px;
-  }
-  @media (max-width: $medium) {
-    width: calc(100% - #{$container-devices-margin}* 2);
-    padding: 0px;
-  }
-}
-
 /*
 * flex responsive
 */
@@ -26,6 +10,7 @@
   flex-flow: row wrap;
   align-items: center;
   justify-content: center;
+  height: auto;
   @media (max-width: $medium) {
     flex-flow: column;
     width: 100%;

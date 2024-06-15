@@ -2,6 +2,12 @@
 @import '../assets/scss/vars.scss';
 section {
   font-size: 23px;
+  > div {
+    @media (max-width: $large) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
   &.details {
     flex-flow: row wrap;
     justify-content: space-between;
@@ -16,6 +22,7 @@ section {
         align-items: flex-end;
         display: inline-flex;
         flex-flow: column;
+        margin-bottom: 0px;
         .status {
           font-weight: 900;
           margin-top: 0.7em;
@@ -24,6 +31,29 @@ section {
             width: 1.5rem;
             margin-right: 1rem;
           }
+        }
+        @media (max-width: $large) {
+          margin: 1em auto;
+        }
+      }
+      @media (max-width: $xx-large) {
+        flex-flow: column;
+        > div[class^='col-'] {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+      @media (max-width: $large) {
+        margin: auto;
+        > * {
+          width: 100%;
+          max-width: 100%;
+          margin: inherit;
+        }
+      }
+      @media (max-width: $medium) {
+        > div[class^='col-'] {
+          margin: auto;
         }
       }
     }
@@ -35,8 +65,15 @@ section {
       background-color: $project-panel-bg-color;
       border-radius: $mat-border-radius;
       padding: 2em;
+      @media (max-width: $large) {
+        margin: auto;
+        > * {
+          width: 100%;
+          max-width: 100%;
+          margin: inherit;
+        }
+      }
     }
-
     .image {
       margin-left: 0px;
       display: flex;
@@ -44,10 +81,9 @@ section {
       border-radius: 3px;
       background-position: center;
       background-size: cover;
-
-      img {
-        width: 100%;
-        max-width: 220px;
+      @media (max-width: $xx-large) {
+        margin-right: 0px;
+        background-size: unset;
       }
     }
     button {
@@ -57,11 +93,38 @@ section {
       padding: 2em 4em;
       text-align: center;
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1em;
       font-weight: 800;
       cursor: pointer;
       text-transform: uppercase;
+      z-index: 1;
+
+      @media (max-width: $large) {
+        padding: 1em;
+        position: absolute;
+        top: 30%;
+        &.prev {
+          left: 0em;
+        }
+        &.next {
+          right: 0em;
+        }
+      }
+      @media (max-width: $medium) {
+        top: unset;
+        position: fixed;
+        bottom: 0.5em;
+        max-height: 3em;
+        &.prev {
+          left: 0.5em;
+        }
+        &.next {
+          right: 0.5em;
+        }
+      }
 
       &.edit {
         padding: 0em;
@@ -86,6 +149,10 @@ section {
         cursor: not-allowed;
       }
     }
+
+    &.editing {
+      border: 1px solid;
+    }
   }
 }
 </style>
@@ -93,19 +160,19 @@ section {
 <template>
   <section
     class="details flex col-11"
-    :class="{ 'no-data': charStore.$state.loading }"
+    :class="{ 'no-data': charStore.$state.loading, editing: charStore.$state.editMode }"
     v-if="charStore.$state.data?.model"
   >
     <button class="prev"><i class="material-icons">arrow_back</i></button>
     <div class="col-6">
       <header class="col-12 flex">
         <div
-          class="image col-3"
+          class="col-4 image"
           :style="`background-image: url(${charStore.$state.data.model?.image})`"
           :data-attr-title="charStore.$state.data.model?.name"
         ></div>
-        <div class="col-9">
-          <button class="edit"><i class="material-icons">edit</i></button>
+        <div class="col-8">
+          <button class="edit" @click="toggleEditMode"><i class="material-icons">edit</i></button>
           <a :href="charStore.$state.data!.model.url" target="_blank" class="col-12"
             ><h1 class="text-align-right">{{ charStore.$state.data.model?.name || '' }}</h1>
             <StatusComponent
@@ -163,7 +230,7 @@ section {
         />
       </div>
     </div>
-    <button class="prev"><i class="material-icons">arrow_forward</i></button>
+    <button class="next"><i class="material-icons">arrow_forward</i></button>
   </section>
 </template>
 <script lang="ts">
@@ -195,6 +262,10 @@ export default defineComponent({
       console.log('character:', character);
     };
 
+    const toggleEditMode = () => {
+      charStore.updateEditModeState();
+    };
+
     onBeforeMount(() => {
       charStore.fetchCharacter(Number(route.params.id)).then(() => {
         updateCharacter();
@@ -208,7 +279,8 @@ export default defineComponent({
     return {
       charStore,
       // character,
-      redirect
+      redirect,
+      toggleEditMode
     };
   }
 });

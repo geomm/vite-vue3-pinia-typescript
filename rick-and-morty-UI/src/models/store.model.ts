@@ -4,6 +4,7 @@ export interface IStoreState<T> {
   error: any | null;
   paging?: number;
   pagesTotal?: number | null | undefined;
+  editMode?: boolean;
 }
 
 export interface ModelState<T> {
