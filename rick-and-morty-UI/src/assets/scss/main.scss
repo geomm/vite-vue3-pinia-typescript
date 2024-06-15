@@ -41,9 +41,9 @@ main {
   height: 100%;
   width: 100%;
   position: relative;
-  margin: 10vh auto;
+  // margin: 10vh auto;
   @media (max-width: 1024px) {
-    margin-top: unset;
+    // margin-top: unset;
   }
 }
 h1 {

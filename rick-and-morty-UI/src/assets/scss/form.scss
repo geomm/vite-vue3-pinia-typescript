@@ -21,14 +21,15 @@ textarea {
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
   background: none;
-  color: $mat-muted-color;
+  color: $project-white-color;
+  font-weight: 100;
   font-size: 18px;
   padding: 10px 10px 10px 5px;
   display: block;
   width: $mat-width;
   border: none;
   border-radius: 0;
-  border-bottom: 1px solid var(--vt-ui-project-accent-color);
+  border-bottom: 1px solid $project-accent-color;
   appearance: none;
   -webkit-appearance: none;
   &:focus {
@@ -38,7 +39,7 @@ textarea {
   &:valid ~ label {
     top: -14px;
     font-size: 12px;
-    color: var(--vt-ui-project-secondary-color);
+    color: $project-secondary-color;
   }
   &:focus ~ .bar:before {
     width: $mat-width;
@@ -52,7 +53,7 @@ input {
 }
 
 label {
-  color: var(--vt-ui-project-secondary-color);
+  color: $project-secondary-color;
   font-size: 1em;
   font-weight: bold;
   position: absolute;
@@ -72,7 +73,7 @@ label {
     width: 0;
     bottom: 0px;
     position: absolute;
-    background: var(--vt-ui-project-secondary-color);
+    background: $project-secondary-color;
     transition: $mat-trans-time ease all;
     left: 0%;
   }

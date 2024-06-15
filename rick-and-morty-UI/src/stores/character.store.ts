@@ -1,6 +1,6 @@
 import type { IApiDataModel } from '@/models/api-data.model';
 import type { ICharacter } from '@/models/character.model';
-import type { IStoreState, ModelState } from '@/models/store.model';
+import type { EditableModelProperties, IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
@@ -59,7 +59,9 @@ export const characterStore = defineStore('character', {
     },
     updateEditModeState(): void {
       this.$state.editMode = !this.$state.editMode;
-      console.log('toggled editMode:', this.$state.editMode);
+    },
+    updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
+      this.$state.data!.model[key as EditableModelProperties] = value;
     }
   }
 });

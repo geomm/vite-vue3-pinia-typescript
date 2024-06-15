@@ -1,3 +1,5 @@
+export type EditableModelProperties = 'name' | 'gender' | 'species';
+
 export interface IStoreState<T> {
   data: ModelState<T> | null;
   loading: boolean;

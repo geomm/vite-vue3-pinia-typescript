@@ -56,7 +56,7 @@
         :type="'number'"
         :id="'pageIndex'"
         :label="'Page #'"
-        v-model="value"
+        :inputValue="value"
         v-on:update:inputValue="keyUpOnEnter($event)"
       />
       <p class="col-6">
@@ -84,7 +84,7 @@ export default defineComponent({
     paging: Number as PropType<number>,
     pagesTotal: Number as PropType<number | null | undefined>
   },
-  emits: ['click:getPrev', 'click:getNext', 'keyup:enter'],
+  emits: ['click:getPrev', 'click:getNext', 'keyup:enter'], //'keyup:up'
   components: { InputComponent },
   setup(props, { emit }) {
     const value = ref(null as InputValue);
@@ -101,6 +101,7 @@ export default defineComponent({
 
     const keyUpOnEnter = (value: number) => {
       emit('keyup:enter', value);
+      // emit('keyup:up', value);
     };
 
     return {

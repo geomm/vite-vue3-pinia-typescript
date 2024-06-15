@@ -56,28 +56,65 @@
       }
     }
   }
+  &.editing {
+    background-color: #3b7171;
+    padding: 0.5em 2em;
+    margin: 1em auto;
+  }
 }
 </style>
 <template>
-  <div class="section" v-if="content">
+  <div class="section" v-if="!editable">
     <span :class="{ 'text-gray': !icon }"
       ><i v-if="icon" class="material-icons"> {{ icon }} </i>{{ label }}:
     </span>
-    <b v-if="!url" :class="{ 'text-gray': content === 'unknown' }">{{ content || '' }}</b>
+    <b v-if="!url" :class="{ 'text-gray': content === 'unknown' }">{{ content || '-' }}</b>
     <b v-else-if="url"
       ><a :href="url" target="_blank">{{ content }}</a></b
     >
   </div>
+  <div class="section editing" v-else>
+    <span
+      ><i v-if="icon" class="material-icons"> {{ icon }} </i>{{ label }}:
+    </span>
+    <InputComponent
+      :label="label"
+      :type="'text'"
+      :id="label"
+      :inputValue="editableContent"
+      v-on:update:inputValue="valueChange($event)"
+    />
+  </div>
 </template>
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent, ref, type PropType } from 'vue';
+import InputComponent from './InputComponent.vue';
 export default defineComponent({
   name: 'SectionInfoComponent',
+  components: {
+    InputComponent
+  },
   props: {
-    label: String as PropType<string | null>,
+    label: String as PropType<string>,
     content: String as PropType<string | null>,
     url: String as PropType<string | null>,
-    icon: String as PropType<string | null>
+    icon: String as PropType<string | null>,
+    editable: Boolean as PropType<boolean>
+  },
+  emits: ['keyup:up'],
+  setup(props, { emit }) {
+    const editableContent = ref(props.content);
+
+    const valueChange = (value: string) => {
+      // const target = event.target as HTMLInputElement;
+      console.log('>>> valueChange: ', value);
+      emit('keyup:up', value);
+    };
+
+    return {
+      editableContent,
+      valueChange
+    };
   }
 });
 </script>

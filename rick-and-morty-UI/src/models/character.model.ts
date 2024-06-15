@@ -5,11 +5,11 @@ interface INamedUrl {
 
 export type Origin = string | 'unknown' ;
 
-export type Gender = 'Male' | 'Female' | 'unknown';
+export type Gender = 'Male' | 'Female' | 'unknown' | string;
 
 export type Status = 'Alive' | 'Dead' | 'unknown';
 
-export type Spieces = 'Alien' | 'Human';
+export type Spieces = 'Alien' | 'Human' | string;
 
 export interface ICharacter {
   id: number;
