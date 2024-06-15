@@ -7,7 +7,7 @@
   </div>
 </template>
 <script lang="ts">
-import type { InputTypes } from '@/models/inputTypes.model';
+import type { InputTypes } from '@/models/input-types.model';
 import { defineComponent, type PropType } from 'vue';
 
 export default defineComponent({
