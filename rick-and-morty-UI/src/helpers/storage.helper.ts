@@ -13,6 +13,7 @@ export function fetchFromStorage(key: string): ICharacter | null {
       return storageCharacter;
     } catch (error) {
       toast.error(`Error parsing storage: ${error}`, toastifyConfiguration);
+      console.error(`Error parsing storage: ${error}`, toastifyConfiguration);
       return null;
     }
   }

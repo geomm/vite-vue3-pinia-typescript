@@ -97,9 +97,10 @@ section {
   >
     <button
       class="prev"
-      :class="{ disabled: charStore.$state.editMode }"
+      :class="{ disabled: true }"
       @click="redirect((Number(charStore.$state.data.model.id) || 1) - 1)"
     >
+      <!-- charStore.$state.editMode -->
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
@@ -175,9 +176,10 @@ section {
     </div>
     <button
       class="next"
-      :class="{ disabled: charStore.$state.editMode }"
+      :class="{ disabled: true }"
       @click="redirect(Number(charStore.$state.data.model.id) + 1)"
     >
+      <!-- charStore.$state.editMode  -->
       <i class="material-icons">arrow_forward</i>
     </button>
   </section>
@@ -210,12 +212,6 @@ export default defineComponent({
 
     const toggleEditMode = async (value?: boolean) => {
       charStore.updateEditModeState(value);
-      console.log(
-        'Editind Character Data: ',
-        charStore.$state.data!.model,
-        '\nEdit Mode: ',
-        charStore.$state.editMode
-      );
     };
 
     const tmpKeepProp = (key: EditableModelProperties, value: string) => {
@@ -229,12 +225,6 @@ export default defineComponent({
       };
       charStore.setCharacterState(newCharacterState);
       charStore.updateEditModeState(false);
-      console.log(
-        'New Character Data: ',
-        charStore.$state.data?.model,
-        '\nEdit Mode: ',
-        charStore.$state.editMode
-      );
     };
 
     onBeforeMount(async () => {
@@ -243,6 +233,7 @@ export default defineComponent({
     });
 
     onBeforeUnmount(() => {
+      tmpCharacter = {};
       toggleEditMode(false);
     });
 
