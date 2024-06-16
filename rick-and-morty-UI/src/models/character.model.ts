@@ -14,8 +14,8 @@ export type Spieces = 'Alien' | 'Human' | string;
 export interface ICharacter {
   id: number;
   name: string;
-  status: string;
-  species: string;
+  status: Status;
+  species: Spieces;
   type: string;
   gender: Gender;
   origin: INamedUrl;

@@ -82,7 +82,7 @@
       :type="'text'"
       :id="label"
       :inputValue="editableContent"
-      v-on:update:inputValue="valueChange($event)"
+      v-on:update:inputValue="sectionEdited($event)"
     />
   </div>
 </template>
@@ -101,19 +101,18 @@ export default defineComponent({
     icon: String as PropType<string | null>,
     editable: Boolean as PropType<boolean>
   },
-  emits: ['keyup:up'],
+  emits: ['section:edit'],
   setup(props, { emit }) {
     const editableContent = ref(props.content);
 
-    const valueChange = (value: string) => {
-      // const target = event.target as HTMLInputElement;
-      console.log('>>> valueChange: ', value);
-      emit('keyup:up', value);
+    const sectionEdited = (value: string) => {
+      console.log('>>> valueChange: ', value, editableContent.value);
+      emit('section:edit', value);
     };
 
     return {
       editableContent,
-      valueChange
+      sectionEdited
     };
   }
 });

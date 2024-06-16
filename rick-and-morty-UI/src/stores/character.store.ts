@@ -52,6 +52,7 @@ export const characterStore = defineStore('character', {
     },
     setCharacterState(character: ICharacter): void {
       this.$state.data!.model = character;
+      console.log('setCharacterState', character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {

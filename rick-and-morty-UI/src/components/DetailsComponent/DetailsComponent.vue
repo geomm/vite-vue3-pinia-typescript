@@ -1,5 +1,5 @@
 <style scoped lang="scss">
-@import '../assets/scss/vars.scss';
+@import '../../assets/scss/vars.scss';
 section {
   font-size: 1.3rem;
   > div {
@@ -11,55 +11,6 @@ section {
   &.details {
     flex-flow: row wrap;
     justify-content: space-between;
-    header {
-      align-items: flex-end;
-      justify-content: space-between;
-      a,
-      h1 {
-        margin-right: 0px;
-      }
-      a {
-        align-items: flex-end;
-        display: inline-flex;
-        flex-flow: column;
-        margin-bottom: 0px;
-        .status {
-          font-weight: 900;
-          margin-top: 0.7em;
-          .status_icon {
-            height: 1.5rem;
-            width: 1.5rem;
-            margin-right: 1rem;
-          }
-        }
-        @media (max-width: $large) {
-          margin: 1em auto;
-        }
-      }
-      @media (max-width: $xx-large) {
-        flex-flow: column;
-        > div[class^='col-'] {
-          width: 100%;
-          max-width: 100%;
-        }
-      }
-      @media (max-width: $large) {
-        margin: auto;
-        > * {
-          width: 100%;
-          max-width: 100%;
-          margin: inherit;
-        }
-      }
-      @media (max-width: $medium) {
-        > div[class^='col-'] {
-          margin: auto;
-        }
-      }
-    }
-    h1 {
-      margin: 0em 0.1em -0.1em;
-    }
     .info {
       text-align: right;
       background-color: $project-panel-bg-color;
@@ -67,23 +18,6 @@ section {
       padding: 2em;
       @media (max-width: $large) {
         margin: auto;
-        > * {
-          // width: 100%;
-          // max-width: 100%;
-          // margin: inherit;
-        }
-      }
-    }
-    .image {
-      margin-left: 0px;
-      display: flex;
-      height: 200px;
-      border-radius: 3px;
-      background-position: center;
-      background-size: cover;
-      @media (max-width: $xx-large) {
-        margin-right: 0px;
-        background-size: unset;
       }
     }
     button {
@@ -165,25 +99,16 @@ section {
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
-      <header class="col-12 flex">
-        <div
-          class="col-4 image"
-          :style="`background-image: url(${charStore.$state.data.model?.image})`"
-          :data-attr-title="charStore.$state.data.model?.name"
-        ></div>
-        <div class="col-8">
-          <button class="edit" @click="toggleEditMode" v-if="!charStore.$state.editMode">
-            <i class="material-icons">edit</i>
-          </button>
-          <a :href="charStore.$state.data!.model.url" target="_blank" class="col-12"
-            ><h1 class="text-align-right">{{ charStore.$state.data.model?.name || '' }}</h1>
-            <StatusComponent
-              :status="charStore.$state.data!.model?.status"
-              :species="charStore.$state.data!.model?.species"
-            />
-          </a>
-        </div>
-      </header>
+      <!-- :character="charStore.$state.data.model" -->
+      <DetailsHeaderComponent
+        v-model:name="charStore.$state.data.model.name"
+        v-model:image="charStore.$state.data.model.image"
+        v-model:status="charStore.$state.data.model.status"
+        v-model:specied="charStore.$state.data.model.species"
+        v-model:url="charStore.$state.data.model.url"
+        :editMode="charStore.$state.editMode"
+        @edit:click="toggleEditMode"
+      />
 
       <div class="info col-12">
         <SectionInfoComponent
@@ -212,7 +137,7 @@ section {
           :content="charStore.$state.data!.model?.gender"
           :icon="'wc'"
           :editable="charStore.$state.editMode"
-          @keyup:up="tmpKeepProp('gender', $event)"
+          @section:edit="tmpKeepProp('gender', $event)"
         />
 
         <SectionInfoComponent
@@ -232,7 +157,7 @@ section {
           :content="charStore.$state.data!.model?.species"
           :icon="'pets'"
           :editable="charStore.$state.editMode"
-          @keyup:up="tmpKeepProp('species', $event)"
+          @section:edit="tmpKeepProp('species', $event)"
         />
         <div class="flex" v-if="charStore.$state.editMode">
           <button class="cancel col-6 ml0" @click="toggleEditMode">
@@ -259,14 +184,14 @@ import router from '@/router';
 import { characterStore } from '@/stores/character.store';
 import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
-import StatusComponent from './UICompoents/StatusComponent.vue';
-import SectionInfoComponent from './UICompoents/SectionInfoComponent.vue';
 import type { EditableModelProperties } from '@/models/store.model';
+import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
+import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
 
 export default defineComponent({
   name: 'DetailsComponent',
   components: {
-    StatusComponent,
+    DetailsHeaderComponent,
     SectionInfoComponent
   },
   setup() {
@@ -300,8 +225,8 @@ export default defineComponent({
         ...tmpCharacter
       };
       charStore.setCharacterState(newCharacterState);
-      updateCharacter();
-      console.log('Changes submitted', charStore.$state.data!.model, newCharacterState, character);
+      // updateCharacter();
+      console.log('Changes submitted', charStore.$state.data!.model);
       toggleEditMode();
     };
 

@@ -5,9 +5,11 @@
       :id="id"
       v-model="value"
       v-on:keyup.enter="updateValue"
-      v-on:key.up="updateValue"
-      required
+      v-on:focusout="updateValue"
     />
+    <!-- required
+           v-on:keyup.up="updateValue"
+           v-on:blur="updateValue"-->
     <span class="highlight"></span>
     <span class="bar"></span>
     <label :for="label">{{ label }}</label>
@@ -18,7 +20,7 @@
 </template>
 <script lang="ts">
 import type { InputTypes, InputValue } from '@/models/input-types.model';
-import { defineComponent, ref, type PropType } from 'vue';
+import { defineComponent, onBeforeUnmount, ref, type PropType } from 'vue';
 
 export default defineComponent({
   name: 'InputComponent',
@@ -37,6 +39,10 @@ export default defineComponent({
       const target = event.target as HTMLInputElement;
       emit('update:inputValue', target.value);
     };
+
+    onBeforeUnmount(() => {
+
+    })
 
     return {
       updateValue,
