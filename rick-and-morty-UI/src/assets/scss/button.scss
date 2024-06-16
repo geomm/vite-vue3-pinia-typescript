@@ -3,8 +3,8 @@ button {
   background: var(--vt-c-white);
   color: mix(black, $mat-muted-color, 25%);
   border: none;
-  padding: 10px 20px;
-  border-radius: 3px;
+  padding: 1em;
+  border-radius: $mat-border-radius;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
@@ -18,28 +18,5 @@ button {
     box-shadow:
       0 7px 14px rgba(0, 0, 0, 0.18),
       0 5px 5px rgba(0, 0, 0, 0.12);
-  }
-  &.btn-link {
-    background: $mat-hl-color;
-    color: mix(white, $mat-hl-color, 80%);
-    &:hover {
-      background: darken($mat-hl-color, 5%);
-      color: mix(white, $mat-hl-color, 85%);
-    }
-  }
-  &.btn-submit {
-    background: $mat-hl-color;
-    color: mix(white, $mat-hl-color, 70%);
-    &:hover {
-      background: darken($mat-hl-color, 5%);
-      color: mix(white, $mat-hl-color, 85%);
-    }
-  }
-  &.btn-cancel {
-    background: #eee;
-    &:hover {
-      background: darken(#eee, 5%);
-      color: mix(black, $mat-muted-color, 30%);
-    }
   }
 }

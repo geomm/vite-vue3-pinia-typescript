@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import DetailsComponent from '@/components/DetailsComponent.vue';
+import DetailsComponent from '@/components/DetailsComponent/DetailsComponent.vue';
 </script>
 
 <template>
-  <main>
+  <main class="flex">
     <DetailsComponent />
   </main>
 </template>

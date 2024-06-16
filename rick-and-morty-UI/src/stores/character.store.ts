@@ -1,11 +1,12 @@
 import type { IApiDataModel } from '@/models/api-data.model';
 import type { ICharacter } from '@/models/character.model';
-import type { IStoreState, ModelState } from '@/models/store.model';
+import type { EditableModelProperties, IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
 import { toast } from 'vue3-toastify';
 import { toastifyConfiguration } from '@/configs/toastify.config';
+import { fetchFromStorage, storeIntoStorage } from '@/helpers/storage.helper';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
@@ -13,7 +14,8 @@ export const characterStore = defineStore('character', {
     loading: false,
     error: null as any | null,
     paging: 1,
-    pagesTotal: null
+    pagesTotal: null,
+    editMode: false
   }),
   actions: {
     async fetchCharacters(page: number): Promise<void> {
@@ -25,7 +27,23 @@ export const characterStore = defineStore('character', {
           'character',
           { page: page }
         );
-        this.data!.results = response.data.results;
+
+        const storageItems = { ...localStorage };
+
+        console.log(Object.keys(storageItems));
+
+        const tempResults = response.data.results;
+
+        this.data!.results = tempResults;
+        // .map((item: ICharacter, index: number) => {
+        //   if (Object.keys(storageItems).includes(index.toString())) {
+        //     return JSON.parse(storageItems[index]);
+        //   } else {
+        //     return item;
+        //   }
+        // }); //response.data.results;
+        console.log('results: ', this.data!.results);
+
         this.pagesTotal = response.data.info.pages;
         toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
@@ -39,22 +57,40 @@ export const characterStore = defineStore('character', {
       this.loading = true;
       this.error = null;
 
-      try {
-        const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        this.setCharacterState(response.data);
-      } catch (error) {
-        this.error = error;
-        toast.error(`Store error: ${error}`, toastifyConfiguration);
-      } finally {
+      const tmpFromStorage = fetchFromStorage(id.toString());
+
+      if (tmpFromStorage) {
+        this.setCharacterState(tmpFromStorage);
         this.loading = false;
+      } else {
+        try {
+          const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
+          this.setCharacterState(response.data);
+        } catch (error) {
+          this.error = error;
+          toast.error(`Store error: ${error}`, toastifyConfiguration);
+        } finally {
+          this.loading = false;
+        }
       }
     },
     setCharacterState(character: ICharacter): void {
       this.$state.data!.model = character;
+      storeIntoStorage(this.$state.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {
       this.$state.data!.model = {} as ICharacter;
+    },
+    updateEditModeState(value: boolean | null = null): void {
+      if (value === null) {
+        this.$state.editMode = !this.$state.editMode;
+        return;
+      }
+      this.$state.editMode = value;
+    },
+    updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
+      this.$state.data!.model[key as EditableModelProperties] = value;
     }
   }
 });

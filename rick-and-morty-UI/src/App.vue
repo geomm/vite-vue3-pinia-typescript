@@ -1,42 +1,11 @@
-<style scoped>
+<style scoped lang="scss">
+@import './assets/scss/vars.scss';
+
 header {
   line-height: 1.5;
   max-height: 100vh;
   position: relative;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
+  @media (min-width: $larger) {
     display: flex;
     place-items: center;
     position: fixed;
@@ -44,16 +13,42 @@ nav a:first-of-type {
     z-index: 1;
     left: 0px;
   }
+}
 
-  .logo {
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+  @media (min-width: $larger) {
     margin: 0 2rem 0 2rem;
   }
+}
 
-  nav {
+nav {
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
+
+  a {
+    display: inline-block;
+    padding: 0 1rem;
+    border-left: 1px solid var(--color-border);
+    &.router-link-exact-active {
+      color: var(--color-text);
+    }
+
+    &.router-link-exact-active:hover {
+      background-color: transparent;
+    }
+
+    &:first-of-type {
+      border: 0;
+    }
+  }
+  @media (min-width: $larger) {
     text-align: left;
     margin-left: -1rem;
     font-size: 1rem;
-
     padding: 1rem 0;
     margin-top: 1rem;
   }
@@ -62,7 +57,7 @@ nav a:first-of-type {
 <template>
   <header>
     <RouterLink class="logo" to="/"
-      ><img alt="Vue logo" class="logo" src="@/assets/Rick_and_Morty.svg" width="300" height="150"
+      ><img alt="Vue logo" class="logo" src="@/assets/rick-and-morty-logo.svg" width="300" height="150"
     /></RouterLink>
   </header>
   <RouterView />

@@ -26,26 +26,32 @@ in container's bash,
 ```
 $ cd usr/src/rick-and-morty-UI
 $ npm i
+$ npm run format
 $ npm run dev
+```
+
+open browser and visit,
+```
+http://localhost:8080
 ```
 
 ### Tasks:
 
 - ~~setup api service~~
-- setup store/state - **inreview**
+- ~~setup store/state~~ - **inreview**
 - ~~create list~~
 - - get last episode's link in list's items
 - - ~~add status icon in listing (red/green circle)~~
-- main page UI design - **inreview**
-- create details - UI - **wip**
-- adjust details for edit mode
-- organize styles - **wip/inreview**
+- ~~main page UI design~~ - **inreview**
+- ~~create details - UI~~ - **inreview**
+- adjust details for edit mode **WIP**
+- organize styles - **WIP/inreview**
 - ~~add loader~~
 - ~~add toast (error handling, edit mode state store notify user)~~
 - - ~~use toast for invalid pagination inputs~~ 
 - - ~~use toast for requests errors~~
 - ~~create NavComponent (show activePage/total and input)~~
-- - currently input is binded on:keydown:enter @TODO: add button to the right of the input
+- - ~~currently input is binded on:keydown:enter @TODO: add button to the right of the input~~
 - - add validation (before request) in pagin input
 - - simplify template properties instead of using pinia state directly
 

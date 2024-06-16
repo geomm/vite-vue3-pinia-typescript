@@ -1,4 +1,5 @@
 <style scoped lang="scss">
+@import '../../assets/scss/vars.scss';
 ul {
   list-style-type: none;
   padding-left: unset;
@@ -10,8 +11,10 @@ ul {
   -webkit-transition: opacity 0.1s ease-in-out;
   -moz-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
-  &.disabled {
-    opacity: 0.3;
+  padding: 6em 0em;
+  @media (max-width: $larger) {
+    // padding-bottom: 30vh;
+    padding: 0em 0em 12em 0em;
   }
   li {
     opacity: 0.9;
@@ -30,7 +33,7 @@ ul {
 }
 </style>
 <template>
-  <ul class="flex" :class="{ disabled: charStore.$state.loading }">
+  <ul class="flex" :class="{ 'no-data': charStore.$state.loading }">
     <ListCardComponent
       v-for="character in charStore.$state.data?.results"
       :key="character.id"
@@ -40,9 +43,11 @@ ul {
   <ListPaginationComponent
     :paging="charStore.$state.paging"
     :pagesTotal="charStore.$state.pagesTotal"
+    :useSubmit="true"
     @click:getPrev="getPrevCharacters"
     @click:getNext="getNextCharacters"
     @keyup:enter="fetchCharactersByPageNumber($event)"
+    @button:click="fetchCharactersByPageNumber($event)"
   />
 </template>
 <script lang="ts">
@@ -66,7 +71,7 @@ export default defineComponent({
     const getPrevCharacters = () => {
       const page = (charStore.$state.paging || 1) - 1;
       if (!page) {
-        toast.warn(`There are no less than ${page} pages :)`, toastifyConfiguration);
+        toast.warn(`There is nothing before page 1 :)`, toastifyConfiguration);
         return;
       }
       charStore.fetchCharacters(page);

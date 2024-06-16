@@ -31,64 +31,9 @@
     display: flex;
     flex-direction: column;
     .section {
-      flex: 1 1 0%;
-      display: flex;
-      flex-direction: column;
-      -webkit-box-pack: center;
-      justify-content: center;
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: 800;
-      }
-
-      &:first-child {
-        -webkit-box-pack: start;
-        justify-content: flex-start;
-      }
-      &:last-child {
-        -webkit-box-pack: end;
-        justify-content: flex-end;
-      }
-      span {
-        font-size: 1em;
-        font-weight: 500;
-      }
-      .text-gray {
-        color: rgb(158, 158, 158);
-      }
-      .status {
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-        text-transform: capitalize;
-        .status_icon {
-          height: 0.5rem;
-          width: 0.5rem;
-          margin-right: 0.375rem;
-          background: rgb(158, 158, 158);
-          border-radius: 50%;
-
-          &.alive {
-            height: 0.5rem;
-            width: 0.5rem;
-            margin-right: 0.375rem;
-            background: var(--vt-ui-project-status-icon-green);
-            border-radius: 50%;
-          }
-          &.dead {
-            height: 0.5rem;
-            width: 0.5rem;
-            margin-right: 0.375rem;
-            background: var(--vt-ui-project-status-icon-red);
-            border-radius: 50%;
-          }
-        }
-      }
       a {
         color: rgb(245, 245, 245);
-        &:hover,
-        &:focus {
+        &:hover {
           color: rgb(255, 152, 0);
           text-decoration: none;
         }
@@ -98,7 +43,7 @@
 }
 </style>
 <template>
-  <li class="rick-and-morty-api-card" v-if="character as ICharacter" :key="character.id">
+  <li class="rick-and-morty-api-card" v-if="character" :key="character.id">
     <div class="image">
       <img :src="character.image" :alt="character.name" />
     </div>
@@ -107,37 +52,37 @@
         <a @click="redirect(character?.id)"
           ><h2>{{ character?.name }}</h2></a
         >
-        <!-- <RouterLink :to="{ name: 'character', params: { id: character?.id } }"
-          ><h2>{{ character?.name }}</h2></RouterLink
-        > -->
-        <span class="status">
-          <span class="status_icon" :class="character?.status.toLowerCase()"></span>
-          {{ character?.status }} - {{ character?.species }}
-        </span>
+        <StatusComponent :status="character?.status" :species="character?.species" />
       </div>
-      <div class="section">
-        <span class="text-gray">Last known location: </span>
-        <a :href="character.location?.url" target="_blank">{{ character.location?.name }}</a>
-      </div>
-      <div class="section">
-        <span class="text-gray">First seen in:</span>
-        <a :href="character.episode?.[character.episode?.length - 1]" target="_blank">{{
-          character.episode?.[character.episode?.length - 1]
-        }}</a>
-      </div>
+      <SectionInfoComponent
+        class="list-card"
+        :label="'Last known location'"
+        :content="character.location?.name"
+        :url="character.location?.url"
+      />
+      <SectionInfoComponent
+        class="list-card"
+        :label="'First seen in'"
+        :content="character.episode?.[character.episode?.length - 1]"
+        :url="character.episode?.[character.episode?.length - 1]"
+      />
     </div>
   </li>
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
 import { defineComponent } from 'vue';
+import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
+import StatusComponent from '../UICompoents/StatusComponent.vue';
 
 export default defineComponent({
   name: 'ListCardComponent',
   props: ['character'],
+  components: {
+    SectionInfoComponent,
+    StatusComponent
+  },
   setup() {
     const redirect = (id: number) => {
       router.push({ name: `character`, params: { id: id } });

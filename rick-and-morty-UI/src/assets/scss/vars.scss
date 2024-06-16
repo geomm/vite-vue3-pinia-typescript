@@ -3,14 +3,26 @@
 */
 @import './breakpoints.scss';
 
+// 'material like' vars
 $mat-bg-color: hsl(208, 25%, 12%);
-$mat-hl-color: #f0ff00;
-$mat-muted-color: mix(white, $mat-bg-color, 70%);
+$mat-muted-color: mix(#ffffff, $mat-bg-color, 70%);
 $mat-trans-time: 300ms;
 $mat-width: 100%;
+$mat-border-radius: 3px;
 
+// grid vars
 $gutter: 0.5em;
 $flex-columns: 12;
 $flex-col-margin: 1em;
-$container-width: 100%;
-$container-devices-margin: 1.5em;
+
+// project color vars
+$project-white-color: var(--vt-c-white);
+$project-accent-color: var(--vt-ui-project-accent-color);
+$project-secondary-color: var(--vt-ui-project-secondary-color);
+$project-panel-bg-color: var(--vt-ui-project-panel-bg-color);
+$project-status-icon-green: var(--vt-ui-project-status-icon-green);
+$project-status-icon-red: var(--vt-ui-project-status-icon-red);
+$project-link: var(--vt-ui-project-link);
+$project-link-active: var(--vt-ui-project-link-active);
+$project-text-gray: var(--vt-ui-project-text-gray);
+

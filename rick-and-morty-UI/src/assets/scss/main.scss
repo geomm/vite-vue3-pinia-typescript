@@ -2,61 +2,89 @@
 @import './vars.scss';
 @import './grid.scss';
 @import './button.scss';
+@import './icons.scss';
 @import './form.scss';
 
 @import 'vue3-toastify/dist/index.css';
 
 body {
   display: flex;
-  background-image: url(https://static1.srcdn.com/wordpress/wp-content/uploads/2023/12/untitled-design-32-1.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-blend-mode: multiply;
-  background-position: 50%;
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-image: url(../../assets/rick-and-morty-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: 110%;
+    background-position: 50% 50%;
+    opacity: 0.1;
+    @media (max-width: $xx-large) {
+      background-size: cover;
+    }
+  }
 }
 #app {
   margin: 0 auto;
   padding: 0px;
-  width: 100vw;
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-flow: column;
   align-items: center;
   font-weight: normal;
 }
 main {
-  align-items: center;
-  display: flex;
-  flex-flow: column;
   height: 100%;
   width: 100%;
   position: relative;
-  margin-top: 9vh;
-  @media (max-width: 1024px) {
-    margin-top: unset;
+  &.flex {
+    flex-flow: row wrap;
   }
 }
 h1 {
   margin: 1rem 0 1rem 0;
-  font-size: 18px;
-  text-transform: uppercase;
-  color: var(--vt-c-white);
+  margin: 0.5em;
+  font-size: 3.5em;
+  font-weight: 800;
+  line-height: 1em;
+  @media (max-width: $xx-large) {
+    font-size: 1.5em;
+  }
+}
+h2 {
+  margin: 0rem;
+  color: inherit;
+  font-weight: 800;
+  text-rendering: optimizeLegibility;
+  font-size: 1.5rem;
+  line-height: 1.1;
 }
 a {
   text-decoration: none;
-  color: var(--vt-ui-project-accent-color);
+  color: $project-link;
   transition: 0.4s;
   &.router-link-active:not(.logo) {
     display: none;
   }
   &:hover {
-    color: var(--vt-c-white);
+    color: $project-link-active;
   }
 }
 b {
-  font-weight: 700;
+  font-weight: 800;
 }
 .no-data {
-  opacity: 0.2;
+  opacity: 0.3;
+}
+.text-align-right {
+  text-align: right;
+}
+.text-gray {
+  color: $project-text-gray;
 }
 
 @media (hover: hover) {
