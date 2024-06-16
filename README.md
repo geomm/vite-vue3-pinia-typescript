@@ -26,6 +26,7 @@ in container's bash,
 ```
 $ cd usr/src/rick-and-morty-UI
 $ npm i
+$ npm run format
 $ npm run dev
 ```
 

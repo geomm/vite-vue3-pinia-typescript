@@ -76,9 +76,9 @@
       ><i v-if="icon" class="material-icons"> {{ icon }} </i>{{ label }}:
     </span>
     <b v-if="!url" :class="{ 'text-gray': content === 'unknown' }">{{ content || '-' }}</b>
-    <b v-else-if="url"
-      ><a :href="url" target="_blank">{{ content }}</a></b
-    >
+    <b v-else-if="url">
+      <a :href="url" target="_blank">{{ content }}</a>
+    </b>
   </div>
   <div class="section editing" v-else>
     <span
@@ -94,16 +94,7 @@
   </div>
 </template>
 <script lang="ts">
-import {
-  defineComponent,
-  nextTick,
-  onBeforeUnmount,
-  onBeforeUpdate,
-  onMounted,
-  onUpdated,
-  ref,
-  type PropType
-} from 'vue';
+import { defineComponent, ref, type PropType } from 'vue';
 import InputComponent from './InputComponent.vue';
 export default defineComponent({
   name: 'SectionInfoComponent',
@@ -121,30 +112,10 @@ export default defineComponent({
   setup(props, { emit }) {
     const editableContent = ref(props.content);
 
-    const isEditable = ref(props.editable);
-
     const sectionEdited = (value: string) => {
       editableContent.value = value;
-      console.log('SectionInfoComponent: sectionEdited', editableContent.value);
       emit('section:edit', value);
     };
-
-    onMounted(async () => {
-      await nextTick();
-      console.log('SectionInfoComponent: on mounted', editableContent.value);
-    });
-    onBeforeUnmount(() => {
-      editableContent.value = null;
-      console.log('SectionInfoComponent: before unmount', editableContent.value);
-    });
-
-    onBeforeUpdate(() => {
-      console.log('SectionInfoComponent: onBeforeUpdate', editableContent.value);
-    });
-    onUpdated(async () => {
-      await nextTick();
-      console.log('SectionInfoComponent: onUpdated', editableContent.value);
-    });
 
     return {
       editableContent,

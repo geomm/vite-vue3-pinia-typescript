@@ -25,9 +25,8 @@ button {
       v-model="value"
       v-on:focusout="updateValue"
       required
-      @input="checkButtonDisabled"
+      @input="onUserInput"
     />
-    <!-- v-on:keyup.enter="updateValue" -->
     <span class="highlight"></span>
     <span class="bar"></span>
     <label :for="label">{{ label }}</label>
@@ -58,7 +57,6 @@ export default defineComponent({
     const isButtonDisabled = ref(true);
 
     const updateValue = (event: Event | InputValue | undefined) => {
- 
       if (!shouldUseSubmit.value) {
         const target = (event as Event).target as HTMLInputElement;
         emit('update:inputValue', target.value);
@@ -69,7 +67,7 @@ export default defineComponent({
       }
     };
 
-    const checkButtonDisabled = () => {
+    const onUserInput = () => {
       isButtonDisabled.value = value.value?.toString().trim() === '';
     };
 
@@ -80,7 +78,7 @@ export default defineComponent({
     return {
       updateValue,
       value,
-      checkButtonDisabled,
+      onUserInput,
       isButtonDisabled,
       shouldUseSubmit
     };

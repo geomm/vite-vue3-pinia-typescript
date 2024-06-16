@@ -37,7 +37,9 @@ section {
       z-index: 1;
       @media (max-width: $large) {
         padding: 1em;
-        position: absolute;
+        &:not(.cancel):not(.submit) {
+          position: absolute;
+        }
         top: 30%;
         &.prev {
           left: 0em;
@@ -48,7 +50,9 @@ section {
       }
       @media (max-width: $medium) {
         top: unset;
-        position: fixed;
+        &:not(.cancel):not(.submit) {
+          position: fixed;
+        }
         bottom: 0.5em;
         max-height: 3em;
         &.prev {
@@ -237,11 +241,12 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       await charStore.fetchCharacter(Number(route.params.id));
+      await nextTick();
     });
 
     onBeforeUnmount(() => {
       toggleEditMode(false);
-      charStore.resetCharacterState();
+      // charStore.resetCharacterState();
     });
 
     onBeforeRouteLeave((to, from, next) => {
