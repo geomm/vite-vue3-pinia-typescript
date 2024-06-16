@@ -186,7 +186,7 @@ section {
 import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, nextTick, onBeforeMount, onBeforeUnmount } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
@@ -209,7 +209,6 @@ export default defineComponent({
     };
 
     const toggleEditMode = async (value?: boolean) => {
-      await nextTick();
       charStore.updateEditModeState(value);
       console.log(
         'Editind Character Data: ',
@@ -224,7 +223,6 @@ export default defineComponent({
     };
 
     const submitChanges = async () => {
-      await nextTick();
       const newCharacterState = {
         ...charStore.$state.data!.model,
         ...tmpCharacter
@@ -240,13 +238,12 @@ export default defineComponent({
     };
 
     onBeforeMount(async () => {
+      // charStore.resetCharacterState();
       await charStore.fetchCharacter(Number(route.params.id));
-      await nextTick();
     });
 
     onBeforeUnmount(() => {
       toggleEditMode(false);
-      // charStore.resetCharacterState();
     });
 
     onBeforeRouteLeave((to, from, next) => {

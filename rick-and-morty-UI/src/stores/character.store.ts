@@ -59,24 +59,24 @@ export const characterStore = defineStore('character', {
 
       const tmpFromStorage = fetchFromStorage(id.toString());
 
-      // if (tmpFromStorage) {
-      //   this.setCharacterState(tmpFromStorage);
-      //   this.loading = false;
-      // } else {
-      try {
-        const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        this.setCharacterState(response.data);
-      } catch (error) {
-        this.error = error;
-        toast.error(`Store error: ${error}`, toastifyConfiguration);
-      } finally {
+      if (tmpFromStorage) {
+        this.setCharacterState(tmpFromStorage);
         this.loading = false;
+      } else {
+        try {
+          const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
+          this.setCharacterState(response.data);
+        } catch (error) {
+          this.error = error;
+          toast.error(`Store error: ${error}`, toastifyConfiguration);
+        } finally {
+          this.loading = false;
+        }
       }
-      // }
     },
     setCharacterState(character: ICharacter): void {
       this.$state.data!.model = character;
-      // storeIntoStorage(this.$state.data!.model.id.toString(), character);
+      storeIntoStorage(this.$state.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {
