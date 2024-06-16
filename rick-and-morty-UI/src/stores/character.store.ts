@@ -6,6 +6,7 @@ import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
 import { toast } from 'vue3-toastify';
 import { toastifyConfiguration } from '@/configs/toastify.config';
+import { fetchFromStorage, storeIntoStorage } from '@/helpers/storage.helper';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
@@ -40,19 +41,26 @@ export const characterStore = defineStore('character', {
       this.loading = true;
       this.error = null;
 
-      try {
-        const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-        this.setCharacterState(response.data);
-      } catch (error) {
-        this.error = error;
-        toast.error(`Store error: ${error}`, toastifyConfiguration);
-      } finally {
+      const tmpFromStorage = fetchFromStorage(id.toString());
+
+      if (tmpFromStorage) {
+        this.setCharacterState(tmpFromStorage);
         this.loading = false;
+      } else {
+        try {
+          const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
+          this.setCharacterState(response.data);
+        } catch (error) {
+          this.error = error;
+          toast.error(`Store error: ${error}`, toastifyConfiguration);
+        } finally {
+          this.loading = false;
+        }
       }
     },
     setCharacterState(character: ICharacter): void {
       this.$state.data!.model = character;
-      console.log('setCharacterState', character);
+      storeIntoStorage(this.$state.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {

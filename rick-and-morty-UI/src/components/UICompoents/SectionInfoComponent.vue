@@ -106,7 +106,6 @@ export default defineComponent({
     const editableContent = ref(props.content);
 
     const sectionEdited = (value: string) => {
-      console.log('>>> valueChange: ', value, editableContent.value);
       emit('section:edit', value);
     };
 

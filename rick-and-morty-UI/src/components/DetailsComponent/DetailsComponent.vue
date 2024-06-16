@@ -104,10 +104,11 @@ section {
         v-model:name="charStore.$state.data.model.name"
         v-model:image="charStore.$state.data.model.image"
         v-model:status="charStore.$state.data.model.status"
-        v-model:specied="charStore.$state.data.model.species"
+        v-model:species="charStore.$state.data.model.species"
         v-model:url="charStore.$state.data.model.url"
         :editMode="charStore.$state.editMode"
         @edit:click="toggleEditMode"
+        @section:edit="tmpKeepProp('name', $event)"
       />
 
       <div class="info col-12">
@@ -216,7 +217,6 @@ export default defineComponent({
 
     const tmpKeepProp = (key: EditableModelProperties, value: string) => {
       tmpCharacter[key as EditableModelProperties] = value;
-      console.log('>> new partial model to merge: ', tmpCharacter);
     };
 
     const submitChanges = () => {
@@ -226,7 +226,6 @@ export default defineComponent({
       };
       charStore.setCharacterState(newCharacterState);
       // updateCharacter();
-      console.log('Changes submitted', charStore.$state.data!.model);
       toggleEditMode();
     };
 

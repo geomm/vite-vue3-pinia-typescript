@@ -132,18 +132,31 @@ button {
       <button class="edit" @click="toggleEditMode" v-if="!editMode">
         <i class="material-icons">edit</i>
       </button>
-      <a :href="state?.url" target="_blank" class="col-12"
-        ><h1 class="text-align-right">{{ state?.name || '' }}</h1>
+      <a :href="state?.url" target="_blank" class="col-12" v-if="!editMode">
+        <h1 class="text-align-right">{{ state?.name || '' }}</h1>
+
         <StatusComponent :status="state?.status" :species="state?.species" />
       </a>
+
+      <p class="col-12" v-else>
+        <InputComponent
+          :label="'Name'"
+          :type="'text'"
+          :id="'Name'"
+          :inputValue="editableContent"
+          v-on:update:inputValue="titleEdited($event)"
+        />
+        <StatusComponent :status="state?.status" :species="state?.species" />
+      </p>
     </div>
   </header>
 </template>
 
 <script lang="ts">
 import type { Spieces, Status } from '@/models/character.model';
-import { defineComponent, onBeforeMount, reactive, ref, watchEffect, type PropType } from 'vue';
+import { defineComponent, reactive, ref, type PropType } from 'vue';
 import StatusComponent from '../UICompoents/StatusComponent.vue';
+import InputComponent from '../UICompoents/InputComponent.vue';
 
 export default defineComponent({
   name: 'DetailsHeaderComponent',
@@ -154,29 +167,33 @@ export default defineComponent({
     status: String as PropType<Status>,
     species: String as PropType<Spieces>,
     url: String as PropType<string>,
-    editMode: Boolean as PropType<boolean>
+    editMode: Boolean as PropType<boolean>,
+    content: String as PropType<string>
   },
   components: {
-    StatusComponent
+    StatusComponent,
+    InputComponent
   },
-  emits: ['edit:click'],
+  emits: ['edit:click', 'section:edit'],
   setup(props, { emit }) {
     const state = reactive(props);
     // const state = reactive<Partial<ICharacter>>(props.character || ({} as Partial<ICharacter>));
+    const editableContent = ref(state.name);
 
-    watchEffect(() => {
-      console.log('watchEffect', state);
-    });
+    const titleEdited = (value: string) => {
+      console.log('>>> valueChange: ', value, editableContent.value);
+      emit('section:edit', value);
+    };
 
     const toggleEditMode = (event: Event) => {
       emit('edit:click', event);
     };
-    onBeforeMount(() => {
-      console.log('>>>> BEFORE ', state);
-    });
+
     return {
       state,
-      toggleEditMode
+      toggleEditMode,
+      editableContent,
+      titleEdited
     };
   }
 });
