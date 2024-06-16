@@ -36,6 +36,9 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
+    @media (max-width: $small) {
+      padding: 1em;
+    }
   }
   @media (max-width: $larger) {
     position: fixed;
@@ -43,8 +46,16 @@
     right: 0px;
     width: 100%;
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row;
     justify-content: space-between;
+  }
+  @media (max-width: $medium) {
+    flex-flow: column;
+  }
+  .flex {
+    @media (max-width: $medium) {
+      flex-flow: row;
+    }
   }
 }
 </style>
@@ -57,7 +68,8 @@
         :id="'pageIndex'"
         :label="'Page #'"
         :inputValue="value"
-        v-on:update:inputValue="keyUpOnEnter($event)"
+        :useSubmit="useSubmit"
+        v-on:update:inputValue="getResultsAction($event)"
       />
       <p class="col-6">
         {{ paging }} <b>/ {{ pagesTotal }}</b>
@@ -74,7 +86,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue';
+import { defineComponent, ref, type PropType, type Ref } from 'vue';
 import InputComponent from '../UICompoents/InputComponent.vue';
 import type { InputValue } from '@/models/input-types.model';
 
@@ -82,9 +94,10 @@ export default defineComponent({
   name: 'ListPaginationComponent',
   props: {
     paging: Number as PropType<number>,
-    pagesTotal: Number as PropType<number | null | undefined>
+    pagesTotal: Number as PropType<number | null | undefined>,
+    useSubmit: Boolean as PropType<boolean>
   },
-  emits: ['click:getPrev', 'click:getNext', 'keyup:enter'], //'keyup:up'
+  emits: ['click:getPrev', 'click:getNext', 'keyup:enter', 'button:click'],
   components: { InputComponent },
   setup(props, { emit }) {
     const value = ref(null as InputValue);
@@ -99,15 +112,18 @@ export default defineComponent({
       emit('click:getNext', target.value);
     };
 
-    const keyUpOnEnter = (value: number) => {
-      emit('keyup:enter', value);
-      // emit('keyup:up', value);
+    const getResultsAction = (value: number) => {
+      if (typeof value === 'object') {
+        emit('button:click', (value as Ref<InputValue>).value?.toString());
+      } else {
+        emit('keyup:enter', value);
+      }
     };
 
     return {
       prevClicked,
       nextClicked,
-      keyUpOnEnter,
+      getResultsAction,
       value
     };
   }

@@ -9,6 +9,7 @@
   top: 50%;
   margin-left: -65px;
   margin-top: -25px;
+  z-index: 2;
   &:before {
     content: '';
     height: 40px;

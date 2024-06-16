@@ -99,7 +99,6 @@ section {
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
-      <!-- :character="charStore.$state.data.model" -->
       <DetailsHeaderComponent
         v-model:name="charStore.$state.data.model.name"
         v-model:image="charStore.$state.data.model.image"
@@ -107,7 +106,7 @@ section {
         v-model:species="charStore.$state.data.model.species"
         v-model:url="charStore.$state.data.model.url"
         :editMode="charStore.$state.editMode"
-        @edit:click="toggleEditMode"
+        @edit:click="toggleEditMode(!charStore.$state.editMode)"
         @section:edit="tmpKeepProp('name', $event)"
       />
 
@@ -161,7 +160,7 @@ section {
           @section:edit="tmpKeepProp('species', $event)"
         />
         <div class="flex" v-if="charStore.$state.editMode">
-          <button class="cancel col-6 ml0" @click="toggleEditMode">
+          <button class="cancel col-6 ml0" @click="toggleEditMode(false)">
             Cancel<i class="material-icons">close</i>
           </button>
           <button class="submit col-6 mr0" @click="submitChanges">
@@ -183,7 +182,7 @@ section {
 import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { defineComponent, nextTick, onBeforeMount, onBeforeUnmount } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
@@ -198,44 +197,50 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const charStore = characterStore();
-    let character: ICharacter = {} as ICharacter;
+
     let tmpCharacter: Partial<ICharacter> = {};
 
     const redirect = (id: number) => {
-      console.log('redirect clicked: ', id);
       router.push({ name: `character`, params: { id: id } });
     };
 
-    const updateCharacter = () => {
-      character = charStore.$state.data!.model;
-      console.log('character:', character);
-    };
-
-    const toggleEditMode = () => {
-      charStore.updateEditModeState();
+    const toggleEditMode = async (value?: boolean) => {
+      await nextTick();
+      charStore.updateEditModeState(value);
+      console.log(
+        'Editind Character Data: ',
+        charStore.$state.data!.model,
+        '\nEdit Mode: ',
+        charStore.$state.editMode
+      );
     };
 
     const tmpKeepProp = (key: EditableModelProperties, value: string) => {
       tmpCharacter[key as EditableModelProperties] = value;
     };
 
-    const submitChanges = () => {
+    const submitChanges = async () => {
+      await nextTick();
       const newCharacterState = {
-        ...character,
+        ...charStore.$state.data!.model,
         ...tmpCharacter
       };
       charStore.setCharacterState(newCharacterState);
-      // updateCharacter();
-      toggleEditMode();
+      charStore.updateEditModeState(false);
+      console.log(
+        'New Character Data: ',
+        charStore.$state.data?.model,
+        '\nEdit Mode: ',
+        charStore.$state.editMode
+      );
     };
 
-    onBeforeMount(() => {
-      charStore.fetchCharacter(Number(route.params.id)).then(() => {
-        updateCharacter();
-      });
+    onBeforeMount(async () => {
+      await charStore.fetchCharacter(Number(route.params.id));
     });
 
     onBeforeUnmount(() => {
+      toggleEditMode(false);
       charStore.resetCharacterState();
     });
 
@@ -253,7 +258,6 @@ export default defineComponent({
 
     return {
       charStore,
-      // character,
       redirect,
       toggleEditMode,
       submitChanges,

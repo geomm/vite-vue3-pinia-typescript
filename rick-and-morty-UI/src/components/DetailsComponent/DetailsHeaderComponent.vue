@@ -5,7 +5,6 @@ header {
   justify-content: space-between;
   a,
   h1 {
-    // margin-right: 0px;
     margin: 0em 0.1em -0.1em;
   }
   a {
@@ -120,6 +119,11 @@ button {
     cursor: not-allowed;
   }
 }
+.editing {
+  header .image {
+    opacity: 0.2;
+  }
+}
 </style>
 <template>
   <header class="col-12 flex" v-if="state?.name">
@@ -144,7 +148,7 @@ button {
           :type="'text'"
           :id="'Name'"
           :inputValue="editableContent"
-          v-on:update:inputValue="titleEdited($event)"
+          v-on:update:inputValue="headerEdited($event)"
         />
         <StatusComponent :status="state?.status" :species="state?.species" />
       </p>
@@ -180,8 +184,8 @@ export default defineComponent({
     // const state = reactive<Partial<ICharacter>>(props.character || ({} as Partial<ICharacter>));
     const editableContent = ref(state.name);
 
-    const titleEdited = (value: string) => {
-      console.log('>>> valueChange: ', value, editableContent.value);
+    const headerEdited = (value: string) => {
+      editableContent.value = value;
       emit('section:edit', value);
     };
 
@@ -193,7 +197,7 @@ export default defineComponent({
       state,
       toggleEditMode,
       editableContent,
-      titleEdited
+      headerEdited
     };
   }
 });

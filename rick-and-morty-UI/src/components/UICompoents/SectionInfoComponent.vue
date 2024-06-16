@@ -62,6 +62,13 @@
     margin: 1em auto;
   }
 }
+.editing {
+  .section {
+    &:not(.editing) {
+      opacity: 0.3;
+    }
+  }
+}
 </style>
 <template>
   <div class="section" v-if="!editable">
@@ -87,7 +94,16 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue';
+import {
+  defineComponent,
+  nextTick,
+  onBeforeUnmount,
+  onBeforeUpdate,
+  onMounted,
+  onUpdated,
+  ref,
+  type PropType
+} from 'vue';
 import InputComponent from './InputComponent.vue';
 export default defineComponent({
   name: 'SectionInfoComponent',
@@ -105,9 +121,30 @@ export default defineComponent({
   setup(props, { emit }) {
     const editableContent = ref(props.content);
 
+    const isEditable = ref(props.editable);
+
     const sectionEdited = (value: string) => {
+      editableContent.value = value;
+      console.log('SectionInfoComponent: sectionEdited', editableContent.value);
       emit('section:edit', value);
     };
+
+    onMounted(async () => {
+      await nextTick();
+      console.log('SectionInfoComponent: on mounted', editableContent.value);
+    });
+    onBeforeUnmount(() => {
+      editableContent.value = null;
+      console.log('SectionInfoComponent: before unmount', editableContent.value);
+    });
+
+    onBeforeUpdate(() => {
+      console.log('SectionInfoComponent: onBeforeUpdate', editableContent.value);
+    });
+    onUpdated(async () => {
+      await nextTick();
+      console.log('SectionInfoComponent: onUpdated', editableContent.value);
+    });
 
     return {
       editableContent,

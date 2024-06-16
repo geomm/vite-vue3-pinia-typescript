@@ -11,8 +11,10 @@ ul {
   -webkit-transition: opacity 0.1s ease-in-out;
   -moz-transition: opacity 0.1s ease-in-out;
   transition: opacity 0.1s ease-in-out;
+  padding: 6em 0em;
   @media (max-width: $larger) {
-    padding: 30vh 0px;
+    // padding-bottom: 30vh;
+    padding: 0em 0em 12em 0em;
   }
   li {
     opacity: 0.9;
@@ -41,9 +43,11 @@ ul {
   <ListPaginationComponent
     :paging="charStore.$state.paging"
     :pagesTotal="charStore.$state.pagesTotal"
+    :useSubmit="true"
     @click:getPrev="getPrevCharacters"
     @click:getNext="getNextCharacters"
     @keyup:enter="fetchCharactersByPageNumber($event)"
+    @button:click="fetchCharactersByPageNumber($event)"
   />
 </template>
 <script lang="ts">
