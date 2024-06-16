@@ -30,25 +30,20 @@ export const characterStore = defineStore('character', {
 
         const storageItems = { ...localStorage };
 
-        console.log(Object.keys(storageItems));
-
-        const tempResults = response.data.results;
-
-        this.data!.results = tempResults;
-        // .map((item: ICharacter, index: number) => {
-        //   if (Object.keys(storageItems).includes(index.toString())) {
-        //     return JSON.parse(storageItems[index]);
-        //   } else {
-        //     return item;
-        //   }
-        // }); //response.data.results;
-        console.log('results: ', this.data!.results);
+        this.data!.results = response.data.results.map((item: ICharacter) => {
+          if (Object.keys(storageItems).includes(item.id.toString())) {
+            return JSON.parse(storageItems[item.id]);
+          } else {
+            return item;
+          }
+        });
 
         this.pagesTotal = response.data.info.pages;
         toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
         toast.error(`Store error: ${error}`, toastifyConfiguration);
+        console.error(`Store error:  ${error}`, toastifyConfiguration);
       } finally {
         this.loading = false;
       }
@@ -69,6 +64,7 @@ export const characterStore = defineStore('character', {
         } catch (error) {
           this.error = error;
           toast.error(`Store error: ${error}`, toastifyConfiguration);
+          console.error(`Store error:  ${error}`, toastifyConfiguration);
         } finally {
           this.loading = false;
         }

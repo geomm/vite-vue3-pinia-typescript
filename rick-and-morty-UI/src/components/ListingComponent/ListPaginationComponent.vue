@@ -77,10 +77,10 @@
     </div>
     <div class="flex">
       <button class="col-6" :class="{ disabled: !((paging || 1) - 1) }" v-on:click="prevClicked">
-        Prev
+        <i class="material-icons">arrow_back</i>
       </button>
       <button class="col-6" :class="{ disabled: paging === pagesTotal }" v-on:click="nextClicked">
-        Next
+        <i class="material-icons">arrow_forward</i>
       </button>
     </div>
   </div>
