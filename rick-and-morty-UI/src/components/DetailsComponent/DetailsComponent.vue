@@ -194,6 +194,8 @@ import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
 import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
 
+// @TODO: maybe creating a detailsEditingState model for properties to initiating properly on edit could work
+
 export default defineComponent({
   name: 'DetailsComponent',
   components: {
