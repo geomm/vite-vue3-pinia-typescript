@@ -246,7 +246,7 @@ export default defineComponent({
         }
         return;
       }
-      // next();
+      next();
     });
 
     return {
