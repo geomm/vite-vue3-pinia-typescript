@@ -57,10 +57,15 @@ nav {
 <template>
   <header>
     <RouterLink class="logo" to="/"
-      ><img alt="Vue logo" class="logo" src="@/assets/rick-and-morty-logo.svg" width="300" height="150"
+      ><img
+        alt="Vue logo"
+        class="logo"
+        src="@/assets/rick-and-morty-logo.svg"
+        width="300"
+        height="150"
     /></RouterLink>
   </header>
-  <RouterView />
+  <RouterView :key="$route.fullPath"/>
   <LoaderComponent v-if="charStore.$state.loading" />
 </template>
 <script lang="ts">
