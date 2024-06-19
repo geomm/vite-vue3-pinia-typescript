@@ -10,6 +10,7 @@ button {
   &:hover:not(.disabled) {
     background-color: var(--vt-ui-project-secondary-color);
     color: var(--vt-ui-project-accent-color);
+    cursor: pointer;
   }
   &.disabled {
     opacity: 0.6;
@@ -39,7 +40,7 @@ button {
 </template>
 <script lang="ts">
 import type { InputTypes, InputValue } from '@/models/input-types.model';
-import { defineComponent, nextTick, onMounted, ref, type PropType } from 'vue';
+import { defineComponent, ref, type PropType } from 'vue';
 
 export default defineComponent({
   name: 'InputComponent',
@@ -48,39 +49,32 @@ export default defineComponent({
     type: String as PropType<InputTypes>,
     id: String as PropType<string>,
     inputValue: String as PropType<InputValue>,
-    useSubmit: Boolean as PropType<boolean>
+    useSubmit: Boolean as PropType<boolean>,
+    emitFocusOut: Boolean as PropType<boolean>
   },
-  emits: ['update:inputValue'],
+  emits: ['update:inputValue', 'submit:inputValue'],
   setup(props, { emit }) {
     const value = ref(props.inputValue);
-    const shouldUseSubmit = ref(props.useSubmit);
     const isButtonDisabled = ref(true);
 
     const updateValue = (event: Event | InputValue | undefined) => {
-      if (!shouldUseSubmit.value) {
-        const target = (event as Event).target as HTMLInputElement;
-        emit('update:inputValue', target.value);
-      } else {
-        if (!isButtonDisabled.value) {
-          emit('update:inputValue', value);
-        }
+      if (typeof event === 'number') {
+        emit('submit:inputValue', value);
+        value.value = null;
+      } else if (event instanceof Event) {
+        emit('update:inputValue', value);
       }
     };
 
     const onUserInput = () => {
-      isButtonDisabled.value = value.value?.toString().trim() === '';
+      isButtonDisabled.value = value.value?.toString().trim() === '' || value.value === null;
     };
-
-    onMounted(async () => {
-      await nextTick();
-    });
 
     return {
       updateValue,
       value,
       onUserInput,
-      isButtonDisabled,
-      shouldUseSubmit
+      isButtonDisabled
     };
   }
 });
