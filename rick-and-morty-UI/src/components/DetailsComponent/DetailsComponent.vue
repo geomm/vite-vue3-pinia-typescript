@@ -95,12 +95,7 @@ section {
     :class="{ 'no-data': charStore.$state.loading, editing: charStore.$state.editMode }"
     v-if="charStore.$state.data?.model"
   >
-    <button
-      class="prev"
-      :class="{ disabled: true }"
-      @click="redirect((Number(charStore.$state.data.model.id) || 1) - 1)"
-    >
-      <!-- charStore.$state.editMode -->
+    <button class="prev" :class="{ disabled: charStore.$state.editMode }" @click="goPrev">
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
@@ -174,12 +169,7 @@ section {
         </div>
       </div>
     </div>
-    <button
-      class="next"
-      :class="{ disabled: true }"
-      @click="redirect(Number(charStore.$state.data.model.id) + 1)"
-    >
-      <!-- charStore.$state.editMode  -->
+    <button class="next" :class="{ disabled: charStore.$state.editMode }" @click="goNext">
       <i class="material-icons">arrow_forward</i>
     </button>
   </section>
@@ -210,6 +200,15 @@ export default defineComponent({
       router.push({ name: `character`, params: { id: id } });
     };
 
+    const goNext = async () => {
+      charStore.incrementPage();
+      redirect(Number(charStore.$state.paging));
+    };
+    const goPrev = async () => {
+      charStore.decrementPage();
+      redirect(Number(charStore.$state.paging));
+    };
+
     const toggleEditMode = async (value?: boolean) => {
       charStore.updateEditModeState(value);
     };
@@ -230,6 +229,7 @@ export default defineComponent({
     onBeforeMount(async () => {
       // charStore.resetCharacterState();
       await charStore.fetchCharacter(Number(route.params.id));
+      charStore.setActivePage(Number(charStore.$state.data?.model.id));
     });
 
     onBeforeUnmount(() => {
@@ -254,7 +254,9 @@ export default defineComponent({
       redirect,
       toggleEditMode,
       submitChanges,
-      tmpKeepProp
+      tmpKeepProp,
+      goNext,
+      goPrev
     };
   }
 });
