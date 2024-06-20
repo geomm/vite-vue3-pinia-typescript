@@ -69,10 +69,10 @@
         :label="'Page #'"
         :inputValue="value"
         :useSubmit="useSubmit"
-        v-on:update:inputValue="getResultsAction($event)"
+        v-on:submit:inputValue="getResultsAction($event)"
       />
       <p class="col-6">
-        {{ paging }} <b>/ {{ pagesTotal }}</b>
+        <b> {{ paging }}</b> / {{ pagesTotal }}
       </p>
     </div>
     <div class="flex">

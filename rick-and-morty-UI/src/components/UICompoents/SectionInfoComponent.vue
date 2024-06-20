@@ -89,6 +89,7 @@
       :type="'text'"
       :id="label"
       :inputValue="editableContent"
+      :use-submit="false"
       v-on:update:inputValue="sectionEdited($event)"
     />
   </div>
