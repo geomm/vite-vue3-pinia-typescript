@@ -3,7 +3,7 @@ interface INamedUrl {
   url: string;
 }
 
-export type Origin = string | 'unknown' ;
+export type Origin = string | 'unknown';
 
 export type Gender = 'Male' | 'Female' | 'unknown' | string;
 

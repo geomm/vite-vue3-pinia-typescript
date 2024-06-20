@@ -1,4 +1,4 @@
-import type { ToastOptions } from "vue3-toastify";
+import type { ToastOptions } from 'vue3-toastify';
 
 export const toastifyConfiguration: Partial<ToastOptions> = {
   theme: 'colored',

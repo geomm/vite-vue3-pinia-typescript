@@ -28,7 +28,7 @@ export const characterStore = defineStore('character', {
           { page: page }
         );
 
-        const storageItems = { ...localStorage };
+        const storageItems = { ...localStorage }; // @TODO: replace with sessionStorage on delivery
 
         this.data!.results = response.data.results.map((item: ICharacter) => {
           if (Object.keys(storageItems).includes(item.id.toString())) {
@@ -87,6 +87,15 @@ export const characterStore = defineStore('character', {
     },
     updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
       this.$state.data!.model[key as EditableModelProperties] = value;
-    }
+    },
+   setActivePage(pageIndex: number) {
+    this.$state.paging = pageIndex;
+   },
+   async incrementPage() {
+    this.$state.paging = (this.$state.paging as number) + 1;
+   },
+   async decrementPage() {
+    this.$state.paging = (this.$state.paging as number) - 1;
+   }
   }
 });
