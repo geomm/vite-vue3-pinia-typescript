@@ -52,6 +52,7 @@ ul {
 </template>
 <script lang="ts">
 import { characterStore } from '@/stores/character.store';
+import { episodeStore } from '@/stores/episode.store';
 import { defineComponent, onMounted } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
 import ListPaginationComponent from './ListPaginationComponent.vue';
@@ -63,9 +64,12 @@ export default defineComponent({
   components: { ListCardComponent, ListPaginationComponent },
   setup() {
     const charStore = characterStore();
+    const episStore = episodeStore();
 
     onMounted(() => {
-      charStore.fetchCharacters(1);
+      episStore.fetchAllEpisodes(() => {
+        charStore.fetchCharacters(1);
+      });
     });
 
     const getPrevCharacters = () => {
@@ -92,6 +96,7 @@ export default defineComponent({
 
     return {
       charStore,
+      episStore,
       getNextCharacters,
       getPrevCharacters,
       fetchCharactersByPageNumber

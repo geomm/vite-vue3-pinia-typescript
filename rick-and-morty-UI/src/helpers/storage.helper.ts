@@ -2,7 +2,7 @@ import { toastifyConfiguration } from '@/configs/toastify.config';
 import type { ICharacter } from '@/models/character.model';
 import { toast } from 'vue3-toastify';
 
-const storage = localStorage;
+export const storage = localStorage; // @TODO: replace with sessionStorage on delivery
 
 export function fetchFromStorage(key: string): ICharacter | null {
   const item = storage.getItem(key);

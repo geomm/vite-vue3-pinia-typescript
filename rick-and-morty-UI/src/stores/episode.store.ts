@@ -13,48 +13,51 @@ export const episodeStore = defineStore('episode', {
     loading: false,
     error: null as any | null,
     paging: 1,
-    pagesTotal: null
+    pagesTotal: null,
+    items: [] as IEpisode[]
   }),
   actions: {
-    async fetchEpisodes(page: number): Promise<void> {
-      this.loading = true;
-      this.error = null;
-      this.paging = page;
-      try {
-        const response: AxiosResponse<IApiDataModel<IEpisode>> = await apiService.get('episode', {
-          page: page
-        });
-        this.pagesTotal = response.data.info.pages;
-        toast.success(`Episodes fetched`, toastifyConfiguration);
-      } catch (error) {
-        this.error = error;
-        toast.error(`Store error: ${error}`, toastifyConfiguration);
-        console.error(`Store error:  ${error}`, toastifyConfiguration);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async fetchEpisode(id: number): Promise<void> {
+    async fetchAllEpisodes(callback: () => void): Promise<void> {
       this.loading = true;
       this.error = null;
 
+      let run = true;
+
       try {
-        const response: AxiosResponse<IEpisode> = await apiService.get(`episode/${id}`);
-        this.setEpisodeState(response.data);
+        while (run) {
+          const response: AxiosResponse<IApiDataModel<IEpisode>> = await apiService.get(`episode`, {
+            page: this.paging
+          });
+
+          this.data!.results = response.data.results;
+          this.pagesTotal = response.data.info.pages;
+
+          if (this.data!.results && this.data!.results.length) {
+            this.items!.push(...this.data!.results);
+            if (!response.data.info.next) {
+              run = false;
+            } else {
+              this.paging++;
+            }
+          }
+        }
+        toast.success(`All Episodes fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
         toast.error(`Store error: ${error}`, toastifyConfiguration);
         console.error(`Store error:  ${error}`, toastifyConfiguration);
       } finally {
         this.loading = false;
+        callback();
       }
     },
-    setEpisodeState(episode: IEpisode): void {
-      this.$state.data!.model = episode;
-      toast.success(`Episode state is set`, toastifyConfiguration);
-    },
-    resetEpisodeState(): void {
-      this.$state.data!.model = {} as IEpisode;
+    getEpisodeTitle(episodeUrl: string): string {
+      const episodeUrlArray = episodeUrl.split('episode/');
+      return (
+        this.items?.filter(
+          (item) => item.id === Number(episodeUrlArray[episodeUrlArray.length - 1])
+        )[0]?.name || 'No Title'
+      );
     }
   }
 });
