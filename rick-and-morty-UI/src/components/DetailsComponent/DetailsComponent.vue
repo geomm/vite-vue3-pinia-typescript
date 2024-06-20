@@ -234,8 +234,10 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       // charStore.resetCharacterState();
-      await charStore.fetchCharacter(Number(route.params.id));
-      charStore.setActivePage(Number(charStore.$state.data?.model.id));
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacter(Number(route.params.id));
+        charStore.setActivePage(Number(charStore.$state.data?.model.id));
+      });
     });
 
     onBeforeUnmount(() => {

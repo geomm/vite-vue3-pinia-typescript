@@ -66,9 +66,9 @@ export default defineComponent({
     const charStore = characterStore();
     const episStore = episodeStore();
 
-    onMounted(() => {
-      episStore.fetchAllEpisodes(() => {
-        charStore.fetchCharacters(1);
+    onMounted(async () => {
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacters(1);
       });
     });
 

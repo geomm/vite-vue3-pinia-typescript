@@ -18,6 +18,10 @@ export const episodeStore = defineStore('episode', {
   }),
   actions: {
     async fetchAllEpisodes(callback: () => void): Promise<void> {
+      if (this.items!.length > 0) {
+        callback();
+        return;
+      }
       this.loading = true;
       this.error = null;
 
