@@ -120,7 +120,7 @@ section {
 
         <SectionInfoComponent
           :label="'First seen in'"
-          :content="'That episode'"
+          :content="episodeTitle(charStore.$state.data!.model.episode?.[0])"
           :url="charStore.$state.data!.model.episode?.[0]"
           :icon="'movie'"
         />
@@ -175,11 +175,12 @@ section {
   </section>
 </template>
 <script lang="ts">
+import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
 import { characterStore } from '@/stores/character.store';
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
-import { onBeforeRouteLeave, useRoute } from 'vue-router';
+import { episodeStore } from '@/stores/episode.store';
 import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
 import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
@@ -193,6 +194,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const charStore = characterStore();
+    const episStore = episodeStore();
 
     let tmpCharacter: Partial<ICharacter> = {};
 
@@ -226,10 +228,16 @@ export default defineComponent({
       charStore.updateEditModeState(false);
     };
 
+    const episodeTitle = (url: string): string => {
+      return episStore.getEpisodeTitle(url);
+    };
+
     onBeforeMount(async () => {
       // charStore.resetCharacterState();
-      await charStore.fetchCharacter(Number(route.params.id));
-      charStore.setActivePage(Number(charStore.$state.data?.model.id));
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacter(Number(route.params.id));
+        charStore.setActivePage(Number(charStore.$state.data?.model.id));
+      });
     });
 
     onBeforeUnmount(() => {
@@ -256,7 +264,8 @@ export default defineComponent({
       submitChanges,
       tmpKeepProp,
       goNext,
-      goPrev
+      goPrev,
+      episodeTitle
     };
   }
 });

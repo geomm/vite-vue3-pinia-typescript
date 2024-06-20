@@ -65,14 +65,15 @@ nav {
         height="150"
     /></RouterLink>
   </header>
-  <RouterView :key="$route.fullPath"/>
-  <LoaderComponent v-if="charStore.$state.loading" />
+  <RouterView :key="$route.fullPath" />
+  <LoaderComponent v-if="isLoading()" />
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
 import LoaderComponent from './components/UICompoents/LoaderComponent.vue';
 import { characterStore } from './stores/character.store';
+import { episodeStore } from './stores/episode.store';
 
 export default defineComponent({
   name: 'AppComponent',
@@ -83,8 +84,14 @@ export default defineComponent({
   },
   setup() {
     const charStore = characterStore();
+    const episStore = episodeStore();
+
+    const isLoading = (): boolean => {
+      return charStore.$state.loading || episStore.$state.loading;
+    };
+
     return {
-      charStore
+      isLoading
     };
   }
 });

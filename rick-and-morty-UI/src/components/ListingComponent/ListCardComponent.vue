@@ -63,8 +63,8 @@
       <SectionInfoComponent
         class="list-card"
         :label="'First seen in'"
-        :content="character.episode?.[character.episode?.length - 1]"
-        :url="character.episode?.[character.episode?.length - 1]"
+        :content="episodeTitle(character.episode?.[0])"
+        :url="character.episode?.[0]"
       />
     </div>
   </li>
@@ -75,6 +75,7 @@ import router from '@/router';
 import { defineComponent } from 'vue';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
 import StatusComponent from '../UICompoents/StatusComponent.vue';
+import { episodeStore } from '@/stores/episode.store';
 
 export default defineComponent({
   name: 'ListCardComponent',
@@ -84,11 +85,17 @@ export default defineComponent({
     StatusComponent
   },
   setup() {
+    const episStore = episodeStore();
+
     const redirect = (id: number) => {
       router.push({ name: `character`, params: { id: id } });
     };
+    const episodeTitle = (url: string): string => {
+      return episStore.getEpisodeTitle(url);
+    };
     return {
-      redirect
+      redirect,
+      episodeTitle
     };
   }
 });

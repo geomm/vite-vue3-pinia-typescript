@@ -15,9 +15,9 @@ app.use(router);
 // Example plugin that logs state changes
 pinia.use(({ store }) => {
   store.$subscribe((mutation, state) => {
-    console.log(mutation.type);
-    console.log(mutation.storeId);
-    console.log(state);
+    // console.log(mutation.type);
+    // console.log(mutation.storeId);
+    // console.log(state);
   });
 });
 
