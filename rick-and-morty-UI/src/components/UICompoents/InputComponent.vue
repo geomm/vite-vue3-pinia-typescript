@@ -59,10 +59,10 @@ export default defineComponent({
 
     const updateValue = (event: Event | InputValue | undefined) => {
       if (typeof event === 'number') {
-        emit('submit:inputValue', value);
+        emit('submit:inputValue', value.value);
         value.value = null;
       } else if (event instanceof Event) {
-        emit('update:inputValue', value);
+        emit('update:inputValue', value.value);
       }
     };
 
