@@ -39,6 +39,7 @@ button {
   </div>
 </template>
 <script lang="ts">
+import { sanitizeInput } from '@/helpers/input.helpers';
 import type { InputTypes, InputValue } from '@/models/input-types.model';
 import { defineComponent, ref, type PropType } from 'vue';
 
@@ -59,10 +60,10 @@ export default defineComponent({
 
     const updateValue = (event: Event | InputValue | undefined) => {
       if (typeof event === 'number') {
-        emit('submit:inputValue', value.value);
+        emit('submit:inputValue', sanitizeInput(value.value));
         value.value = null;
       } else if (event instanceof Event) {
-        emit('update:inputValue', value.value);
+        emit('update:inputValue', sanitizeInput(value.value));
       }
     };
 
