@@ -25,7 +25,7 @@ export const characterStore = defineStore('character', {
       try {
         const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
           'character',
-          { page: page }
+          { page: this.paging }
         );
 
         const storageItems = { ...storage };
@@ -88,14 +88,14 @@ export const characterStore = defineStore('character', {
     updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
       this.data!.model[key as EditableModelProperties] = value;
     },
-   setActivePage(pageIndex: number) {
-    this.paging = pageIndex;
-   },
-   async incrementPage() {
-    this.paging = (this.paging as number) + 1;
-   },
-   async decrementPage() {
-    this.paging = (this.paging as number) - 1;
-   }
+    setActivePage(pageIndex: number) {
+      this.paging = pageIndex;
+    },
+    async incrementPage() {
+      this.paging = (this.paging as number) + 1;
+    },
+    async decrementPage() {
+      this.paging = (this.paging as number) - 1;
+    }
   }
 });

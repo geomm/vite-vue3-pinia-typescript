@@ -108,6 +108,7 @@ section {
         :editMode="charStore.$state.editMode"
         @edit:click="toggleEditMode(!charStore.$state.editMode)"
         @section:edit="tmpKeepProp('name', $event)"
+        v-on:input-validation="isValid"
       />
 
       <div class="info col-12">
@@ -137,7 +138,9 @@ section {
           :content="charStore.$state.data!.model?.gender"
           :icon="'wc'"
           :editable="charStore.$state.editMode"
+          :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('gender', $event)"
+          v-on:input-validation="isValid"
         />
 
         <SectionInfoComponent
@@ -157,13 +160,19 @@ section {
           :content="charStore.$state.data!.model?.species"
           :icon="'pets'"
           :editable="charStore.$state.editMode"
+          :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('species', $event)"
+          v-on:input-validation="isValid"
         />
         <div class="flex" v-if="charStore.$state.editMode">
           <button class="cancel col-6 ml0" @click="toggleEditMode(false)">
             Cancel<i class="material-icons">close</i>
           </button>
-          <button class="submit col-6 mr0" @click="submitChanges">
+          <button
+            class="submit col-6 mr0"
+            @click="submitChanges"
+            :class="{ disabled: !validInput }"
+          >
             Submit<i class="material-icons">check</i>
           </button>
         </div>
@@ -175,10 +184,12 @@ section {
   </section>
 </template>
 <script lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
-import type { ICharacter } from '@/models/character.model';
 import router from '@/router';
+import type { Validation } from '@vuelidate/core';
+import { projectAvailableValidations } from '@/constants/input.constants';
+import type { ICharacter } from '@/models/character.model';
 import { characterStore } from '@/stores/character.store';
 import { episodeStore } from '@/stores/episode.store';
 import type { EditableModelProperties } from '@/models/store.model';
@@ -195,21 +206,10 @@ export default defineComponent({
     const route = useRoute();
     const charStore = characterStore();
     const episStore = episodeStore();
+    const validInput = ref(true);
+    const availableValidations = projectAvailableValidations;
 
     let tmpCharacter: Partial<ICharacter> = {};
-
-    const redirect = (id: number) => {
-      router.push({ name: `character`, params: { id: id } });
-    };
-
-    const goNext = async () => {
-      charStore.incrementPage();
-      redirect(Number(charStore.$state.paging));
-    };
-    const goPrev = async () => {
-      charStore.decrementPage();
-      redirect(Number(charStore.$state.paging));
-    };
 
     const toggleEditMode = async (value?: boolean) => {
       charStore.updateEditModeState(value);
@@ -219,17 +219,41 @@ export default defineComponent({
       tmpCharacter[key as EditableModelProperties] = value;
     };
 
+    const redirect = (id: number) => {
+      router.push({ name: `character`, params: { id: id } });
+    };
+
+    const goNext = async () => {
+      if (!charStore.$state.editMode) {
+        await charStore.incrementPage();
+        redirect(Number(charStore.$state.paging));
+      }
+    };
+
+    const goPrev = async () => {
+      if (!charStore.$state.editMode) {
+        await charStore.decrementPage();
+        redirect(Number(charStore.$state.paging));
+      }
+    };
+
     const submitChanges = async () => {
-      const newCharacterState = {
-        ...charStore.$state.data!.model,
-        ...tmpCharacter
-      };
-      charStore.setCharacterState(newCharacterState);
-      charStore.updateEditModeState(false);
+      if (validInput.value) {
+        const newCharacterState = {
+          ...charStore.$state.data!.model,
+          ...tmpCharacter
+        };
+        charStore.setCharacterState(newCharacterState);
+        charStore.updateEditModeState(false);
+      }
     };
 
     const episodeTitle = (url: string): string => {
       return episStore.getEpisodeTitle(url);
+    };
+
+    const isValid = (arg: Validation) => {
+      validInput.value = !arg.$invalid;
     };
 
     onBeforeMount(async () => {
@@ -259,13 +283,16 @@ export default defineComponent({
 
     return {
       charStore,
+      validInput,
       redirect,
       toggleEditMode,
       submitChanges,
       tmpKeepProp,
       goNext,
       goPrev,
-      episodeTitle
+      episodeTitle,
+      availableValidations,
+      isValid
     };
   }
 });

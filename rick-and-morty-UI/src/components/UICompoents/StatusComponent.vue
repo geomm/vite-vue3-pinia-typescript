@@ -15,8 +15,11 @@
       background: var(--vt-ui-project-status-icon-green);
     }
     &.dead {
-      background: var(--vt-ui-project-status-icon-red);
+      background: var(--vt-ui-project-status-error);
     }
+  }
+  &.disabled {
+    opacity: 0.3;
   }
 }
 </style>
