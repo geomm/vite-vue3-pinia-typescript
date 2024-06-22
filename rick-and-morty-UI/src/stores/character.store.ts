@@ -15,7 +15,8 @@ export const characterStore = defineStore('character', {
     error: null as any | null,
     paging: 1,
     pagesTotal: null,
-    editMode: false
+    editMode: false,
+    totalCount: null
   }),
   actions: {
     async fetchCharacters(page: number): Promise<void> {
@@ -39,6 +40,8 @@ export const characterStore = defineStore('character', {
         });
 
         this.pagesTotal = response.data.info.pages;
+        this.totalCount = response.data.info.count;
+        storeIntoStorage('total_characters', this.totalCount);
         toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
@@ -55,7 +58,7 @@ export const characterStore = defineStore('character', {
       const tmpFromStorage = fetchFromStorage(id.toString());
 
       if (tmpFromStorage) {
-        this.setCharacterState(tmpFromStorage);
+        this.setCharacterState(tmpFromStorage as ICharacter);
         this.loading = false;
       } else {
         try {

@@ -95,7 +95,11 @@ section {
     :class="{ 'no-data': charStore.$state.loading, editing: charStore.$state.editMode }"
     v-if="charStore.$state.data?.model"
   >
-    <button class="prev" :class="{ disabled: charStore.$state.editMode }" @click="goPrev">
+    <button
+      class="prev"
+      :class="{ disabled: charStore.$state.editMode || charStore.$state.paging === 1 }"
+      @click="goPrev"
+    >
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
@@ -181,7 +185,13 @@ section {
         </div>
       </div>
     </div>
-    <button class="next" :class="{ disabled: charStore.$state.editMode }" @click="goNext">
+    <button
+      class="next"
+      :class="{
+        disabled: charStore.$state.editMode || charStore.$state.paging === totalCharacters()
+      }"
+      @click="goNext"
+    >
       <i class="material-icons">arrow_forward</i>
     </button>
   </section>
@@ -198,6 +208,9 @@ import { episodeStore } from '@/stores/episode.store';
 import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
 import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
+import { toast } from 'vue3-toastify';
+import { toastifyConfiguration } from '@/configs/toastify.config';
+import { fetchFromStorage } from '@/helpers/storage.helper';
 
 export default defineComponent({
   name: 'DetailsComponent',
@@ -214,6 +227,10 @@ export default defineComponent({
 
     let tmpCharacter: Partial<ICharacter> = {};
 
+    const totalCharacters = (): number => {
+      return charStore.$state.totalCount || Number(fetchFromStorage('total_characters'));
+    };
+
     const toggleEditMode = async (value?: boolean) => {
       charStore.updateEditModeState(value);
     };
@@ -228,6 +245,10 @@ export default defineComponent({
 
     const goNext = async () => {
       if (!charStore.$state.editMode) {
+        if (charStore.$state.paging === totalCharacters()) {
+          toast.warn(`There is nothing after page ${totalCharacters()}`, toastifyConfiguration);
+          return;
+        }
         await charStore.incrementPage();
         redirect(Number(charStore.$state.paging));
       }
@@ -235,6 +256,13 @@ export default defineComponent({
 
     const goPrev = async () => {
       if (!charStore.$state.editMode) {
+        if (charStore.$state.paging === 1) {
+          toast.warn(
+            `There is nothing before page ${charStore.$state.paging} :)`,
+            toastifyConfiguration
+          );
+          return;
+        }
         await charStore.decrementPage();
         redirect(Number(charStore.$state.paging));
       }
@@ -295,7 +323,8 @@ export default defineComponent({
       goPrev,
       episodeTitle,
       availableValidations,
-      isValid
+      isValid,
+      totalCharacters
     };
   }
 });

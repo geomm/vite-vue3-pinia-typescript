@@ -14,7 +14,8 @@ export const episodeStore = defineStore('episode', {
     error: null as any | null,
     paging: 1,
     pagesTotal: null,
-    items: [] as IEpisode[]
+    items: [] as IEpisode[],
+    totalCount: null
   }),
   actions: {
     async fetchAllEpisodes(callback: () => void): Promise<void> {
@@ -35,11 +36,13 @@ export const episodeStore = defineStore('episode', {
 
           this.data!.results = response.data.results;
           this.pagesTotal = response.data.info.pages;
+          this.totalCount = response.data.info.count;
 
           if (this.data!.results && this.data!.results.length) {
             this.items!.push(...this.data!.results);
             if (!response.data.info.next) {
               run = false;
+              this.totalCount = this.items?.length;
             } else {
               this.paging++;
             }
