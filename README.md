@@ -40,11 +40,11 @@ http://localhost:8080
 - ~~setup api service~~
 - ~~setup store/state~~ - **inreview**
 - ~~create list~~
-- - get last episode's link in list's items
+- - ~~get last episode's link in list's items~~
 - - ~~add status icon in listing (red/green circle)~~
 - ~~main page UI design~~ - **inreview**
 - ~~create details - UI~~ - **inreview**
-- adjust details for edit mode **WIP**
+- ~~adjust details for edit mode~~ **WIP**
 - organize styles - **WIP/inreview**
 - ~~add loader~~
 - ~~add toast (error handling, edit mode state store notify user)~~
@@ -52,7 +52,7 @@ http://localhost:8080
 - - ~~use toast for requests errors~~
 - ~~create NavComponent (show activePage/total and input)~~
 - - ~~currently input is binded on:keydown:enter @TODO: add button to the right of the input~~
-- - add validation (before request) in pagin input
+- - ~~add validation (before request) in pagin input / sanitize input value~~
 - - simplify template properties instead of using pinia state directly
 
 ---

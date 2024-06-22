@@ -148,17 +148,25 @@ button {
           :type="'text'"
           :id="'Name'"
           :inputValue="editableContent"
+          :validations="availableValidations.REQUIRED"
           v-on:update:inputValue="headerEdited($event)"
+          v-on:input-validation="isValid"
         />
-        <StatusComponent :status="state?.status" :species="state?.species" />
+        <StatusComponent
+          :status="state?.status"
+          :species="state?.species"
+          :class="{ disabled: editMode }"
+        />
       </p>
     </div>
   </header>
 </template>
 
 <script lang="ts">
-import type { Spieces, Status } from '@/models/character.model';
 import { defineComponent, reactive, ref, type PropType } from 'vue';
+import type { Validation } from '@vuelidate/core';
+import { projectAvailableValidations } from '../../constants/input.constants';
+import type { Spieces, Status } from '@/models/character.model';
 import StatusComponent from '../UICompoents/StatusComponent.vue';
 import InputComponent from '../UICompoents/InputComponent.vue';
 
@@ -178,11 +186,12 @@ export default defineComponent({
     StatusComponent,
     InputComponent
   },
-  emits: ['edit:click', 'section:edit'],
+  emits: ['edit:click', 'section:edit', 'input-validation'],
   setup(props, { emit }) {
     const state = reactive(props);
     // const state = reactive<Partial<ICharacter>>(props.character || ({} as Partial<ICharacter>));
     const editableContent = ref(state.name);
+    const availableValidations = projectAvailableValidations;
 
     const headerEdited = (value: string) => {
       editableContent.value = value;
@@ -193,11 +202,17 @@ export default defineComponent({
       emit('edit:click', event);
     };
 
+    const isValid = (arg: Validation) => {
+      emit('input-validation', arg);
+    };
+
     return {
       state,
       toggleEditMode,
       editableContent,
-      headerEdited
+      headerEdited,
+      availableValidations,
+      isValid
     };
   }
 });
