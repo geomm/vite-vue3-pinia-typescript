@@ -13,7 +13,6 @@ ul {
   transition: opacity 0.1s ease-in-out;
   padding: 6em 0em;
   @media (max-width: $larger) {
-    // padding-bottom: 30vh;
     padding: 0em 0em 12em 0em;
   }
   li {

@@ -1,4 +1,3 @@
-// wip
 export interface IEpisode {
   id: number;
   name: string;

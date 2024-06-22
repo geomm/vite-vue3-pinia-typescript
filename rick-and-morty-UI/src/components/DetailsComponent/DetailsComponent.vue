@@ -117,6 +117,7 @@ section {
           :content="charStore.$state.data!.model.location?.name"
           :url="charStore.$state.data!.model.location?.url"
           :icon="'location_on'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
@@ -124,6 +125,7 @@ section {
           :content="episodeTitle(charStore.$state.data!.model.episode?.[0])"
           :url="charStore.$state.data!.model.episode?.[0]"
           :icon="'movie'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
@@ -131,6 +133,7 @@ section {
           :content="charStore.$state.data!.model.origin?.name"
           :url="charStore.$state.data!.model.origin?.url"
           :icon="'public'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent

@@ -14,7 +14,11 @@ const router = createRouter({
       name: 'character',
       component: () => import('../views/CharacterDetailsView.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // Always scroll to top
+    return { top: 0 };
+  }
 });
 
 export default router;

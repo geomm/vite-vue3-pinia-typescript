@@ -77,7 +77,12 @@
     </span>
     <b v-if="!url" :class="{ 'text-gray': content === 'unknown' }">{{ content || '-' }}</b>
     <b v-else-if="url">
-      <a :href="url" target="_blank">{{ content }}</a>
+      <template v-if="!editMode">
+        <a :href="url" target="_blank">{{ content }}</a>
+      </template>
+      <template v-else>
+        <a>{{ content }}</a>
+      </template>
     </b>
   </div>
   <div class="section editing" v-else>
@@ -111,11 +116,13 @@ export default defineComponent({
     url: String as PropType<string | null>,
     icon: String as PropType<string | null>,
     editable: Boolean as PropType<boolean>,
-    validations: String as PropType<string>
+    validations: String as PropType<string>,
+    editMode: Boolean as PropType<boolean>
   },
   emits: ['section:edit', 'input-validation'],
   setup(props, { emit }) {
     const editableContent = ref(props.content);
+    // const editMode = ref(props.editMode);
 
     const sectionEdited = (value: string) => {
       editableContent.value = value;
