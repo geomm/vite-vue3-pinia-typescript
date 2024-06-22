@@ -20,14 +20,7 @@ button {
 </style>
 <template>
   <div class="mat-input">
-    <input
-      :type="type"
-      :id="id"
-      v-model="value"
-      v-on:focusout="updateValue"
-      required
-      @input="onUserInput"
-    />
+    <input :type="type" :id="id" v-model="value" v-on:focusout="updateValue" required />
     <span class="highlight"></span>
     <span class="bar"></span>
     <label :for="label">{{ label }}</label>
@@ -41,7 +34,7 @@ button {
 <script lang="ts">
 import { sanitizeInput } from '@/helpers/input.helpers';
 import type { InputTypes, InputValue } from '@/models/input-types.model';
-import { defineComponent, ref, type PropType } from 'vue';
+import { defineComponent, ref, watch, type PropType } from 'vue';
 
 export default defineComponent({
   name: 'InputComponent',
@@ -65,16 +58,16 @@ export default defineComponent({
       } else if (event instanceof Event) {
         emit('update:inputValue', sanitizeInput(value.value));
       }
+      console.log('valval:', value.value);
     };
 
-    const onUserInput = () => {
-      isButtonDisabled.value = value.value?.toString().trim() === '' || value.value === null;
-    };
+    watch(value, (newVal) => {
+      isButtonDisabled.value = newVal?.toString().trim() === '' || !newVal;
+    });
 
     return {
       updateValue,
       value,
-      onUserInput,
       isButtonDisabled
     };
   }
