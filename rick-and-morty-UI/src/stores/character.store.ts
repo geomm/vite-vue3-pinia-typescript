@@ -10,7 +10,7 @@ import { fetchFromStorage, storage, storeIntoStorage } from '@/helpers/storage.h
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
-    data: {} as ModelState<ICharacter> | null,
+    data: {} as ModelState<ICharacter>,
     loading: false,
     error: null as any | null,
     paging: 1,

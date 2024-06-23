@@ -4,8 +4,9 @@ import type { InputValue } from '@/models/input-types.model';
 import type { IValidation } from '@/models/validation.model';
 
 export function sanitizeInput(input: InputValue) {
-  if (typeof input === 'string')
-    return input!.toString().replace(/[&<>"']/g, (m) => dangerousCharsMap[m]);
+  if (typeof input === 'string') {
+    return input!.toString().replace(/[&<>"'/\\;\-*%_]/g, (m) => dangerousCharsMap[m]);
+  }
   return input;
 }
 

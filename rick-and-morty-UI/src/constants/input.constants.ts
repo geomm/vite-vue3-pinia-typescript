@@ -13,7 +13,7 @@ export const dangerousCharsMap: IDangarousCharsMap = {
   '/*': '',
   '*\\': '',
   '%': '',
-  _: ''
+  '_': ''
 };
 
 export enum projectAvailableValidations {

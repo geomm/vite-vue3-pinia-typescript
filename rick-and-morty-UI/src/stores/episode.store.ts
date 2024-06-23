@@ -9,7 +9,7 @@ import type { IEpisode } from '@/models/episode.model';
 
 export const episodeStore = defineStore('episode', {
   state: (): IStoreState<IEpisode> => ({
-    data: {} as ModelState<IEpisode> | null,
+    data: {} as ModelState<IEpisode>,
     loading: false,
     error: null as any | null,
     paging: 1,
@@ -59,7 +59,7 @@ export const episodeStore = defineStore('episode', {
       }
     },
     getEpisodeTitle(episodeUrl: string): string {
-      const episodeUrlArray = episodeUrl.split('episode/');
+      const episodeUrlArray = episodeUrl?.split('episode/') || [];
       return (
         this.items?.filter(
           (item) => item.id === Number(episodeUrlArray[episodeUrlArray.length - 1])
