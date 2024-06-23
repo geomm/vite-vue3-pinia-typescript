@@ -97,7 +97,7 @@ section {
   >
     <button
       class="prev"
-      :class="{ disabled: charStore.$state.editMode || charStore.$state.paging === 1 }"
+      :class="{ disabled: charStore.$state.editMode || charStore.$state.detailsPaging === 1 }"
       @click="goPrev"
     >
       <i class="material-icons">arrow_back</i>
@@ -188,7 +188,7 @@ section {
     <button
       class="next"
       :class="{
-        disabled: charStore.$state.editMode || charStore.$state.paging === totalCharacters()
+        disabled: charStore.$state.editMode || charStore.$state.detailsPaging === totalCharacters()
       }"
       @click="goNext"
     >
