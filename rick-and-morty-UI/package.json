@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "preview": "eval $(grep '^VITE_PREVIEW_PORT' ../env/.env.production) && vite preview --port ${VITE_PREVIEW_PORT} --host",
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",

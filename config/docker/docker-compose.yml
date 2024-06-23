@@ -9,7 +9,7 @@ services:
     ports:
       - ${VITE_PORT}:${VITE_PORT}
       - ${VITE_HMR_PORT}:${VITE_HMR_PORT}
-      - ${PREVIEW_PORT}:${PREVIEW_PORT}
+      - ${VITE_PREVIEW_PORT}:${VITE_PREVIEW_PORT}
     env_file: ../../env/.env.development
     volumes:
       - ../../:/usr/src

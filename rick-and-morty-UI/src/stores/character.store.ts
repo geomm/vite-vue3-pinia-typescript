@@ -10,17 +10,23 @@ import { fetchFromStorage, storage, storeIntoStorage } from '@/helpers/storage.h
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
-    data: {} as ModelState<ICharacter> | null,
+    data: {} as ModelState<ICharacter>,
     loading: false,
     error: null as any | null,
     paging: 1,
+    detailsPaging: 0,
     pagesTotal: null,
-    editMode: false
+    editMode: false,
+    totalCount: null
   }),
   actions: {
-    async fetchCharacters(page: number): Promise<void> {
+    async fetchCharacters(page?: number): Promise<void> {
+      if (!page) {
+        page = this.paging;
+      }
       this.loading = true;
       this.error = null;
+
       this.paging = page;
       try {
         const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
@@ -39,6 +45,8 @@ export const characterStore = defineStore('character', {
         });
 
         this.pagesTotal = response.data.info.pages;
+        this.totalCount = response.data.info.count;
+        storeIntoStorage('total_characters', this.totalCount);
         toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
@@ -55,7 +63,7 @@ export const characterStore = defineStore('character', {
       const tmpFromStorage = fetchFromStorage(id.toString());
 
       if (tmpFromStorage) {
-        this.setCharacterState(tmpFromStorage);
+        this.setCharacterState(tmpFromStorage as ICharacter);
         this.loading = false;
       } else {
         try {
@@ -96,6 +104,15 @@ export const characterStore = defineStore('character', {
     },
     async decrementPage() {
       this.paging = (this.paging as number) - 1;
+    },
+    setActiveDetailsPage(pageIndex: number) {
+      this.detailsPaging = pageIndex;
+    },
+    async incrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) + 1;
+    },
+    async decrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) - 1;
     }
   }
 });

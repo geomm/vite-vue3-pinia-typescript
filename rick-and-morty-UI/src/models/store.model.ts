@@ -6,6 +6,8 @@ export interface IStoreState<T> {
   error: any | null;
   paging: number;
   pagesTotal: number | null | undefined;
+  detailsPaging?: number;
+  totalCount?: number | null | undefined;
   editMode?: boolean;
   items?: T[];
 }

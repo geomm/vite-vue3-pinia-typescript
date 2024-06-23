@@ -4,13 +4,13 @@ import { toast } from 'vue3-toastify';
 
 export const storage = localStorage; // @TODO: replace with sessionStorage on delivery
 
-export function fetchFromStorage(key: string): ICharacter | null {
+export function fetchFromStorage(key: string): ICharacter | number | string | null {
   const item = storage.getItem(key);
   if (item) {
-    let storageCharacter: ICharacter;
+    let storageData: ICharacter | number | string;
     try {
-      storageCharacter = JSON.parse(item);
-      return storageCharacter;
+      storageData = JSON.parse(item);
+      return storageData;
     } catch (error) {
       toast.error(`Error parsing storage: ${error}`, toastifyConfiguration);
       console.error(`Error parsing storage: ${error}`, toastifyConfiguration);

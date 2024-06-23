@@ -13,7 +13,6 @@ ul {
   transition: opacity 0.1s ease-in-out;
   padding: 6em 0em;
   @media (max-width: $larger) {
-    // padding-bottom: 30vh;
     padding: 0em 0em 12em 0em;
   }
   li {
@@ -68,7 +67,7 @@ export default defineComponent({
 
     onMounted(async () => {
       await episStore.fetchAllEpisodes(async () => {
-        await charStore.fetchCharacters(1);
+        await charStore.fetchCharacters(); //1
       });
     });
 

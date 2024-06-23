@@ -9,6 +9,10 @@
   padding: 1em;
   border-radius: 3px;
 
+  > div:first-child {
+    padding-bottom: 0.4em;
+  }
+
   p {
     font-size: xx-large;
     letter-spacing: 0.001em;

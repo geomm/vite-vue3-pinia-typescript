@@ -9,12 +9,13 @@ import type { IEpisode } from '@/models/episode.model';
 
 export const episodeStore = defineStore('episode', {
   state: (): IStoreState<IEpisode> => ({
-    data: {} as ModelState<IEpisode> | null,
+    data: {} as ModelState<IEpisode>,
     loading: false,
     error: null as any | null,
     paging: 1,
     pagesTotal: null,
-    items: [] as IEpisode[]
+    items: [] as IEpisode[],
+    totalCount: null
   }),
   actions: {
     async fetchAllEpisodes(callback: () => void): Promise<void> {
@@ -35,11 +36,13 @@ export const episodeStore = defineStore('episode', {
 
           this.data!.results = response.data.results;
           this.pagesTotal = response.data.info.pages;
+          this.totalCount = response.data.info.count;
 
           if (this.data!.results && this.data!.results.length) {
             this.items!.push(...this.data!.results);
             if (!response.data.info.next) {
               run = false;
+              this.totalCount = this.items?.length;
             } else {
               this.paging++;
             }
@@ -56,7 +59,7 @@ export const episodeStore = defineStore('episode', {
       }
     },
     getEpisodeTitle(episodeUrl: string): string {
-      const episodeUrlArray = episodeUrl.split('episode/');
+      const episodeUrlArray = episodeUrl?.split('episode/') || [];
       return (
         this.items?.filter(
           (item) => item.id === Number(episodeUrlArray[episodeUrlArray.length - 1])
