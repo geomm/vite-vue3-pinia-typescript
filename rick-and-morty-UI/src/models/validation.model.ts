@@ -8,4 +8,3 @@ export interface IValidation {
 export interface IDangarousCharsMap {
   [key: string]: string;
 }
-
