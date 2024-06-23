@@ -245,26 +245,26 @@ export default defineComponent({
 
     const goNext = async () => {
       if (!charStore.$state.editMode) {
-        if (charStore.$state.paging === totalCharacters()) {
+        if (charStore.$state.detailsPaging === totalCharacters()) {
           toast.warn(`There is nothing after page ${totalCharacters()}`, toastifyConfiguration);
           return;
         }
-        await charStore.incrementPage();
-        redirect(Number(charStore.$state.paging));
+        await charStore.incrementDetailsPage();
+        redirect(Number(charStore.$state.detailsPaging));
       }
     };
 
     const goPrev = async () => {
       if (!charStore.$state.editMode) {
-        if (charStore.$state.paging === 1) {
+        if (charStore.$state.detailsPaging === 1) {
           toast.warn(
-            `There is nothing before page ${charStore.$state.paging} :)`,
+            `There is nothing before page ${charStore.$state.detailsPaging} :)`,
             toastifyConfiguration
           );
           return;
         }
-        await charStore.decrementPage();
-        redirect(Number(charStore.$state.paging));
+        await charStore.decrementDetailsPage();
+        redirect(Number(charStore.$state.detailsPaging));
       }
     };
 
@@ -291,7 +291,7 @@ export default defineComponent({
       // charStore.resetCharacterState();
       await episStore.fetchAllEpisodes(async () => {
         await charStore.fetchCharacter(Number(route.params.id));
-        charStore.setActivePage(Number(charStore.$state.data?.model.id));
+        charStore.setActiveDetailsPage(Number(charStore.$state.data?.model.id));
       });
     });
 

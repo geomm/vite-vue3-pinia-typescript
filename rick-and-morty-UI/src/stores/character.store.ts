@@ -14,14 +14,19 @@ export const characterStore = defineStore('character', {
     loading: false,
     error: null as any | null,
     paging: 1,
+    detailsPaging: 0,
     pagesTotal: null,
     editMode: false,
     totalCount: null
   }),
   actions: {
-    async fetchCharacters(page: number): Promise<void> {
+    async fetchCharacters(page?: number): Promise<void> {
+      if (!page) {
+        page = this.paging;
+      }
       this.loading = true;
       this.error = null;
+
       this.paging = page;
       try {
         const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
@@ -99,6 +104,15 @@ export const characterStore = defineStore('character', {
     },
     async decrementPage() {
       this.paging = (this.paging as number) - 1;
+    },
+    setActiveDetailsPage(pageIndex: number) {
+      this.detailsPaging = pageIndex;
+    },
+    async incrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) + 1;
+    },
+    async decrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) - 1;
     }
   }
 });

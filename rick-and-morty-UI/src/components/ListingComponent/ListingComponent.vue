@@ -67,7 +67,7 @@ export default defineComponent({
 
     onMounted(async () => {
       await episStore.fetchAllEpisodes(async () => {
-        await charStore.fetchCharacters(1);
+        await charStore.fetchCharacters(); //1
       });
     });
 
