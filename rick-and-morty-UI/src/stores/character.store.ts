@@ -6,29 +6,35 @@ import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
 import { toast } from 'vue3-toastify';
 import { toastifyConfiguration } from '@/configs/toastify.config';
-import { fetchFromStorage, storeIntoStorage } from '@/helpers/storage.helper';
+import { fetchFromStorage, storage, storeIntoStorage } from '@/helpers/storage.helper';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
-    data: {} as ModelState<ICharacter> | null,
+    data: {} as ModelState<ICharacter>,
     loading: false,
     error: null as any | null,
     paging: 1,
+    detailsPaging: 0,
     pagesTotal: null,
-    editMode: false
+    editMode: false,
+    totalCount: null
   }),
   actions: {
-    async fetchCharacters(page: number): Promise<void> {
+    async fetchCharacters(page?: number): Promise<void> {
+      if (!page) {
+        page = this.paging;
+      }
       this.loading = true;
       this.error = null;
+
       this.paging = page;
       try {
         const response: AxiosResponse<IApiDataModel<ICharacter>> = await apiService.get(
           'character',
-          { page: page }
+          { page: this.paging }
         );
 
-        const storageItems = { ...localStorage };
+        const storageItems = { ...storage };
 
         this.data!.results = response.data.results.map((item: ICharacter) => {
           if (Object.keys(storageItems).includes(item.id.toString())) {
@@ -39,6 +45,8 @@ export const characterStore = defineStore('character', {
         });
 
         this.pagesTotal = response.data.info.pages;
+        this.totalCount = response.data.info.count;
+        storeIntoStorage('total_characters', this.totalCount);
         toast.success(`Characters fetched`, toastifyConfiguration);
       } catch (error) {
         this.error = error;
@@ -55,7 +63,7 @@ export const characterStore = defineStore('character', {
       const tmpFromStorage = fetchFromStorage(id.toString());
 
       if (tmpFromStorage) {
-        this.setCharacterState(tmpFromStorage);
+        this.setCharacterState(tmpFromStorage as ICharacter);
         this.loading = false;
       } else {
         try {
@@ -71,22 +79,40 @@ export const characterStore = defineStore('character', {
       }
     },
     setCharacterState(character: ICharacter): void {
-      this.$state.data!.model = character;
-      storeIntoStorage(this.$state.data!.model.id.toString(), character);
+      this.data!.model = character;
+      storeIntoStorage(this.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
     resetCharacterState(): void {
-      this.$state.data!.model = {} as ICharacter;
+      this.data!.model = {} as ICharacter;
     },
     updateEditModeState(value: boolean | null = null): void {
       if (value === null) {
-        this.$state.editMode = !this.$state.editMode;
+        this.editMode = !this.editMode;
         return;
       }
-      this.$state.editMode = value;
+      this.editMode = value;
     },
     updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
-      this.$state.data!.model[key as EditableModelProperties] = value;
+      this.data!.model[key as EditableModelProperties] = value;
+    },
+    setActivePage(pageIndex: number) {
+      this.paging = pageIndex;
+    },
+    async incrementPage() {
+      this.paging = (this.paging as number) + 1;
+    },
+    async decrementPage() {
+      this.paging = (this.paging as number) - 1;
+    },
+    setActiveDetailsPage(pageIndex: number) {
+      this.detailsPaging = pageIndex;
+    },
+    async incrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) + 1;
+    },
+    async decrementDetailsPage() {
+      this.detailsPaging = (this.detailsPaging as number) - 1;
     }
   }
 });

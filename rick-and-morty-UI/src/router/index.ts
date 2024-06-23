@@ -13,8 +13,18 @@ const router = createRouter({
       path: '/character/:id',
       name: 'character',
       component: () => import('../views/CharacterDetailsView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: '404',
+      component: () => import('../views/NotFoundView.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // Always scroll to top
+    // console.log(to, from, savedPosition);
+    return { top: 0 };
+  }
 });
 
 export default router;

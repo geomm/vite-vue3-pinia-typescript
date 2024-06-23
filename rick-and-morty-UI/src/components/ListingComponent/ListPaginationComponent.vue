@@ -9,6 +9,10 @@
   padding: 1em;
   border-radius: 3px;
 
+  > div:first-child {
+    padding-bottom: 0.4em;
+  }
+
   p {
     font-size: xx-large;
     letter-spacing: 0.001em;
@@ -68,11 +72,12 @@
         :id="'pageIndex'"
         :label="'Page #'"
         :inputValue="value"
+        :validations="`${availableValidations.MINNUMBER}:0, ${availableValidations.MAXNUMBER}:${pagesTotal}`"
         :useSubmit="useSubmit"
-        v-on:update:inputValue="getResultsAction($event)"
+        v-on:submit:inputValue="getResultsAction($event)"
       />
       <p class="col-6">
-        {{ paging }} <b>/ {{ pagesTotal }}</b>
+        <b> {{ paging }}</b> / {{ pagesTotal }}
       </p>
     </div>
     <div class="flex">
@@ -89,6 +94,7 @@
 import { defineComponent, ref, type PropType, type Ref } from 'vue';
 import InputComponent from '../UICompoents/InputComponent.vue';
 import type { InputValue } from '@/models/input-types.model';
+import { projectAvailableValidations } from '@/constants/input.constants';
 
 export default defineComponent({
   name: 'ListPaginationComponent',
@@ -101,6 +107,7 @@ export default defineComponent({
   components: { InputComponent },
   setup(props, { emit }) {
     const value = ref(null as InputValue);
+    const availableValidations = projectAvailableValidations;
 
     const prevClicked = (event: Event) => {
       const target = event.target as HTMLInputElement;
@@ -124,6 +131,7 @@ export default defineComponent({
       prevClicked,
       nextClicked,
       getResultsAction,
+      availableValidations,
       value
     };
   }

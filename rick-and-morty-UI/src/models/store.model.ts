@@ -4,9 +4,12 @@ export interface IStoreState<T> {
   data: ModelState<T> | null;
   loading: boolean;
   error: any | null;
-  paging?: number;
-  pagesTotal?: number | null | undefined;
+  paging: number;
+  pagesTotal: number | null | undefined;
+  detailsPaging?: number;
+  totalCount?: number | null | undefined;
   editMode?: boolean;
+  items?: T[];
 }
 
 export interface ModelState<T> {

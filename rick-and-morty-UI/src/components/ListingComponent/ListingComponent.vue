@@ -13,7 +13,6 @@ ul {
   transition: opacity 0.1s ease-in-out;
   padding: 6em 0em;
   @media (max-width: $larger) {
-    // padding-bottom: 30vh;
     padding: 0em 0em 12em 0em;
   }
   li {
@@ -52,6 +51,7 @@ ul {
 </template>
 <script lang="ts">
 import { characterStore } from '@/stores/character.store';
+import { episodeStore } from '@/stores/episode.store';
 import { defineComponent, onMounted } from 'vue';
 import ListCardComponent from './ListCardComponent.vue';
 import ListPaginationComponent from './ListPaginationComponent.vue';
@@ -63,9 +63,12 @@ export default defineComponent({
   components: { ListCardComponent, ListPaginationComponent },
   setup() {
     const charStore = characterStore();
+    const episStore = episodeStore();
 
-    onMounted(() => {
-      charStore.fetchCharacters(1);
+    onMounted(async () => {
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacters(); //1
+      });
     });
 
     const getPrevCharacters = () => {
@@ -92,6 +95,7 @@ export default defineComponent({
 
     return {
       charStore,
+      episStore,
       getNextCharacters,
       getPrevCharacters,
       fetchCharactersByPageNumber

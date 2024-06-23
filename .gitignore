@@ -11,7 +11,7 @@ rick-and-morty-UI/lerna-debug.log*
 
 rick-and-morty-UI/node_modules
 rick-and-morty-UI/.DS_Store
-rick-and-morty-UI/dist
+# rick-and-morty-UI/dist
 rick-and-morty-UI/dist-ssr
 rick-and-morty-UI/coverage
 rick-and-morty-UI/*.local

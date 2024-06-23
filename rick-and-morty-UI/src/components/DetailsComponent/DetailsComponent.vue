@@ -97,10 +97,9 @@ section {
   >
     <button
       class="prev"
-      :class="{ disabled: true }"
-      @click="redirect((Number(charStore.$state.data.model.id) || 1) - 1)"
+      :class="{ disabled: charStore.$state.editMode || charStore.$state.detailsPaging === 1 }"
+      @click="goPrev"
     >
-      <!-- charStore.$state.editMode -->
       <i class="material-icons">arrow_back</i>
     </button>
     <div class="col-6">
@@ -113,6 +112,7 @@ section {
         :editMode="charStore.$state.editMode"
         @edit:click="toggleEditMode(!charStore.$state.editMode)"
         @section:edit="tmpKeepProp('name', $event)"
+        v-on:input-validation="isValid"
       />
 
       <div class="info col-12">
@@ -121,13 +121,15 @@ section {
           :content="charStore.$state.data!.model.location?.name"
           :url="charStore.$state.data!.model.location?.url"
           :icon="'location_on'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
           :label="'First seen in'"
-          :content="'That episode'"
+          :content="episodeTitle(charStore.$state.data!.model.episode?.[0])"
           :url="charStore.$state.data!.model.episode?.[0]"
           :icon="'movie'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
@@ -135,6 +137,7 @@ section {
           :content="charStore.$state.data!.model.origin?.name"
           :url="charStore.$state.data!.model.origin?.url"
           :icon="'public'"
+          :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
@@ -142,7 +145,9 @@ section {
           :content="charStore.$state.data!.model?.gender"
           :icon="'wc'"
           :editable="charStore.$state.editMode"
+          :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('gender', $event)"
+          v-on:input-validation="isValid"
         />
 
         <SectionInfoComponent
@@ -162,13 +167,19 @@ section {
           :content="charStore.$state.data!.model?.species"
           :icon="'pets'"
           :editable="charStore.$state.editMode"
+          :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('species', $event)"
+          v-on:input-validation="isValid"
         />
         <div class="flex" v-if="charStore.$state.editMode">
           <button class="cancel col-6 ml0" @click="toggleEditMode(false)">
             Cancel<i class="material-icons">close</i>
           </button>
-          <button class="submit col-6 mr0" @click="submitChanges">
+          <button
+            class="submit col-6 mr0"
+            @click="submitChanges"
+            :class="{ disabled: !validInput }"
+          >
             Submit<i class="material-icons">check</i>
           </button>
         </div>
@@ -176,23 +187,30 @@ section {
     </div>
     <button
       class="next"
-      :class="{ disabled: true }"
-      @click="redirect(Number(charStore.$state.data.model.id) + 1)"
+      :class="{
+        disabled: charStore.$state.editMode || charStore.$state.detailsPaging === totalCharacters()
+      }"
+      @click="goNext"
     >
-      <!-- charStore.$state.editMode  -->
       <i class="material-icons">arrow_forward</i>
     </button>
   </section>
 </template>
 <script lang="ts">
-import type { ICharacter } from '@/models/character.model';
-import router from '@/router';
-import { characterStore } from '@/stores/character.store';
-import { defineComponent, onBeforeMount, onBeforeUnmount } from 'vue';
+import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
+import router from '@/router';
+import type { Validation } from '@vuelidate/core';
+import { projectAvailableValidations } from '@/constants/input.constants';
+import type { ICharacter } from '@/models/character.model';
+import { characterStore } from '@/stores/character.store';
+import { episodeStore } from '@/stores/episode.store';
 import type { EditableModelProperties } from '@/models/store.model';
 import SectionInfoComponent from '../UICompoents/SectionInfoComponent.vue';
 import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
+import { toast } from 'vue3-toastify';
+import { toastifyConfiguration } from '@/configs/toastify.config';
+import { fetchFromStorage } from '@/helpers/storage.helper';
 
 // @TODO: maybe creating a detailsEditingState model for properties to initiating properly on edit could work
 
@@ -205,11 +223,14 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const charStore = characterStore();
+    const episStore = episodeStore();
+    const validInput = ref(true);
+    const availableValidations = projectAvailableValidations;
 
     let tmpCharacter: Partial<ICharacter> = {};
 
-    const redirect = (id: number) => {
-      router.push({ name: `character`, params: { id: id } });
+    const totalCharacters = (): number => {
+      return charStore.$state.totalCount || Number(fetchFromStorage('total_characters'));
     };
 
     const toggleEditMode = async (value?: boolean) => {
@@ -220,18 +241,60 @@ export default defineComponent({
       tmpCharacter[key as EditableModelProperties] = value;
     };
 
+    const redirect = (id: number) => {
+      router.push({ name: `character`, params: { id: id } });
+    };
+
+    const goNext = async () => {
+      if (!charStore.$state.editMode) {
+        if (charStore.$state.detailsPaging === totalCharacters()) {
+          toast.warn(`There is nothing after page ${totalCharacters()}`, toastifyConfiguration);
+          return;
+        }
+        await charStore.incrementDetailsPage();
+        redirect(Number(charStore.$state.detailsPaging));
+      }
+    };
+
+    const goPrev = async () => {
+      if (!charStore.$state.editMode) {
+        if (charStore.$state.detailsPaging === 1) {
+          toast.warn(
+            `There is nothing before page ${charStore.$state.detailsPaging} :)`,
+            toastifyConfiguration
+          );
+          return;
+        }
+        await charStore.decrementDetailsPage();
+        redirect(Number(charStore.$state.detailsPaging));
+      }
+    };
+
     const submitChanges = async () => {
-      const newCharacterState = {
-        ...charStore.$state.data!.model,
-        ...tmpCharacter
-      };
-      charStore.setCharacterState(newCharacterState);
-      charStore.updateEditModeState(false);
+      if (validInput.value) {
+        const newCharacterState = {
+          ...charStore.$state.data!.model,
+          ...tmpCharacter
+        };
+        charStore.setCharacterState(newCharacterState);
+        charStore.updateEditModeState(false);
+      }
+    };
+
+    const episodeTitle = (url: string): string => {
+      return episStore.getEpisodeTitle(url);
+    };
+
+    const isValid = (arg: Validation) => {
+      validInput.value = !arg.$invalid;
     };
 
     onBeforeMount(async () => {
       // charStore.resetCharacterState();
-      await charStore.fetchCharacter(Number(route.params.id));
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacter(Number(route.params.id));
+        charStore.setActiveDetailsPage(Number(charStore.$state.data?.model.id));
+      });
     });
 
     onBeforeUnmount(() => {
@@ -253,10 +316,17 @@ export default defineComponent({
 
     return {
       charStore,
+      validInput,
       redirect,
       toggleEditMode,
       submitChanges,
-      tmpKeepProp
+      tmpKeepProp,
+      goNext,
+      goPrev,
+      episodeTitle,
+      availableValidations,
+      isValid,
+      totalCharacters
     };
   }
 });

@@ -1,2 +1,2 @@
 export type InputTypes = 'number' | 'text';
-export type InputValue = number | string | null;
+export type InputValue = number | string | null | undefined;
