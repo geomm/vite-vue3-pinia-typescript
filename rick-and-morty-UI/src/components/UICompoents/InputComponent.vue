@@ -151,7 +151,7 @@ export default defineComponent({
       () => value,
       (newVal) => {
         isButtonDisabled.value =
-          newVal?.toString().trim() === '' || !newVal || vuelidate!.value.$invalid;
+          newVal?.toString().trim() === '' || !newVal.value || vuelidate!.value.$invalid;
         if (vuelidate) {
           emit('input-validation', vuelidate.value);
         }
