@@ -1,24 +1,37 @@
-# Rick & Morty assignment
+# Rick & Morty Characters Directory
 
-# Setup
+# Requirements
 
 Docker version 26.1.4, Node.js version 20.14.0
 
 # Development
 
+The workflow is,
+
+- Compose docker Dev environemnt to work
+- Jump into that Dev environment
+- - Develop and deliver
+- - Check Production build process and preview using Vite server
+- Build Production docker image
+- Run Production docker container for Test (or Produce for delivery)
+
 In project root directory,
 
-## Prepare image
+# Workflow in detail
+
+## 1. Compose docker Dev environemnt to work
 
 ```
 $ docker compose -f config/docker/docker-compose.yml --env-file ./env/.env.development up -d
 ```
 
-## Open running container command line
+## 2. Jump into Dev environment
 
 ```
 $ docker exec -it rick_and_morty_UI_dev /bin/bash
 ```
+
+### 2.1 Develop and deliver
 
 in container's bash,
 
@@ -35,7 +48,7 @@ open browser and visit,
 http://localhost:8080
 ```
 
-### Check prod build in vite server
+### 2.2 Check Production build process and preview using Vite server
 
 in container's bash
 
@@ -50,25 +63,29 @@ open browser and visit,
 http://localhost:4173
 ```
 
-## Demonstrate Production
+## 3. Build Production docker image
 
 - Create a production image using NGINX server consuming the .rick-and-morty-UI/dist artifacts (created previously by `npm run build`)
 - - `$ docker build . -t rick_and_morty_ui_prod`
+
+## 4. Run Production docker container for Test (or Produce for delivery)
+
 - Run the container
 - - `$ docker run --name rick_and_morty_ui_prod_container -p 80:8080 -it rick_and_morty_ui_prod`
+
 - Open browser in http://localhost/
 
-### Tasks:
+## Tasks:
 
 - ~~setup api service~~
-- ~~setup store/state~~ - **inreview**
+- ~~setup store/state~~
 - ~~create list~~
 - - ~~get last episode's link in list's items~~
 - - ~~add status icon in listing (red/green circle)~~
-- ~~main page UI design~~ - **inreview**
-- ~~create details - UI~~ - **inreview**
-- ~~adjust details for edit mode~~ **WIP**
-- organize styles - **WIP/inreview**
+- ~~main page UI design~~
+- ~~create details - UI~~
+- ~~adjust details for edit mode~~
+- ~~organize styles~~
 - ~~add loader~~
 - ~~add toast (error handling, edit mode state store notify user)~~
 - - ~~use toast for invalid pagination inputs~~
@@ -76,7 +93,7 @@ http://localhost:4173
 - ~~create NavComponent (show activePage/total and input)~~
 - - ~~currently input is binded on:keydown:enter @TODO: add button to the right of the input~~
 - - ~~add validation (before request) in pagin input / sanitize input value~~
-- - simplify template properties instead of using pinia state directly
+- - ~~simplify template properties instead of using pinia state directly~~
 
 ---
 
