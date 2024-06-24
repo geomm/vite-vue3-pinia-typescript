@@ -1,6 +1,6 @@
 import type { IApiDataModel } from '@/models/api-data.model';
 import type { ICharacter } from '@/models/character.model';
-import type { EditableModelProperties, IStoreState, ModelState } from '@/models/store.model';
+import type { IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
@@ -86,9 +86,6 @@ export const characterStore = defineStore('character', {
       storeIntoStorage(this.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
     },
-    resetCharacterState(): void {
-      this.data!.model = {} as ICharacter;
-    },
     updateEditModeState(value: boolean | null = null): void {
       if (value === null) {
         this.editMode = !this.editMode;
@@ -96,25 +93,13 @@ export const characterStore = defineStore('character', {
       }
       this.editMode = value;
     },
-    updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
-      this.data!.model[key as EditableModelProperties] = value;
-    },
-    setActivePage(pageIndex: number) {
-      this.paging = pageIndex;
-    },
-    async incrementPage() {
-      this.paging = (this.paging as number) + 1;
-    },
-    async decrementPage() {
-      this.paging = (this.paging as number) - 1;
-    },
     setActiveDetailsPage(pageIndex: number) {
       this.detailsPaging = pageIndex;
     },
-    async incrementDetailsPage() {
+    incrementDetailsPage() {
       this.detailsPaging = (this.detailsPaging as number) + 1;
     },
-    async decrementDetailsPage() {
+    decrementDetailsPage() {
       this.detailsPaging = (this.detailsPaging as number) - 1;
     }
   }

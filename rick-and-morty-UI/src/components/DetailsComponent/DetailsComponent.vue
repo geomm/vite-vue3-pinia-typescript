@@ -142,7 +142,7 @@ section {
 
         <SectionInfoComponent
           :label="'Gender'"
-          v-model:content="character.gender"
+          :content="character.gender"
           :icon="'wc'"
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
@@ -156,7 +156,7 @@ section {
 
         <SectionInfoComponent
           :label="'Species'"
-          v-model:content="character.species"
+          :content="character.species"
           :icon="'pets'"
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
@@ -231,7 +231,7 @@ export default defineComponent({
           toast.warn(`There is nothing after page ${totalCharacters()}`, toastifyConfiguration);
           return;
         }
-        await charStore.incrementDetailsPage();
+        charStore.incrementDetailsPage();
         redirect(Number(charStore.$state.detailsPaging));
       }
     };
@@ -245,7 +245,7 @@ export default defineComponent({
           );
           return;
         }
-        await charStore.decrementDetailsPage();
+        charStore.decrementDetailsPage();
         redirect(Number(charStore.$state.detailsPaging));
       }
     };
@@ -319,7 +319,6 @@ export default defineComponent({
       validInput,
       availableValidations,
       character,
-      redirect,
       toggleEditMode,
       submitChanges,
       tmpKeepProp,

@@ -162,8 +162,8 @@ export default defineComponent({
     return {
       value,
       isButtonDisabled,
-      updateValue,
-      vuelidate
+      vuelidate,
+      updateValue
     };
   }
 });

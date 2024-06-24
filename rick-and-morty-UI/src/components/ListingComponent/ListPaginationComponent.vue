@@ -128,11 +128,11 @@ export default defineComponent({
     };
 
     return {
+      availableValidations,
+      value,
       prevClicked,
       nextClicked,
-      getResultsAction,
-      availableValidations,
-      value
+      getResultsAction
     };
   }
 });

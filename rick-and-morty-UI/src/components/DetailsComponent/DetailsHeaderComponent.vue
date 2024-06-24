@@ -147,7 +147,7 @@ button {
           :label="'Name'"
           :type="'text'"
           :id="'Name'"
-          v-model:inputValue="editableContent"
+          :inputValue="editableContent"
           :validations="availableValidations.REQUIRED"
           v-on:update:inputValue="headerEdited($event)"
           v-on:input-validation="isValid"
@@ -206,10 +206,10 @@ export default defineComponent({
 
     return {
       state,
-      toggleEditMode,
       editableContent,
-      headerEdited,
       availableValidations,
+      toggleEditMode,
+      headerEdited,
       isValid
     };
   }
