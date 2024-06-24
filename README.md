@@ -101,6 +101,8 @@ http://localhost:4173
 
 ## Known Issues
 
+**In NGINX production build known issue below seems resolved**
+
 - Material Icon font loading issue while developing (page behaves like CSS is blocking on load), visible in devTools warnings:
 - - Failed to decode downloaded font: /material-design-icons/font/MaterialIcons-Regular.woff2
 - - OTS parsing error: invalid sfntVersion: 1008813135
@@ -108,7 +110,7 @@ http://localhost:4173
 ## Future improvements:
 
 - Enrich input controls (e.g. add drop down select)
-- Keep Listing Paging - navigating though Details should be aware the current Listing Paging in order to go to that listing (redirecting away from Details)
+- Keep Listing Paging - navigating though Details while changing Listing Paging, state should be aware of the new Listing Paging in order to go back to that listing (redirecting away from Details)
 - While in Details Edit mode a guard should cancel browser back and refresh
 - Break down components even more
 
