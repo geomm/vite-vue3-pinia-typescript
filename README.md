@@ -65,6 +65,8 @@ http://localhost:4173
 
 ## 3. Build Production docker image
 
+**From host machine project directory**
+
 - Create a production image using NGINX server consuming the .rick-and-morty-UI/dist artifacts (created previously by `npm run build`)
 - - `$ docker build . -t rick_and_morty_ui_prod`
 
