@@ -76,7 +76,7 @@
 </style>
 <template>
   <div class="mat-input">
-    <input :type="type" :id="id" v-model="value" v-on:focusout="updateValue" required />
+    <input :type="type" :id="id" v-model="value" @focusout="updateValue" required />
     <span class="highlight"></span>
     <span class="bar"></span>
     <label :for="label">{{ label }}</label>

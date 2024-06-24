@@ -74,17 +74,17 @@
         :inputValue="value"
         :validations="`${availableValidations.MINNUMBER}:0, ${availableValidations.MAXNUMBER}:${pagesTotal}`"
         :useSubmit="useSubmit"
-        v-on:submit:inputValue="getResultsAction($event)"
+        @submit:inputValue="getResultsAction($event)"
       />
       <p class="col-6">
         <b> {{ paging }}</b> / {{ pagesTotal }}
       </p>
     </div>
     <div class="flex">
-      <button class="col-6" :class="{ disabled: !((paging || 1) - 1) }" v-on:click="prevClicked">
+      <button class="col-6" :class="{ disabled: !((paging || 1) - 1) }" @click="prevClicked">
         <i class="material-icons">arrow_back</i>
       </button>
-      <button class="col-6" :class="{ disabled: paging === pagesTotal }" v-on:click="nextClicked">
+      <button class="col-6" :class="{ disabled: paging === pagesTotal }" @click="nextClicked">
         <i class="material-icons">arrow_forward</i>
       </button>
     </div>

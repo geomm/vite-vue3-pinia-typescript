@@ -149,8 +149,8 @@ button {
           :id="'Name'"
           :inputValue="editableContent"
           :validations="availableValidations.REQUIRED"
-          v-on:update:inputValue="headerEdited($event)"
-          v-on:input-validation="isValid"
+          @update:inputValue="headerEdited($event)"
+          @input-validation="isValid"
         />
         <StatusComponent
           :status="state?.status"

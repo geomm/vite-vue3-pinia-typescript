@@ -96,8 +96,8 @@
       :inputValue="editableContent"
       :use-submit="false"
       :validations="validations"
-      v-on:update:inputValue="sectionEdited($event)"
-      v-on:input-validation="isValid"
+      @update:inputValue="sectionEdited($event)"
+      @input-validation="isValid"
     />
   </div>
 </template>
