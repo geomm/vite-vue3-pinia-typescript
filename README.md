@@ -99,6 +99,21 @@ http://localhost:4173
 
 ---
 
+## Known Issues
+
+- Material Icon font loading issue while developing (page behaves like CSS is blocking on load), visible in devTools warnings:
+- - Failed to decode downloaded font: /material-design-icons/font/MaterialIcons-Regular.woff2
+- - OTS parsing error: invalid sfntVersion: 1008813135
+
+## Future improvements:
+
+- Enrich input controls (e.g. add drop down select)
+- Keep Listing Paging - navigating though Details should be aware the current Listing Paging in order to go to that listing (redirecting away from Details)
+- While in Details Edit mode a guard should cancel browser back and refresh
+- Break down components even more
+
+---
+
 # rick-and-morty-UI (Vue application)
 
 Files exist in usr/src/rick-and-morty-UI
