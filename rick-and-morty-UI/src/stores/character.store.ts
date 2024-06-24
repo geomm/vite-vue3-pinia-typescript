@@ -1,6 +1,6 @@
 import type { IApiDataModel } from '@/models/api-data.model';
 import type { ICharacter } from '@/models/character.model';
-import type { EditableModelProperties, IStoreState, ModelState } from '@/models/store.model';
+import type { IStoreState, ModelState } from '@/models/store.model';
 import type { AxiosResponse } from 'axios';
 import apiService from '@/services/api.service';
 import { defineStore } from 'pinia';
@@ -56,19 +56,21 @@ export const characterStore = defineStore('character', {
         this.loading = false;
       }
     },
-    async fetchCharacter(id: number): Promise<void> {
+    async fetchCharacter(id: number, callback?: (character: ICharacter) => void): Promise<void> {
       this.loading = true;
       this.error = null;
 
-      const tmpFromStorage = fetchFromStorage(id.toString());
+      const tmpFromStorage: ICharacter = fetchFromStorage(id.toString()) as ICharacter;
 
       if (tmpFromStorage) {
         this.setCharacterState(tmpFromStorage as ICharacter);
+        if (callback) callback(tmpFromStorage as ICharacter);
         this.loading = false;
       } else {
         try {
           const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
           this.setCharacterState(response.data);
+          if (callback) callback(response.data);
         } catch (error) {
           this.error = error;
           toast.error(`Store error: ${error}`, toastifyConfiguration);
@@ -77,14 +79,12 @@ export const characterStore = defineStore('character', {
           this.loading = false;
         }
       }
+      this.setActiveDetailsPage(Number(id));
     },
     setCharacterState(character: ICharacter): void {
       this.data!.model = character;
       storeIntoStorage(this.data!.model.id.toString(), character);
       toast.success(`Character state is set`, toastifyConfiguration);
-    },
-    resetCharacterState(): void {
-      this.data!.model = {} as ICharacter;
     },
     updateEditModeState(value: boolean | null = null): void {
       if (value === null) {
@@ -93,25 +93,13 @@ export const characterStore = defineStore('character', {
       }
       this.editMode = value;
     },
-    updateCharachetStatePropByKey(key: EditableModelProperties, value: string): void {
-      this.data!.model[key as EditableModelProperties] = value;
-    },
-    setActivePage(pageIndex: number) {
-      this.paging = pageIndex;
-    },
-    async incrementPage() {
-      this.paging = (this.paging as number) + 1;
-    },
-    async decrementPage() {
-      this.paging = (this.paging as number) - 1;
-    },
     setActiveDetailsPage(pageIndex: number) {
       this.detailsPaging = pageIndex;
     },
-    async incrementDetailsPage() {
+    incrementDetailsPage() {
       this.detailsPaging = (this.detailsPaging as number) + 1;
     },
-    async decrementDetailsPage() {
+    decrementDetailsPage() {
       this.detailsPaging = (this.detailsPaging as number) - 1;
     }
   }

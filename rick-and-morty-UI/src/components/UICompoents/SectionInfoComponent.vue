@@ -93,7 +93,7 @@
       :label="label"
       :type="'text'"
       :id="label"
-      :inputValue="editableContent"
+      v-model:inputValue="editableContent"
       :use-submit="false"
       :validations="validations"
       v-on:update:inputValue="sectionEdited($event)"
@@ -103,8 +103,9 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, type PropType } from 'vue';
-import InputComponent from './InputComponent.vue';
 import type { Validation } from '@vuelidate/core';
+import InputComponent from './InputComponent.vue';
+
 export default defineComponent({
   name: 'SectionInfoComponent',
   components: {
@@ -122,7 +123,6 @@ export default defineComponent({
   emits: ['section:edit', 'input-validation'],
   setup(props, { emit }) {
     const editableContent = ref(props.content);
-    // const editMode = ref(props.editMode);
 
     const sectionEdited = (value: string) => {
       editableContent.value = value;
