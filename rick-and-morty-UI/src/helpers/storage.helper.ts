@@ -13,7 +13,7 @@ export function fetchFromStorage(key: string): ICharacter | number | string | nu
       return storageData;
     } catch (error) {
       toast.error(`Error parsing storage: ${error}`, toastifyConfiguration);
-      console.error(`Error parsing storage: ${error}`, toastifyConfiguration);
+      console.error(`Error parsing storage: ${error}`);
       return null;
     }
   }

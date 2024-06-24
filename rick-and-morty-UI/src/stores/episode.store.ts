@@ -52,7 +52,7 @@ export const episodeStore = defineStore('episode', {
       } catch (error) {
         this.error = error;
         toast.error(`Store error: ${error}`, toastifyConfiguration);
-        console.error(`Store error:  ${error}`, toastifyConfiguration);
+        console.error(`Store error:  ${error}`);
       } finally {
         this.loading = false;
         callback();

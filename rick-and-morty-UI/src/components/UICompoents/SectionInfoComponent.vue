@@ -93,7 +93,7 @@
       :label="label"
       :type="'text'"
       :id="label"
-      v-model:inputValue="editableContent"
+      :inputValue="editableContent"
       :use-submit="false"
       :validations="validations"
       v-on:update:inputValue="sectionEdited($event)"
