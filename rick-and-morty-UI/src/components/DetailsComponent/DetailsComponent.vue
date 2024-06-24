@@ -264,7 +264,6 @@ export default defineComponent({
 
     const toggleEditMode = (value?: boolean) => {
       charStore.updateEditModeState(value);
-      if (value) console.log('Details toggle edit: ', character.value);
     };
 
     const tmpKeepProp = (key: EditableModelProperties, value: string) => {
