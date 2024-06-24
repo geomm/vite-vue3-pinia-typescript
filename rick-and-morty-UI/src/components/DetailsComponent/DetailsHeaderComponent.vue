@@ -147,7 +147,7 @@ button {
           :label="'Name'"
           :type="'text'"
           :id="'Name'"
-          :inputValue="editableContent"
+          v-model:inputValue="editableContent"
           :validations="availableValidations.REQUIRED"
           v-on:update:inputValue="headerEdited($event)"
           v-on:input-validation="isValid"
@@ -173,7 +173,6 @@ import InputComponent from '../UICompoents/InputComponent.vue';
 export default defineComponent({
   name: 'DetailsHeaderComponent',
   props: {
-    // character: {} as PropType<Partial<ICharacter>>,
     name: String as PropType<string>,
     image: String as PropType<string>,
     status: String as PropType<Status>,
@@ -189,7 +188,6 @@ export default defineComponent({
   emits: ['edit:click', 'section:edit', 'input-validation'],
   setup(props, { emit }) {
     const state = reactive(props);
-    // const state = reactive<Partial<ICharacter>>(props.character || ({} as Partial<ICharacter>));
     const editableContent = ref(state.name);
     const availableValidations = projectAvailableValidations;
 

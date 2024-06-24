@@ -147,13 +147,17 @@ export default defineComponent({
       ? useVuelidate(vuelidationRules, inputState)
       : null;
 
-    watch(value, (newVal) => {
-      isButtonDisabled.value =
-        newVal?.toString().trim() === '' || !newVal || vuelidate!.value.$invalid;
-      if (vuelidate) {
-        emit('input-validation', vuelidate.value);
-      }
-    });
+    watch(
+      () => value,
+      (newVal) => {
+        isButtonDisabled.value =
+          newVal?.toString().trim() === '' || !newVal || vuelidate!.value.$invalid;
+        if (vuelidate) {
+          emit('input-validation', vuelidate.value);
+        }
+      },
+      { deep: true }
+    );
 
     return {
       value,

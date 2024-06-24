@@ -93,7 +93,7 @@
       :label="label"
       :type="'text'"
       :id="label"
-      :inputValue="editableContent"
+      v-model:inputValue="editableContent"
       :use-submit="false"
       :validations="validations"
       v-on:update:inputValue="sectionEdited($event)"
@@ -122,7 +122,6 @@ export default defineComponent({
   emits: ['section:edit', 'input-validation'],
   setup(props, { emit }) {
     const editableContent = ref(props.content);
-    // const editMode = ref(props.editMode);
 
     const sectionEdited = (value: string) => {
       editableContent.value = value;

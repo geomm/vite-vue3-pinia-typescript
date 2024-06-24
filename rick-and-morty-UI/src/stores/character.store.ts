@@ -56,19 +56,21 @@ export const characterStore = defineStore('character', {
         this.loading = false;
       }
     },
-    async fetchCharacter(id: number): Promise<void> {
+    async fetchCharacter(id: number, callback?: (character: ICharacter) => void): Promise<void> {
       this.loading = true;
       this.error = null;
 
-      const tmpFromStorage = fetchFromStorage(id.toString());
+      const tmpFromStorage: ICharacter = fetchFromStorage(id.toString()) as ICharacter;
 
       if (tmpFromStorage) {
         this.setCharacterState(tmpFromStorage as ICharacter);
+        if (callback) callback(tmpFromStorage as ICharacter);
         this.loading = false;
       } else {
         try {
           const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
           this.setCharacterState(response.data);
+          if (callback) callback(response.data);
         } catch (error) {
           this.error = error;
           toast.error(`Store error: ${error}`, toastifyConfiguration);
@@ -77,6 +79,7 @@ export const characterStore = defineStore('character', {
           this.loading = false;
         }
       }
+      this.setActiveDetailsPage(Number(id));
     },
     setCharacterState(character: ICharacter): void {
       this.data!.model = character;
