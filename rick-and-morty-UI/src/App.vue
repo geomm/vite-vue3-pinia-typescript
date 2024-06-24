@@ -19,7 +19,7 @@ header {
   display: block;
   margin: 0 auto 2rem;
   @media (min-width: $larger) {
-    margin: 0 2rem 0 2rem;
+    margin: 0 2rem 0 1rem;
   }
 }
 
@@ -60,7 +60,7 @@ nav {
       ><img
         alt="Vue logo"
         class="logo"
-        src="@/assets/rick-and-morty-logo.svg"
+        src="/rick-and-morty-logo.svg"
         width="300"
         height="150"
     /></RouterLink>

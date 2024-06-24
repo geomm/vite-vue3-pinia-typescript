@@ -51,7 +51,7 @@ export const characterStore = defineStore('character', {
       } catch (error) {
         this.error = error;
         toast.error(`Store error: ${error}`, toastifyConfiguration);
-        console.error(`Store error:  ${error}`, toastifyConfiguration);
+        console.error(`Store error:  ${error}`);
       } finally {
         this.loading = false;
       }
@@ -74,7 +74,7 @@ export const characterStore = defineStore('character', {
         } catch (error) {
           this.error = error;
           toast.error(`Store error: ${error}`, toastifyConfiguration);
-          console.error(`Store error:  ${error}`, toastifyConfiguration);
+          console.error(`Store error:  ${error}`);
         } finally {
           this.loading = false;
         }
@@ -97,10 +97,10 @@ export const characterStore = defineStore('character', {
       this.detailsPaging = pageIndex;
     },
     incrementDetailsPage() {
-      this.detailsPaging = (this.detailsPaging as number) + 1;
+      this.detailsPaging = Number(this.detailsPaging) + 1;
     },
     decrementDetailsPage() {
-      this.detailsPaging = (this.detailsPaging as number) - 1;
+      this.detailsPaging = Number(this.detailsPaging) - 1;
     }
   }
 });

@@ -67,7 +67,7 @@ export default defineComponent({
 
     onMounted(async () => {
       await episStore.fetchAllEpisodes(async () => {
-        await charStore.fetchCharacters(); //1
+        await charStore.fetchCharacters();
       });
     });
 
@@ -81,8 +81,8 @@ export default defineComponent({
     };
 
     const getNextCharacters = () => {
-      const page = (charStore.$state.paging as number) + 1;
-      if (page === (charStore.$state.pagesTotal as number) + 1) {
+      const page = Number(charStore.$state.paging) + 1;
+      if (page === Number(charStore.$state.pagesTotal) + 1) {
         toast.warn(`There are no more that ${page} pages :)`, toastifyConfiguration);
         return;
       }
