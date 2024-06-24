@@ -57,12 +57,7 @@ nav {
 <template>
   <header>
     <RouterLink class="logo" to="/"
-      ><img
-        alt="Vue logo"
-        class="logo"
-        src="/rick-and-morty-logo.svg"
-        width="300"
-        height="150"
+      ><img alt="Vue logo" class="logo" src="/rick-and-morty-logo.svg" width="300" height="150"
     /></RouterLink>
   </header>
   <RouterView :key="$route.fullPath" />

@@ -83,7 +83,7 @@ export default defineComponent({
     const getNextCharacters = () => {
       const page = Number(charStore.$state.paging) + 1;
       if (page === Number(charStore.$state.pagesTotal) + 1) {
-        toast.warn(`There are no more that ${page} pages :)`, toastifyConfiguration);
+        toast.warn(`There are no more than ${page - 1} pages :)`, toastifyConfiguration);
         return;
       }
       charStore.fetchCharacters(page);

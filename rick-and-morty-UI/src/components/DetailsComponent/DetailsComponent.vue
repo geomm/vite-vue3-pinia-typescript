@@ -112,7 +112,7 @@ section {
         :editMode="charStore.$state.editMode"
         @edit:click="toggleEditMode(!charStore.$state.editMode)"
         @section:edit="tmpKeepProp('name', $event)"
-        v-on:input-validation="isValid"
+        @input-validation="isValid"
       />
 
       <div class="info col-12">
@@ -147,7 +147,7 @@ section {
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('gender', $event)"
-          v-on:input-validation="isValid"
+          @input-validation="isValid"
         />
 
         <SectionInfoComponent :label="'Type'" :content="character.type" :icon="'category'" />
@@ -161,7 +161,7 @@ section {
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
           @section:edit="tmpKeepProp('species', $event)"
-          v-on:input-validation="isValid"
+          @input-validation="isValid"
         />
         <div class="flex" v-if="charStore.$state.editMode">
           <button class="cancel col-6 ml0" @click="toggleEditMode(false)">
