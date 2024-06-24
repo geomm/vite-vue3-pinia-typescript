@@ -93,7 +93,7 @@
       :label="label"
       :type="'text'"
       :id="label"
-      :inputValue="editableContent"
+      v-model:inputValue="editableContent"
       :use-submit="false"
       :validations="validations"
       v-on:update:inputValue="sectionEdited($event)"
@@ -102,9 +102,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, type PropType } from 'vue';
+import { defineComponent, reactive, ref, watch, type PropType } from 'vue';
 import InputComponent from './InputComponent.vue';
 import type { Validation } from '@vuelidate/core';
+import { onUpdated } from 'vue';
+import { computed } from 'vue';
+
 export default defineComponent({
   name: 'SectionInfoComponent',
   components: {
@@ -121,17 +124,28 @@ export default defineComponent({
   },
   emits: ['section:edit', 'input-validation'],
   setup(props, { emit }) {
-    const editableContent = ref(props.content);
-    // const editMode = ref(props.editMode);
+    // const editableContent = ref(props.content);
+    const state = reactive(props);
+
+    const editableContent = ref(state.content); // computed(() => state.content); //
 
     const sectionEdited = (value: string) => {
-      editableContent.value = value;
+      // editableContent.value = value;
       emit('section:edit', value);
     };
 
     const isValid = (arg: Validation) => {
       emit('input-validation', arg);
     };
+
+    watch(editableContent, (updatedContent) => {
+      console.log('item watched ', props.label, editableContent.value);
+      // editableContent.value = updatedContent;
+    });
+
+    onUpdated(() => {
+      console.log('item updated ', props.label, editableContent.value);
+    });
 
     return {
       editableContent,

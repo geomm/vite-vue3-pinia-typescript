@@ -104,11 +104,11 @@ section {
     </button>
     <div class="col-6">
       <DetailsHeaderComponent
-        v-model:name="charStore.$state.data.model.name"
-        v-model:image="charStore.$state.data.model.image"
-        v-model:status="charStore.$state.data.model.status"
-        v-model:species="charStore.$state.data.model.species"
-        v-model:url="charStore.$state.data.model.url"
+        v-model:name="character!.name"
+        v-model:image="character!.image"
+        v-model:status="character!.status"
+        v-model:species="character!.species"
+        v-model:url="character!.url"
         :editMode="charStore.$state.editMode"
         @edit:click="toggleEditMode(!charStore.$state.editMode)"
         @section:edit="tmpKeepProp('name', $event)"
@@ -118,31 +118,31 @@ section {
       <div class="info col-12">
         <SectionInfoComponent
           :label="'Last known location'"
-          :content="charStore.$state.data!.model.location?.name"
-          :url="charStore.$state.data!.model.location?.url"
+          v-model:content="character!.location.name"
+          :url="character!.location?.url"
           :icon="'location_on'"
           :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
           :label="'First seen in'"
-          :content="episodeTitle(charStore.$state.data!.model.episode?.[0])"
-          :url="charStore.$state.data!.model.episode?.[0]"
+          :content="episodeTitle(character!.episode?.[0])"
+          :url="character!.episode?.[0]"
           :icon="'movie'"
           :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
           :label="'Origin'"
-          :content="charStore.$state.data!.model.origin?.name"
-          :url="charStore.$state.data!.model.origin?.url"
+          :content="character!.origin?.name"
+          :url="character!.origin?.url"
           :icon="'public'"
           :editMode="charStore.$state.editMode"
         />
 
         <SectionInfoComponent
           :label="'Gender'"
-          :content="charStore.$state.data!.model?.gender"
+          v-model:content="character!.gender"
           :icon="'wc'"
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
@@ -150,21 +150,17 @@ section {
           v-on:input-validation="isValid"
         />
 
-        <SectionInfoComponent
-          :label="'Type'"
-          :content="charStore.$state.data!.model?.type"
-          :icon="'category'"
-        />
+        <SectionInfoComponent :label="'Type'" :content="character!?.type" :icon="'category'" />
 
         <SectionInfoComponent
           :label="'Status'"
-          :content="charStore.$state.data!.model?.status"
+          :content="character!?.status"
           :icon="'how_to_reg'"
         />
 
         <SectionInfoComponent
           :label="'Species'"
-          :content="charStore.$state.data!.model?.species"
+          v-model:content="character!.species"
           :icon="'pets'"
           :editable="charStore.$state.editMode"
           :validations="availableValidations.REQUIRED"
@@ -197,7 +193,7 @@ section {
   </section>
 </template>
 <script lang="ts">
-import { defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
+import { computed, defineComponent, onBeforeMount, onBeforeUnmount, ref } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import router from '@/router';
 import type { Validation } from '@vuelidate/core';
@@ -211,6 +207,9 @@ import DetailsHeaderComponent from './DetailsHeaderComponent.vue';
 import { toast } from 'vue3-toastify';
 import { toastifyConfiguration } from '@/configs/toastify.config';
 import { fetchFromStorage } from '@/helpers/storage.helper';
+import Character from '@/models/character.model';
+import { onMounted } from 'vue';
+import { nextTick } from 'vue';
 
 // @TODO: maybe creating a detailsEditingState model for properties to initiating properly on edit could work
 
@@ -227,14 +226,22 @@ export default defineComponent({
     const validInput = ref(true);
     const availableValidations = projectAvailableValidations;
 
-    let tmpCharacter: Partial<ICharacter> = {};
+    let tmpCharacter: Partial<ICharacter> = {}; // = new Character(); //
+
+    const character = computed(() => charStore.$state.data?.model);
 
     const totalCharacters = (): number => {
       return charStore.$state.totalCount || Number(fetchFromStorage('total_characters'));
     };
 
-    const toggleEditMode = async (value?: boolean) => {
-      charStore.updateEditModeState(value);
+    const toggleEditMode = (value?: boolean) => {
+      if (value) {
+        console.log('character state tm: ', charStore.$state.data?.model);
+        // charStore.setCharacterState(charStore.$state.data?.model as ICharacter);
+      }
+      setTimeout(() => {
+        charStore.updateEditModeState(value);
+      });
     };
 
     const tmpKeepProp = (key: EditableModelProperties, value: string) => {
@@ -273,10 +280,10 @@ export default defineComponent({
     const submitChanges = async () => {
       if (validInput.value) {
         const newCharacterState = {
-          ...charStore.$state.data!.model,
+          ...character.value,
           ...tmpCharacter
         };
-        charStore.setCharacterState(newCharacterState);
+        charStore.setCharacterState(newCharacterState as ICharacter);
         charStore.updateEditModeState(false);
       }
     };
@@ -291,14 +298,30 @@ export default defineComponent({
 
     onBeforeMount(async () => {
       // charStore.resetCharacterState();
-      await episStore.fetchAllEpisodes(async () => {
-        await charStore.fetchCharacter(Number(route.params.id));
-        charStore.setActiveDetailsPage(Number(charStore.$state.data?.model.id));
-      });
-    });
 
+      await episStore.fetchAllEpisodes(async () => {
+        await charStore.fetchCharacter(Number(route.params.id), (character: ICharacter) => {
+          // charStore.refreshCharacterState();
+          console.log('character state callback: ', character);
+          charStore.setCharacterState(character);
+          charStore.setActiveDetailsPage(Number(route.params.id));
+        });
+      });
+
+      // charStore.$subscribe((arg) => {
+      //   // @TODO: delete row
+      //   // console.log('LOG FROM STORE SUBS: ', arg, charStore); // @TODO: delete row
+      //   // charStore.setCharacterState(charStore.$state.data?.model as ICharacter);
+      // }); // @TODO: delete row
+    });
+    onMounted(async () => {
+      await nextTick();
+      // charStore.setCharacterState(charStore.$state.data?.model as ICharacter);
+    });
     onBeforeUnmount(() => {
       tmpCharacter = {};
+      // charStore.setCharacterState(new Character());
+      console.log('character state um: ', charStore.$state.data?.model);
       toggleEditMode(false);
     });
 
@@ -326,7 +349,8 @@ export default defineComponent({
       episodeTitle,
       availableValidations,
       isValid,
-      totalCharacters
+      totalCharacters,
+      character
     };
   }
 });

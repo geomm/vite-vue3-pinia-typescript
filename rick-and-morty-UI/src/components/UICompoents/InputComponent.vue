@@ -148,6 +148,7 @@ export default defineComponent({
       : null;
 
     watch(value, (newVal) => {
+      console.log('>>> input value changed: ', value.value, newVal);
       isButtonDisabled.value =
         newVal?.toString().trim() === '' || !newVal || vuelidate!.value.$invalid;
       if (vuelidate) {

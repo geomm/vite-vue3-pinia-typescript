@@ -147,7 +147,7 @@ button {
           :label="'Name'"
           :type="'text'"
           :id="'Name'"
-          :inputValue="editableContent"
+          v-model:inputValue="editableContent"
           :validations="availableValidations.REQUIRED"
           v-on:update:inputValue="headerEdited($event)"
           v-on:input-validation="isValid"

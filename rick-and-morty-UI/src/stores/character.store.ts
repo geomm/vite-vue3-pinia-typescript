@@ -7,6 +7,7 @@ import { defineStore } from 'pinia';
 import { toast } from 'vue3-toastify';
 import { toastifyConfiguration } from '@/configs/toastify.config';
 import { fetchFromStorage, storage, storeIntoStorage } from '@/helpers/storage.helper';
+import Character from '@/models/character.model';
 
 export const characterStore = defineStore('character', {
   state: (): IStoreState<ICharacter> => ({
@@ -56,7 +57,7 @@ export const characterStore = defineStore('character', {
         this.loading = false;
       }
     },
-    async fetchCharacter(id: number): Promise<void> {
+    async fetchCharacter(id: number, callback?: (arg: ICharacter) => void): Promise<void> {
       this.loading = true;
       this.error = null;
 
@@ -65,10 +66,13 @@ export const characterStore = defineStore('character', {
       if (tmpFromStorage) {
         this.setCharacterState(tmpFromStorage as ICharacter);
         this.loading = false;
+        toast.success(`Character state is set`, toastifyConfiguration); // @TODO: delete row
       } else {
         try {
           const response: AxiosResponse<ICharacter> = await apiService.get(`character/${id}`);
-          this.setCharacterState(response.data);
+          this.setCharacterState(new Character());
+          toast.warn(`Character state is set`, toastifyConfiguration); // @TODO: delete row
+          if (callback) callback(response.data);
         } catch (error) {
           this.error = error;
           toast.error(`Store error: ${error}`, toastifyConfiguration);
@@ -80,8 +84,11 @@ export const characterStore = defineStore('character', {
     },
     setCharacterState(character: ICharacter): void {
       this.data!.model = character;
-      storeIntoStorage(this.data!.model.id.toString(), character);
-      toast.success(`Character state is set`, toastifyConfiguration);
+      storeIntoStorage(this.data!.model?.id.toString(), character);
+      // toast.success(`Character state is set`, toastifyConfiguration); // @TODO: remove comment
+    },
+    refreshCharacterState(): void {
+      this.data!.model = fetchFromStorage(this.data!.model.id.toString()) as ICharacter;
     },
     resetCharacterState(): void {
       this.data!.model = {} as ICharacter;

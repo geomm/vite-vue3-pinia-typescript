@@ -3,5 +3,6 @@ import type { ToastOptions } from 'vue3-toastify';
 export const toastifyConfiguration: Partial<ToastOptions> = {
   theme: 'colored',
   type: 'default',
-  autoClose: 2500
+  autoClose: 2500,
+  delay: 10
 };
