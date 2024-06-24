@@ -72,6 +72,8 @@ http://localhost:4173
 
 ## 4. Run Production docker container for Test (or Produce for delivery)
 
+If the container is already there please remove it, `$ docker container rm rick_and_morty_ui_prod_container `
+
 - Run the container
 - - `$ docker run --name rick_and_morty_ui_prod_container -p 80:8080 -it rick_and_morty_ui_prod`
 
@@ -108,7 +110,8 @@ http://localhost:4173
 ## Future improvements:
 
 - Enrich input controls (e.g. add drop down select)
-- Keep Listing Paging - navigating though Details while changing Listing Paging, state should be aware of the new Listing Paging in order to go back to that listing (redirecting away from Details)
+- Improve UX e.g. add focus on 1st input when in edit mode
+- Keep Listing Paging - change Listing Paging while navigating though Details, state should be aware of the new Listing Paging in order to go back to that listing (redirecting away from Details)
 - While in Details Edit mode a guard should cancel browser back and refresh
 - Break down components even more
 
