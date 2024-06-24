@@ -101,8 +101,6 @@ http://localhost:4173
 
 ## Known Issues
 
-**In NGINX production build known issue below seems resolved**
-
 - Material Icon font loading issue while developing (page behaves like CSS is blocking on load), visible in devTools warnings:
 - - Failed to decode downloaded font: /material-design-icons/font/MaterialIcons-Regular.woff2
 - - OTS parsing error: invalid sfntVersion: 1008813135
