@@ -94,10 +94,10 @@ If the container is already there please remove it, `$ docker container rm rick_
 - ~~add toast (error handling, edit mode state store notify user)~~
 - - ~~use toast for invalid pagination inputs~~
 - - ~~use toast for requests errors~~
-- ~~create NavComponent (show activePage/total and input)~~
+- ~~create ListPaginationComponent (show activePage/total and input)~~
 - - ~~currently input is binded on:keydown:enter @TODO: add button to the right of the input~~
 - - ~~add validation (before request) in pagin input / sanitize input value~~
-- - ~~simplify template properties instead of using pinia state directly~~
+- ~~simplify template properties instead of using pinia state directly~~
 
 ---
 
